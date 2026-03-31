@@ -3,16 +3,16 @@
 ## Harness Engineering 范式的企业级工程实践 | Enterprise Engineering Practice of Harness Engineering Paradigm
 
 > 🚀 **Latest News / 最新动态 / Dernières Nouvelles**
-> 
+>
 > **Version 2.0 has been released! Version 3.0 is currently under iteration, with plans to improve code generation accuracy and reduce errors and omissions.**
-> 
+>
 > **2.0 版本已发布！3.0 版本正在迭代中，计划提高代码生成的准确率，减少误差和遗忘。**
-> 
+>
 > **La version 2.0 est publiée ! La version 3.0 est en cours d'itération, avec des plans pour améliorer la précision de la génération de code et réduire les erreurs et omissions.**
 
 [English](#english) | [中文](#中文) | [Français](#français)
 
----
+***
 
 <a name="english"></a>
 
@@ -29,7 +29,7 @@ Core values of PDD methodology:
 - **Quality Assurance**: Multi-dimensional verification ensures delivery quality
 - **Knowledge Accumulation**: Documents and code evolve synchronously
 
----
+***
 
 ### Core Philosophy
 
@@ -42,7 +42,7 @@ PDD methodology follows these core principles:
 3. **Continuous Verification**: Each feature must pass three-dimensional verification
 4. **Entropy Reduction Governance**: Continuously combat system "entropy increase" and "decay"
 
----
+***
 
 ### Relationship between PDD and OpenSpec
 
@@ -71,12 +71,12 @@ PDD methodology integrates deeply with OpenSpec to form a complete development s
 
 #### Complementary Features
 
-| Feature | PDD Contribution | OpenSpec Contribution |
-|---------|-----------------|----------------------|
-| **Requirement Management** | PRD document system | Specification standardization |
-| **Change Tracking** | Feature matrix | Change ID management |
-| **Document Synchronization** | Specification generation | Specification version control |
-| **Quality Assurance** | Three-dimensional verification | Specification consistency check |
+| Feature                      | PDD Contribution               | OpenSpec Contribution           |
+| ---------------------------- | ------------------------------ | ------------------------------- |
+| **Requirement Management**   | PRD document system            | Specification standardization   |
+| **Change Tracking**          | Feature matrix                 | Change ID management            |
+| **Document Synchronization** | Specification generation       | Specification version control   |
+| **Quality Assurance**        | Three-dimensional verification | Specification consistency check |
 
 #### Implementation Scenarios
 
@@ -124,7 +124,7 @@ Generate Entropy Report
 Create Fix PR
 ```
 
----
+***
 
 ### Skill System Architecture
 
@@ -157,18 +157,18 @@ Create Fix PR
 
 #### Core Skills List
 
-| Category | Skill Name | Core Responsibility | Input | Output |
-|----------|-----------|---------------------|-------|--------|
-| **Main Entry** | pdd-main | Process orchestration, state management | PRD document path | Completed feature code |
-| **Business Analysis** | pdd-ba | Requirement analysis, business modeling | PRD document | Business analysis report |
-| **Feature Extraction** | pdd-extract-features | Feature point extraction | Business analysis report | Feature matrix |
-| **Specification Generation** | pdd-generate-spec | Development specification generation | Feature matrix | spec.md, checklist.md |
-| **Code Implementation** | pdd-implement-feature | Feature implementation | Development specification | Code files |
-| **Code Review** | pdd-code-reviewer | Compliance review | Code + Specification | Review report |
-| **Feature Verification** | pdd-verify-feature | Three-dimensional verification | Code + Acceptance criteria | Verification report |
-| **Entropy Reduction** | pdd-entropy-reduction | Technical debt management | Trigger conditions | Entropy report + Fix PR |
+| Category                     | Skill Name            | Core Responsibility                     | Input                      | Output                   |
+| ---------------------------- | --------------------- | --------------------------------------- | -------------------------- | ------------------------ |
+| **Main Entry**               | pdd-main              | Process orchestration, state management | PRD document path          | Completed feature code   |
+| **Business Analysis**        | pdd-ba                | Requirement analysis, business modeling | PRD document               | Business analysis report |
+| **Feature Extraction**       | pdd-extract-features  | Feature point extraction                | Business analysis report   | Feature matrix           |
+| **Specification Generation** | pdd-generate-spec     | Development specification generation    | Feature matrix             | spec.md, checklist.md    |
+| **Code Implementation**      | pdd-implement-feature | Feature implementation                  | Development specification  | Code files               |
+| **Code Review**              | pdd-code-reviewer     | Compliance review                       | Code + Specification       | Review report            |
+| **Feature Verification**     | pdd-verify-feature    | Three-dimensional verification          | Code + Acceptance criteria | Verification report      |
+| **Entropy Reduction**        | pdd-entropy-reduction | Technical debt management               | Trigger conditions         | Entropy report + Fix PR  |
 
----
+***
 
 ### Development Process
 
@@ -233,7 +233,7 @@ Phase 6: Delivery & Retrospective
 └─────────────────────────────────────────────────────────────────┘
 ```
 
----
+***
 
 ### Usage Guide
 
@@ -271,11 +271,11 @@ AI: [Invoking pdd-main skill]
 
 #### Feature Complexity Classification
 
-| Complexity | Code | Description | Development Time | Human Involvement |
-|------------|------|-------------|------------------|-------------------|
-| Core Business | P0 | Core business processes, multi-party approval | 3-5 days | High |
-| Important Feature | P1 | Important business features, alternatives available | 1-2 days | Medium |
-| Auxiliary Feature | P2 | Auxiliary features, easy to implement | 0.5 day | Low |
+| Complexity        | Code | Description                                         | Development Time | Human Involvement |
+| ----------------- | ---- | --------------------------------------------------- | ---------------- | ----------------- |
+| Core Business     | P0   | Core business processes, multi-party approval       | 3-5 days         | High              |
+| Important Feature | P1   | Important business features, alternatives available | 1-2 days         | Medium            |
+| Auxiliary Feature | P2   | Auxiliary features, easy to implement               | 0.5 day          | Low               |
 
 #### Three-Dimensional Verification Model
 
@@ -303,23 +303,23 @@ Verification Dimensions:
       - Naming convention uniformity
 ```
 
----
+***
 
 ### Document System
 
 #### Core Document Types
 
-| Document Type | Filename | Core Content |
-|--------------|----------|--------------|
-| PRD Document | PRD-{ModuleName}.md | Requirements, business rules |
-| Use Case Diagram | UseCase-{ModuleName}.md | Use case definitions, actors |
-| Flowchart | BusinessFlow-{ModuleName}.md | Business processes, decision points |
-| State Diagram | StateDiagram-{ModuleName}.md | State definitions, transition rules |
-| Feature Matrix | feature-matrix.md | Feature list, dependencies |
-| Development Specification | spec.md | Interface design, data model |
-| Acceptance Criteria | checklist.md | Acceptance items, conditions |
-| Review Report | review-report.md | Review results, issue list |
-| Verification Report | verify-report.md | Verification results, issue list |
+| Document Type             | Filename                     | Core Content                        |
+| ------------------------- | ---------------------------- | ----------------------------------- |
+| PRD Document              | PRD-{ModuleName}.md          | Requirements, business rules        |
+| Use Case Diagram          | UseCase-{ModuleName}.md      | Use case definitions, actors        |
+| Flowchart                 | BusinessFlow-{ModuleName}.md | Business processes, decision points |
+| State Diagram             | StateDiagram-{ModuleName}.md | State definitions, transition rules |
+| Feature Matrix            | feature-matrix.md            | Feature list, dependencies          |
+| Development Specification | spec.md                      | Interface design, data model        |
+| Acceptance Criteria       | checklist.md                 | Acceptance items, conditions        |
+| Review Report             | review-report.md             | Review results, issue list          |
+| Verification Report       | verify-report.md             | Verification results, issue list    |
 
 #### Directory Structure
 
@@ -341,7 +341,7 @@ docs/
         └── verify-report.md
 ```
 
----
+***
 
 ### Entropy Reduction Mechanism
 
@@ -366,39 +366,35 @@ docs/
 
 #### Entropy Score System
 
-| Score Range | Status | Recommended Action |
-|-------------|--------|-------------------|
-| 90-100 | Excellent | Maintain current state |
-| 70-89 | Good | Small improvements |
-| 50-69 | Average | Planned cleanup |
-| 30-49 | Warning | Priority handling |
-| 0-29 | Critical | Emergency refactoring |
+| Score Range | Status    | Recommended Action     |
+| ----------- | --------- | ---------------------- |
+| 90-100      | Excellent | Maintain current state |
+| 70-89       | Good      | Small improvements     |
+| 50-69       | Average   | Planned cleanup        |
+| 30-49       | Warning   | Priority handling      |
+| 0-29        | Critical  | Emergency refactoring  |
 
----
+***
 
 ### Golden Principles
 
 1. **Use shared utility packages, avoid hand-written helper functions**
    - Centralize invariants management
    - Reduce code duplication
-
 2. **Validate boundary data, don't guess data structures**
    - All API entries must have Schema validation
    - Don't rely on implicit type inference
-
 3. **Keep code simple, prioritize readability**
    - Single file no more than 300 lines
    - Single function no more than 50 lines
-
 4. **Documentation as code, keep synchronized**
    - Code changes must synchronize documentation
    - Outdated documentation is technical debt
-
 5. **Pay off debt in small amounts, continuous improvement**
    - Every commit is an improvement opportunity
    - Don't let technical debt accumulate
 
----
+***
 
 ### PDD as Harness Engineering Enterprise Practice
 
@@ -448,6 +444,7 @@ Harness Engineering (PDD):
 ```
 
 **Key Benefits:**
+
 - Reduces ambiguity in requirements
 - Enables parallel development
 - Facilitates automated verification
@@ -567,13 +564,13 @@ PDD leverages domain expert skills to provide specialized guidance:
 
 #### Enterprise Benefits
 
-| Benefit | Description | Impact |
-|---------|-------------|--------|
-| **Reduced Time-to-Market** | Automated specification and code generation | 30-50% faster delivery |
-| **Improved Quality** | Multi-dimensional verification | 60% fewer production bugs |
-| **Lower Maintenance Cost** | Continuous entropy reduction | 40% reduction in technical debt |
-| **Knowledge Preservation** | Document-code synchronization | 80% faster onboarding |
-| **Scalable Development** | Skill-based expert system | Linear scaling with team size |
+| Benefit                    | Description                                 | Impact                          |
+| -------------------------- | ------------------------------------------- | ------------------------------- |
+| **Reduced Time-to-Market** | Automated specification and code generation | 30-50% faster delivery          |
+| **Improved Quality**       | Multi-dimensional verification              | 60% fewer production bugs       |
+| **Lower Maintenance Cost** | Continuous entropy reduction                | 40% reduction in technical debt |
+| **Knowledge Preservation** | Document-code synchronization               | 80% faster onboarding           |
+| **Scalable Development**   | Skill-based expert system                   | Linear scaling with team size   |
 
 #### Implementation Roadmap
 
@@ -629,17 +626,17 @@ Team Metrics:
 
 #### Comparison with Traditional Approaches
 
-| Aspect | Traditional Development | PDD (Harness Engineering) |
-|--------|------------------------|---------------------------|
-| **Requirements** | Informal, often ambiguous | Formalized, specification-first |
-| **Documentation** | Often outdated | Synchronized with code |
-| **Code Quality** | Reactive review | Proactive verification |
-| **Technical Debt** | Accumulates over time | Continuously reduced |
-| **Knowledge Transfer** | Person-dependent | System-dependent |
-| **Scalability** | Non-linear effort | Linear effort with skills |
-| **Automation** | Limited | Comprehensive, multi-layer |
+| Aspect                 | Traditional Development   | PDD (Harness Engineering)       |
+| ---------------------- | ------------------------- | ------------------------------- |
+| **Requirements**       | Informal, often ambiguous | Formalized, specification-first |
+| **Documentation**      | Often outdated            | Synchronized with code          |
+| **Code Quality**       | Reactive review           | Proactive verification          |
+| **Technical Debt**     | Accumulates over time     | Continuously reduced            |
+| **Knowledge Transfer** | Person-dependent          | System-dependent                |
+| **Scalability**        | Non-linear effort         | Linear effort with skills       |
+| **Automation**         | Limited                   | Comprehensive, multi-layer      |
 
----
+***
 
 ### Reference Documentation
 
@@ -649,7 +646,7 @@ Team Metrics:
 - [software-architect SKILL.md](software-architect/SKILL.md)
 - [software-engineer SKILL.md](software-engineer/SKILL.md)
 
----
+***
 
 <a name="中文"></a>
 
@@ -666,7 +663,7 @@ PDD 方法论的核心价值在于：
 - **质量保障**：多维度验证确保交付质量
 - **知识沉淀**：文档与代码同步演进
 
----
+***
 
 ### 核心理念
 
@@ -679,7 +676,7 @@ PDD 方法论遵循以下核心原则：
 3. **持续验证**：每个功能点必须通过三维度验证
 4. **熵减治理**：持续对抗系统的"熵增"与"衰减"
 
----
+***
 
 ### PDD 与 OpenSpec 的关系
 
@@ -708,12 +705,12 @@ PDD 方法论与 OpenSpec 深度融合，形成完整的开发规范体系：
 
 #### 互补特性
 
-| 特性 | PDD 贡献 | OpenSpec 贡献 |
-|------|---------|--------------|
-| **需求管理** | PRD 文档体系 | 规格标准化 |
-| **变更追踪** | 功能点矩阵 | Change ID 管理 |
-| **文档同步** | 规格文档生成 | 规格版本控制 |
-| **质量保障** | 三维度验证 | 规格一致性检查 |
+| 特性       | PDD 贡献   | OpenSpec 贡献  |
+| -------- | -------- | ------------ |
+| **需求管理** | PRD 文档体系 | 规格标准化        |
+| **变更追踪** | 功能点矩阵    | Change ID 管理 |
+| **文档同步** | 规格文档生成   | 规格版本控制       |
+| **质量保障** | 三维度验证    | 规格一致性检查      |
 
 #### 实施场景
 
@@ -761,7 +758,7 @@ pdd-doc-change 分析影响
 创建修复 PR
 ```
 
----
+***
 
 ### 技能体系架构
 
@@ -792,18 +789,18 @@ pdd-doc-change 分析影响
 
 #### 核心技能清单
 
-| 类别 | 技能名称 | 核心职责 | 输入 | 输出 |
-|------|---------|---------|------|------|
-| **主入口** | pdd-main | 流程编排、状态管理 | PRD 文档路径 | 完成的功能代码 |
-| **业务分析** | pdd-ba | 需求分析、业务建模 | PRD 文档 | 业务分析报告 |
-| **功能提取** | pdd-extract-features | 功能点提取 | 业务分析报告 | 功能点矩阵 |
-| **规格生成** | pdd-generate-spec | 开发规格生成 | 功能点矩阵 | spec.md, checklist.md |
-| **代码实现** | pdd-implement-feature | 功能点实现 | 开发规格 | 代码文件 |
-| **代码审查** | pdd-code-reviewer | 合规性审查 | 代码 + 规格 | 审查报告 |
-| **功能验证** | pdd-verify-feature | 三维度验证 | 代码 + 验收标准 | 验收报告 |
-| **熵减治理** | pdd-entropy-reduction | 技术债务管理 | 触发条件 | 熵报告 + 修复 PR |
+| 类别       | 技能名称                  | 核心职责      | 输入        | 输出                    |
+| -------- | --------------------- | --------- | --------- | --------------------- |
+| **主入口**  | pdd-main              | 流程编排、状态管理 | PRD 文档路径  | 完成的功能代码               |
+| **业务分析** | pdd-ba                | 需求分析、业务建模 | PRD 文档    | 业务分析报告                |
+| **功能提取** | pdd-extract-features  | 功能点提取     | 业务分析报告    | 功能点矩阵                 |
+| **规格生成** | pdd-generate-spec     | 开发规格生成    | 功能点矩阵     | spec.md, checklist.md |
+| **代码实现** | pdd-implement-feature | 功能点实现     | 开发规格      | 代码文件                  |
+| **代码审查** | pdd-code-reviewer     | 合规性审查     | 代码 + 规格   | 审查报告                  |
+| **功能验证** | pdd-verify-feature    | 三维度验证     | 代码 + 验收标准 | 验收报告                  |
+| **熵减治理** | pdd-entropy-reduction | 技术债务管理    | 触发条件      | 熵报告 + 修复 PR           |
 
----
+***
 
 ### 开发流程
 
@@ -868,7 +865,7 @@ pdd-doc-change 分析影响
 └─────────────────────────────────────────────────────────────────┘
 ```
 
----
+***
 
 ### 使用指南
 
@@ -877,18 +874,18 @@ pdd-doc-change 分析影响
 **模式一：模块编号自动发现**
 
 ```
-用户: 我想开发 ZCCZ-2 资产转让模块
+用户: 我想开发 ZCCZ-2 转让模块
 
 AI: [调用 pdd-main skill]
     正在扫描 docs/业务分析/ 目录...
-    发现模块: ZCCZ-2-资产转让
-    路径: docs/业务分析/资产处置/ZCCZ-2-资产转让/
+    发现模块: ZCCZ-2-转让
+    路径: docs/业务分析/处置/ZCCZ-2-转让/
 
     已聚合以下设计文档:
-    ✓ PRD-资产转让.md
-    ✓ 用例图-资产转让.md
-    ✓ 业务流程图-资产转让.md
-    ✓ 状态图-资产转让.md
+    ✓ PRD-转让.md
+    ✓ 用例图-转让.md
+    ✓ 业务流程图-转让.md
+    ✓ 状态图-转让.md
 
     请确认是否开始业务分析？ [Y/n]
 ```
@@ -897,8 +894,8 @@ AI: [调用 pdd-main skill]
 
 ```
 用户: 我想基于这些文档开发
-     - docs/业务分析/资产处置/ZCCZ-1/PRD-资产转让.md
-     - docs/业务分析/资产处置/ZCCZ-1/业务流程图-资产转让.md
+     - docs/业务分析/处置/ZCCZ-1/PRD-转让.md
+     - docs/业务分析/处置/ZCCZ-1/业务流程图-转让.md
 
 AI: [调用 pdd-main skill]
     已接收设计文档，开始业务分析...
@@ -906,11 +903,11 @@ AI: [调用 pdd-main skill]
 
 #### 功能点复杂度分类
 
-| 复杂度 | 代码 | 说明 | 开发时间 | 人工参与 |
-|--------|------|------|---------|---------|
-| 核心业务 | P0 | 核心业务流程，涉及多方审批 | 3-5天 | 高 |
-| 重要功能 | P1 | 重要业务功能，有替代方案 | 1-2天 | 中 |
-| 辅助功能 | P2 | 辅助性功能，易于实现 | 0.5天 | 低 |
+| 复杂度  | 代码 | 说明            | 开发时间 | 人工参与 |
+| ---- | -- | ------------- | ---- | ---- |
+| 核心业务 | P0 | 核心业务流程，涉及多方审批 | 3-5天 | 高    |
+| 重要功能 | P1 | 重要业务功能，有替代方案  | 1-2天 | 中    |
+| 辅助功能 | P2 | 辅助性功能，易于实现    | 0.5天 | 低    |
 
 #### 三维度验证模型
 
@@ -938,23 +935,23 @@ AI: [调用 pdd-main skill]
       - 命名规范是否统一
 ```
 
----
+***
 
 ### 文档体系
 
 #### 核心文档类型
 
-| 文档类型 | 文件名 | 核心内容 |
-|---------|--------|---------|
-| PRD 文档 | PRD-{模块名称}.md | 需求描述、业务规则 |
-| 用例图 | 用例图-{模块名称}.md | 用例定义、参与者 |
-| 流程图 | 业务流程图-{模块名称}.md | 业务流程、决策点 |
-| 状态图 | 状态图-{模块名称}.md | 状态定义、转换规则 |
-| 功能点矩阵 | feature-matrix.md | 功能点清单、依赖关系 |
-| 开发规格 | spec.md | 接口设计、数据模型 |
-| 验收标准 | checklist.md | 验收项、验收条件 |
-| 审查报告 | review-report.md | 审查结果、问题清单 |
-| 验收报告 | verify-report.md | 验收结果、问题清单 |
+| 文档类型   | 文件名               | 核心内容       |
+| ------ | ----------------- | ---------- |
+| PRD 文档 | PRD-{模块名称}.md     | 需求描述、业务规则  |
+| 用例图    | 用例图-{模块名称}.md     | 用例定义、参与者   |
+| 流程图    | 业务流程图-{模块名称}.md   | 业务流程、决策点   |
+| 状态图    | 状态图-{模块名称}.md     | 状态定义、转换规则  |
+| 功能点矩阵  | feature-matrix.md | 功能点清单、依赖关系 |
+| 开发规格   | spec.md           | 接口设计、数据模型  |
+| 验收标准   | checklist.md      | 验收项、验收条件   |
+| 审查报告   | review-report.md  | 审查结果、问题清单  |
+| 验收报告   | verify-report.md  | 验收结果、问题清单  |
 
 #### 目录结构
 
@@ -976,7 +973,7 @@ docs/
         └── verify-report.md
 ```
 
----
+***
 
 ### 熵减机制
 
@@ -1000,39 +997,35 @@ docs/
 
 #### 熵值评分系统
 
-| 分数范围 | 状态 | 建议动作 |
-|---------|------|---------|
-| 90-100 | 优秀 | 维持现状 |
-| 70-89 | 良好 | 小额改进 |
-| 50-69 | 一般 | 计划性清理 |
-| 30-49 | 警告 | 优先处理 |
-| 0-29 | 危险 | 紧急重构 |
+| 分数范围   | 状态 | 建议动作  |
+| ------ | -- | ----- |
+| 90-100 | 优秀 | 维持现状  |
+| 70-89  | 良好 | 小额改进  |
+| 50-69  | 一般 | 计划性清理 |
+| 30-49  | 警告 | 优先处理  |
+| 0-29   | 危险 | 紧急重构  |
 
----
+***
 
 ### 黄金原则
 
 1. **使用共享工具包，避免手写辅助函数**
    - 将不变式集中管理
    - 减少重复代码
-
 2. **验证边界数据，不猜测数据结构**
    - 所有 API 入口必须有 Schema 验证
    - 不依赖隐式类型推断
-
 3. **保持代码简洁，优先可读性**
    - 单个文件不超过 300 行
    - 单个函数不超过 50 行
-
 4. **文档即代码，保持同步**
    - 代码变更必须同步文档
    - 文档过时即视为技术债务
-
 5. **小额还贷，持续改进**
    - 每次提交都是改进机会
    - 不让技术债务堆积
 
----
+***
 
 ### PDD 作为 Harness Engineering 范式的企业级应用工程实践
 
@@ -1084,6 +1077,7 @@ Harness Engineering (PDD):
 ```
 
 **核心优势：**
+
 - 减少需求歧义
 - 支持并行开发
 - 促进自动化验证
@@ -1201,13 +1195,13 @@ PDD 利用领域专家技能提供专业化指导：
 
 #### 企业级收益
 
-| 收益 | 描述 | 影响 |
-|------|------|------|
+| 收益         | 描述         | 影响            |
+| ---------- | ---------- | ------------- |
 | **缩短上市时间** | 自动化规格和代码生成 | 交付速度提升 30-50% |
-| **提高质量** | 多维度验证 | 生产环境缺陷减少 60% |
-| **降低维护成本** | 持续熵减治理 | 技术债务减少 40% |
-| **知识沉淀** | 文档代码同步 | 新人上手时间缩短 80% |
-| **可扩展开发** | 技能化专家系统 | 团队规模线性扩展 |
+| **提高质量**   | 多维度验证      | 生产环境缺陷减少 60%  |
+| **降低维护成本** | 持续熵减治理     | 技术债务减少 40%    |
+| **知识沉淀**   | 文档代码同步     | 新人上手时间缩短 80%  |
+| **可扩展开发**  | 技能化专家系统    | 团队规模线性扩展      |
 
 #### 实施路线图
 
@@ -1263,17 +1257,17 @@ PDD 利用领域专家技能提供专业化指导：
 
 #### 与传统开发模式的对比
 
-| 方面 | 传统开发模式 | PDD (Harness Engineering) |
-|------|-------------|---------------------------|
-| **需求管理** | 非正式，常有歧义 | 正式化，规格先行 |
-| **文档管理** | 常常过时 | 与代码同步 |
-| **代码质量** | 被动审查 | 主动验证 |
-| **技术债务** | 随时间累积 | 持续减少 |
-| **知识传递** | 依赖个人 | 依赖系统 |
-| **可扩展性** | 非线性投入 | 技能化线性投入 |
-| **自动化程度** | 有限 | 全面，多层覆盖 |
+| 方面        | 传统开发模式   | PDD (Harness Engineering) |
+| --------- | -------- | ------------------------- |
+| **需求管理**  | 非正式，常有歧义 | 正式化，规格先行                  |
+| **文档管理**  | 常常过时     | 与代码同步                     |
+| **代码质量**  | 被动审查     | 主动验证                      |
+| **技术债务**  | 随时间累积    | 持续减少                      |
+| **知识传递**  | 依赖个人     | 依赖系统                      |
+| **可扩展性**  | 非线性投入    | 技能化线性投入                   |
+| **自动化程度** | 有限       | 全面，多层覆盖                   |
 
----
+***
 
 ### 参考文档
 
@@ -1283,7 +1277,7 @@ PDD 利用领域专家技能提供专业化指导：
 - [software-architect SKILL.md](software-architect/SKILL.md)
 - [software-engineer SKILL.md](software-engineer/SKILL.md)
 
----
+***
 
 <a name="français"></a>
 
@@ -1300,7 +1294,7 @@ Valeurs fondamentales de la méthodologie PDD :
 - **Assurance Qualité** : Vérification multidimensionnelle garantissant la qualité de livraison
 - **Accumulation de Connaissances** : Évolution synchrone des documents et du code
 
----
+***
 
 ### Philosophie Centrale
 
@@ -1313,7 +1307,7 @@ La méthodologie PDD suit ces principes fondamentaux :
 3. **Vérification Continue** : Chaque fonctionnalité doit passer une vérification tridimensionnelle
 4. **Gouvernance de Réduction d'Entropie** : Lutter continuellement contre "l'augmentation d'entropie" et la "décroissance" du système
 
----
+***
 
 ### Relation entre PDD et OpenSpec
 
@@ -1342,12 +1336,12 @@ La méthodologie PDD s'intègre profondément avec OpenSpec pour former un syst�
 
 #### Caractéristiques Complémentaires
 
-| Caractéristique | Contribution PDD | Contribution OpenSpec |
-|----------------|-----------------|----------------------|
-| **Gestion des Exigences** | Système de documents PRD | Standardisation des spécifications |
-| **Suivi des Changements** | Matrice de fonctionnalités | Gestion des ID de Change |
-| **Synchronisation des Documents** | Génération de spécifications | Contrôle de version des spécifications |
-| **Assurance Qualité** | Vérification tridimensionnelle | Contrôle de cohérence des spécifications |
+| Caractéristique                   | Contribution PDD               | Contribution OpenSpec                    |
+| --------------------------------- | ------------------------------ | ---------------------------------------- |
+| **Gestion des Exigences**         | Système de documents PRD       | Standardisation des spécifications       |
+| **Suivi des Changements**         | Matrice de fonctionnalités     | Gestion des ID de Change                 |
+| **Synchronisation des Documents** | Génération de spécifications   | Contrôle de version des spécifications   |
+| **Assurance Qualité**             | Vérification tridimensionnelle | Contrôle de cohérence des spécifications |
 
 #### Scénarios d'Implémentation
 
@@ -1395,7 +1389,7 @@ Génération du Rapport d'Entropie
 Création d'une PR de Correction
 ```
 
----
+***
 
 ### Architecture du Système de Compétences
 
@@ -1429,18 +1423,18 @@ Création d'une PR de Correction
 
 #### Liste des Compétences Principales
 
-| Catégorie | Nom de la Compétence | Responsabilité Principale | Entrée | Sortie |
-|-----------|---------------------|-------------------------|--------|--------|
-| **Entrée Principale** | pdd-main | Orchestration des processus, gestion d'état | Chemin du document PRD | Code de fonctionnalité complété |
-| **Analyse Business** | pdd-ba | Analyse des exigences, modélisation business | Document PRD | Rapport d'analyse business |
-| **Extraction de Fonctionnalités** | pdd-extract-features | Extraction des points de fonctionnalité | Rapport d'analyse business | Matrice de fonctionnalités |
-| **Génération de Spécifications** | pdd-generate-spec | Génération des spécifications de développement | Matrice de fonctionnalités | spec.md, checklist.md |
-| **Implémentation de Code** | pdd-implement-feature | Implémentation des fonctionnalités | Spécification de développement | Fichiers de code |
-| **Revue de Code** | pdd-code-reviewer | Revue de conformité | Code + Spécification | Rapport de revue |
-| **Vérification de Fonctionnalité** | pdd-verify-feature | Vérification tridimensionnelle | Code + Critères d'acceptation | Rapport de vérification |
-| **Réduction d'Entropie** | pdd-entropy-reduction | Gestion de la dette technique | Conditions de déclenchement | Rapport d'entropie + PR de correction |
+| Catégorie                          | Nom de la Compétence  | Responsabilité Principale                      | Entrée                         | Sortie                                |
+| ---------------------------------- | --------------------- | ---------------------------------------------- | ------------------------------ | ------------------------------------- |
+| **Entrée Principale**              | pdd-main              | Orchestration des processus, gestion d'état    | Chemin du document PRD         | Code de fonctionnalité complété       |
+| **Analyse Business**               | pdd-ba                | Analyse des exigences, modélisation business   | Document PRD                   | Rapport d'analyse business            |
+| **Extraction de Fonctionnalités**  | pdd-extract-features  | Extraction des points de fonctionnalité        | Rapport d'analyse business     | Matrice de fonctionnalités            |
+| **Génération de Spécifications**   | pdd-generate-spec     | Génération des spécifications de développement | Matrice de fonctionnalités     | spec.md, checklist.md                 |
+| **Implémentation de Code**         | pdd-implement-feature | Implémentation des fonctionnalités             | Spécification de développement | Fichiers de code                      |
+| **Revue de Code**                  | pdd-code-reviewer     | Revue de conformité                            | Code + Spécification           | Rapport de revue                      |
+| **Vérification de Fonctionnalité** | pdd-verify-feature    | Vérification tridimensionnelle                 | Code + Critères d'acceptation  | Rapport de vérification               |
+| **Réduction d'Entropie**           | pdd-entropy-reduction | Gestion de la dette technique                  | Conditions de déclenchement    | Rapport d'entropie + PR de correction |
 
----
+***
 
 ### Processus de Développement
 
@@ -1506,7 +1500,7 @@ Phase 6 : Livraison et Rétrospective
 └─────────────────────────────────────────────────────────────────┘
 ```
 
----
+***
 
 ### Guide d'Utilisation
 
@@ -1544,11 +1538,11 @@ IA : [Invocation de la compétence pdd-main]
 
 #### Classification de Complexité des Fonctionnalités
 
-| Complexité | Code | Description | Temps de Développement | Implication Humaine |
-|------------|------|-------------|----------------------|---------------------|
-| Business Central | P0 | Processus business centraux, approbation multi-parties | 3-5 jours | Élevée |
-| Fonctionnalité Importante | P1 | Fonctionnalités business importantes, alternatives disponibles | 1-2 jours | Moyenne |
-| Fonctionnalité Auxiliaire | P2 | Fonctionnalités auxiliaires, faciles à implémenter | 0.5 jour | Faible |
+| Complexité                | Code | Description                                                    | Temps de Développement | Implication Humaine |
+| ------------------------- | ---- | -------------------------------------------------------------- | ---------------------- | ------------------- |
+| Business Central          | P0   | Processus business centraux, approbation multi-parties         | 3-5 jours              | Élevée              |
+| Fonctionnalité Importante | P1   | Fonctionnalités business importantes, alternatives disponibles | 1-2 jours              | Moyenne             |
+| Fonctionnalité Auxiliaire | P2   | Fonctionnalités auxiliaires, faciles à implémenter             | 0.5 jour               | Faible              |
 
 #### Modèle de Vérification Tridimensionnelle
 
@@ -1576,23 +1570,23 @@ Dimensions de Vérification:
       - Uniformité des conventions de nommage
 ```
 
----
+***
 
 ### Système de Documents
 
 #### Types de Documents Principaux
 
-| Type de Document | Nom de Fichier | Contenu Principal |
-|-----------------|----------------|-------------------|
-| Document PRD | PRD-{NomModule}.md | Exigences, règles business |
-| Diagramme de Cas d'Utilisation | CasUtilisation-{NomModule}.md | Définitions des cas d'utilisation, acteurs |
-| Organigramme | FluxBusiness-{NomModule}.md | Processus business, points de décision |
-| Diagramme d'État | DiagrammeEtat-{NomModule}.md | Définitions des états, règles de transition |
-| Matrice de Fonctionnalités | feature-matrix.md | Liste des fonctionnalités, dépendances |
-| Spécification de Développement | spec.md | Conception d'interface, modèle de données |
-| Critères d'Acceptation | checklist.md | Éléments d'acceptation, conditions |
-| Rapport de Revue | review-report.md | Résultats de revue, liste des problèmes |
-| Rapport de Vérification | verify-report.md | Résultats de vérification, liste des problèmes |
+| Type de Document               | Nom de Fichier                | Contenu Principal                              |
+| ------------------------------ | ----------------------------- | ---------------------------------------------- |
+| Document PRD                   | PRD-{NomModule}.md            | Exigences, règles business                     |
+| Diagramme de Cas d'Utilisation | CasUtilisation-{NomModule}.md | Définitions des cas d'utilisation, acteurs     |
+| Organigramme                   | FluxBusiness-{NomModule}.md   | Processus business, points de décision         |
+| Diagramme d'État               | DiagrammeEtat-{NomModule}.md  | Définitions des états, règles de transition    |
+| Matrice de Fonctionnalités     | feature-matrix.md             | Liste des fonctionnalités, dépendances         |
+| Spécification de Développement | spec.md                       | Conception d'interface, modèle de données      |
+| Critères d'Acceptation         | checklist.md                  | Éléments d'acceptation, conditions             |
+| Rapport de Revue               | review-report.md              | Résultats de revue, liste des problèmes        |
+| Rapport de Vérification        | verify-report.md              | Résultats de vérification, liste des problèmes |
 
 #### Structure de Répertoire
 
@@ -1614,7 +1608,7 @@ docs/
         └── verify-report.md
 ```
 
----
+***
 
 ### Mécanisme de Réduction d'Entropie
 
@@ -1639,39 +1633,35 @@ docs/
 
 #### Système de Score d'Entropie
 
-| Plage de Score | Statut | Action Recommandée |
-|---------------|--------|-------------------|
-| 90-100 | Excellent | Maintenir l'état actuel |
-| 70-89 | Bon | Petites améliorations |
-| 50-69 | Moyen | Nettoyage planifié |
-| 30-49 | Avertissement | Traitement prioritaire |
-| 0-29 | Critique | Refactoring d'urgence |
+| Plage de Score | Statut        | Action Recommandée      |
+| -------------- | ------------- | ----------------------- |
+| 90-100         | Excellent     | Maintenir l'état actuel |
+| 70-89          | Bon           | Petites améliorations   |
+| 50-69          | Moyen         | Nettoyage planifié      |
+| 30-49          | Avertissement | Traitement prioritaire  |
+| 0-29           | Critique      | Refactoring d'urgence   |
 
----
+***
 
 ### Principes d'Or
 
 1. **Utiliser des packages utilitaires partagés, éviter les fonctions auxiliaires écrites à la main**
    - Centraliser la gestion des invariants
    - Réduire la duplication de code
-
 2. **Valider les données de frontière, ne pas deviner les structures de données**
    - Toutes les entrées API doivent avoir une validation de Schema
    - Ne pas dépendre de l'inférence de type implicite
-
 3. **Garder le code simple, prioriser la lisibilité**
    - Un seul fichier pas plus de 300 lignes
    - Une seule fonction pas plus de 50 lignes
-
 4. **La documentation comme code, maintenir la synchronisation**
    - Les changements de code doivent synchroniser la documentation
    - La documentation obsolète est une dette technique
-
 5. **Rembourser la dette en petits montants, amélioration continue**
    - Chaque commit est une opportunité d'amélioration
    - Ne pas laisser la dette technique s'accumuler
 
----
+***
 
 ### PDD comme Pratique d'Ingénierie d'Entreprise Harness Engineering
 
@@ -1721,6 +1711,7 @@ Harness Engineering (PDD):
 ```
 
 **Avantages Clés :**
+
 - Réduit l'ambiguïté des exigences
 - Permet le développement parallèle
 - Facilite la vérification automatisée
@@ -1841,13 +1832,13 @@ PDD exploite les compétences d'experts du domaine pour fournir des conseils sp�
 
 #### Avantages Entreprise
 
-| Avantage | Description | Impact |
-|----------|-------------|--------|
-| **Temps de Mise sur le Marché Réduit** | Spécification automatisée et génération de code | Livraison 30-50% plus rapide |
-| **Qualité Améliorée** | Vérification multidimensionnelle | 60% moins de bugs en production |
-| **Coût de Maintenance Réduit** | Réduction continue de l'entropie | 40% de réduction de la dette technique |
-| **Préservation des Connaissances** | Synchronisation documents-code | Intégration 80% plus rapide |
-| **Développement Scalable** | Système expert basé sur les compétences | Mise à l'échelle linéaire avec la taille de l'équipe |
+| Avantage                               | Description                                     | Impact                                               |
+| -------------------------------------- | ----------------------------------------------- | ---------------------------------------------------- |
+| **Temps de Mise sur le Marché Réduit** | Spécification automatisée et génération de code | Livraison 30-50% plus rapide                         |
+| **Qualité Améliorée**                  | Vérification multidimensionnelle                | 60% moins de bugs en production                      |
+| **Coût de Maintenance Réduit**         | Réduction continue de l'entropie                | 40% de réduction de la dette technique               |
+| **Préservation des Connaissances**     | Synchronisation documents-code                  | Intégration 80% plus rapide                          |
+| **Développement Scalable**             | Système expert basé sur les compétences         | Mise à l'échelle linéaire avec la taille de l'équipe |
 
 #### Feuille de Route d'Implémentation
 
@@ -1903,17 +1894,17 @@ Métriques d'Équipe:
 
 #### Comparaison avec les Approches Traditionnelles
 
-| Aspect | Développement Traditionnel | PDD (Harness Engineering) |
-|--------|---------------------------|---------------------------|
-| **Exigences** | Informelles, souvent ambiguës | Formalisées, spécification d'abord |
-| **Documentation** | Souvent obsolète | Synchronisée avec le code |
-| **Qualité du Code** | Revue réactive | Vérification proactive |
-| **Dette Technique** | S'accumule avec le temps | Continuellement réduite |
-| **Transfert de Connaissances** | Dépendant des personnes | Dépendant du système |
-| **Scalabilité** | Effort non-linéaire | Effort linéaire avec les compétences |
-| **Automatisation** | Limitée | Complète, multi-couches |
+| Aspect                         | Développement Traditionnel    | PDD (Harness Engineering)            |
+| ------------------------------ | ----------------------------- | ------------------------------------ |
+| **Exigences**                  | Informelles, souvent ambiguës | Formalisées, spécification d'abord   |
+| **Documentation**              | Souvent obsolète              | Synchronisée avec le code            |
+| **Qualité du Code**            | Revue réactive                | Vérification proactive               |
+| **Dette Technique**            | S'accumule avec le temps      | Continuellement réduite              |
+| **Transfert de Connaissances** | Dépendant des personnes       | Dépendant du système                 |
+| **Scalabilité**                | Effort non-linéaire           | Effort linéaire avec les compétences |
+| **Automatisation**             | Limitée                       | Complète, multi-couches              |
 
----
+***
 
 ### Documentation de Référence
 
@@ -1923,22 +1914,23 @@ Métriques d'Équipe:
 - [software-architect SKILL.md](software-architect/SKILL.md)
 - [software-engineer SKILL.md](software-engineer/SKILL.md)
 
----
+***
 
 ## License
 
 MIT License
 
----
+***
 
 ## Contributing
 
 Contributions are welcome! Please read our contributing guidelines before submitting pull requests.
 
----
+***
 
 ## Version History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0.0 | 2026-03-31 | Initial release with complete PDD methodology documentation in English, Chinese, and French |
+| Version | Date       | Changes                                                                                     |
+| ------- | ---------- | ------------------------------------------------------------------------------------------- |
+| 1.0.0   | 2026-03-31 | Initial release with complete PDD methodology documentation in English, Chinese, and French |
+

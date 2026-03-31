@@ -1,7 +1,7 @@
 ---
 name: expert-arch-enforcer
 description: |
-  Architecture constraint enforcement skill that monitors code for violations of preset invariants and architectural boundaries. Automatically triggered when users need architecture checks, dependency checks, or module boundary checks. 支持中文触发：检查架构约束、检查依赖方向、检查模块边界、架构检查、架构强制。
+  Architecture constraint enforcement skill that monitors code for violations of preset invariants and architectural boundaries. Automatically triggered when users need architecture checks, dependency checks, or module boundary checks.
   
   Core responsibility: Ensure architectural coherence and prevent architectural drift.
   

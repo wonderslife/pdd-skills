@@ -1,7 +1,7 @@
 ---
 name: pdd-entropy-reduction
 description: |
-  PDD Entropy Reduction Agent, continuously monitors and repays technical debt to prevent system decay. Automatically triggered when users need code cleanup, documentation updates, technical debt management, architecture alignment, entropy reduction, or garbage collection. 支持中文触发：熵减、清理技术债务、代码清理、垃圾回收、技术债务管理、架构对齐。
+  PDD Entropy Reduction Agent, continuously monitors and repays technical debt to prevent system decay. Automatically triggered when users need code cleanup, documentation updates, technical debt management, architecture alignment, entropy reduction, or garbage collection.
   
   Core Objective: Combat system "entropy increase" and "decay" by periodically running agents to discover documentation inconsistencies or architecture constraint violations.
   

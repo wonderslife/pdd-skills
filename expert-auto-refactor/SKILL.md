@@ -1,7 +1,7 @@
 ---
 name: expert-auto-refactor
 description: |
-  Automated refactoring expert skill that transforms collected quality improvement tasks into concrete code operations. Automatically triggers when users need code refactoring, duplicate elimination, or complexity simplification. 支持中文触发：重构代码、消除重复、简化代码、代码重构、自动重构。
+  Automated refactoring expert skill that transforms collected quality improvement tasks into concrete code operations. Automatically triggers when users need code refactoring, duplicate elimination, or complexity simplification.
   
   Core responsibility: Initiate targeted refactoring PRs regularly in a "small debt repayment" manner to prevent technical debt accumulation.
   

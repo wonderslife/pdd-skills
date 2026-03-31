@@ -1,7 +1,7 @@
 ---
 name: expert-entropy-auditor
 description: |
-  Entropy audit skill that discovers the gap between "design intent" and "code implementation". Automatically triggered when users need technical debt audit, PRD and code consistency check, or AI residue detection. 支持中文触发：审计技术债务、检查PRD一致性、检测AI残渣、技术债务审计、熵增审计。
+  Entropy audit skill that discovers the gap between "design intent" and "code implementation". Automatically triggered when users need technical debt audit, PRD and code consistency check, or AI residue detection.
   
   Core responsibility: Identify "AI residue" scattered in the codebase and suggest consolidating them into shared utility packages.
   
