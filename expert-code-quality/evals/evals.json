@@ -1,0 +1,109 @@
+{
+  "skill_name": "code-quality-expert",
+  "evals": [
+    {
+      "id": 1,
+      "name": "detect-code-smells",
+      "prompt": "Review this Java code and identify any code smells:\n\n```java\npublic class OrderManager {\n    public void processOrder(Order order) {\n        // Validate order\n        if (order.getItems() == null || order.getItems().isEmpty()) {\n            throw new IllegalArgumentException(\"Order has no items\");\n        }\n        if (order.getCustomer() == null) {\n            throw new IllegalArgumentException(\"Order has no customer\");\n        }\n        if (order.getCustomer().getAddress() == null) {\n            throw new IllegalArgumentException(\"Customer has no address\");\n        }\n        \n        // Calculate total\n        double total = 0;\n        for (OrderItem item : order.getItems()) {\n            total += item.getPrice() * item.getQuantity();\n        }\n        \n        // Apply discount\n        double discount = 0;\n        if (order.getCustomer().getType().equals(\"VIP\")) {\n            discount = total * 0.1;\n        } else if (order.getCustomer().getType().equals(\"Premium\")) {\n            discount = total * 0.15;\n        } else if (order.getCustomer().getType().equals(\"Gold\")) {\n            discount = total * 0.2;\n        }\n        \n        // Save order\n        DatabaseConnection db = new DatabaseConnection();\n        db.connect();\n        db.execute(\"INSERT INTO orders VALUES (...) \");\n        db.close();\n        \n        // Send email\n        EmailService email = new EmailService();\n        email.send(order.getCustomer().getEmail(), \"Order confirmed\");\n    }\n}",
+      "expected_output": "Should identify multiple code smells: Long Method, Switch Statements, Feature Envy, Primitive Obsession, and suggest appropriate refactorings",
+      "assertions": [
+        {
+          "name": "identifies_long_method",
+          "description": "Should identify the method is too long and doing too many things"
+        },
+        {
+          "name": "identifies_switch_statements",
+          "description": "Should identify switch/if-else on customer type as a smell"
+        },
+        {
+          "name": "suggests_refactorings",
+          "description": "Should suggest specific refactorings like Extract Method, Replace Conditional with Polymorphism"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "recommend-design-pattern",
+      "prompt": "I have a class that needs to create different types of report objects (PDFReport, ExcelReport, HTMLReport) based on user configuration. The creation logic is getting complex with many conditionals. What design pattern should I use and how should I implement it?",
+      "expected_output": "Should recommend Factory Method or Abstract Factory pattern with clear explanation and implementation example",
+      "assertions": [
+        {
+          "name": "recommends_factory_pattern",
+          "description": "Should recommend Factory Method or Abstract Factory pattern"
+        },
+        {
+          "name": "provides_implementation",
+          "description": "Should provide code example showing the pattern implementation"
+        },
+        {
+          "name": "explains_benefits",
+          "description": "Should explain why this pattern fits the problem"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "refactoring-guidance",
+      "prompt": "I found this code smell in my codebase - a class called 'UserManager' that handles user authentication, user profile management, user notifications, and user reporting. It's over 500 lines. How should I refactor this?",
+      "expected_output": "Should identify this as Large Class and Divergent Change smells, recommend Extract Class refactoring, and provide step-by-step guidance",
+      "assertions": [
+        {
+          "name": "identifies_smells",
+          "description": "Should correctly identify Large Class and Divergent Change"
+        },
+        {
+          "name": "recommends_extract_class",
+          "description": "Should recommend Extract Class refactoring"
+        },
+        {
+          "name": "provides_steps",
+          "description": "Should provide step-by-step refactoring guidance"
+        },
+        {
+          "name": "mentions_srp",
+          "description": "Should mention Single Responsibility Principle"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "solid-principle-violation",
+      "prompt": "Review this code for SOLID principle violations:\n\n```java\npublic class ReportGenerator {\n    private MySQLDatabase db;\n    \n    public ReportGenerator() {\n        this.db = new MySQLDatabase();\n    }\n    \n    public void generateReport(String type) {\n        if (type.equals(\"PDF\")) {\n            generatePdfReport();\n        } else if (type.equals(\"Excel\")) {\n            generateExcelReport();\n        } else if (type.equals(\"HTML\")) {\n            generateHtmlReport();\n        }\n    }\n    \n    private void generatePdfReport() { /* ... */ }\n    private void generateExcelReport() { /* ... */ }\n    private void generateHtmlReport() { /* ... */ }\n}\n```",
+      "expected_output": "Should identify OCP violation (switch on type), DIP violation (direct instantiation), and suggest improvements",
+      "assertions": [
+        {
+          "name": "identifies_ocp_violation",
+          "description": "Should identify Open/Closed Principle violation in generateReport method"
+        },
+        {
+          "name": "identifies_dip_violation",
+          "description": "Should identify Dependency Inversion Principle violation in constructor"
+        },
+        {
+          "name": "suggests_improvements",
+          "description": "Should suggest Strategy pattern and dependency injection"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "pattern-selection",
+      "prompt": "I need to implement a feature where multiple objects need to be notified when a user's status changes. What design pattern should I use?",
+      "expected_output": "Should recommend Observer pattern with explanation and implementation example",
+      "assertions": [
+        {
+          "name": "recommends_observer",
+          "description": "Should recommend Observer pattern"
+        },
+        {
+          "name": "explains_pattern",
+          "description": "Should explain how Observer pattern works"
+        },
+        {
+          "name": "provides_example",
+          "description": "Should provide code example"
+        }
+      ]
+    }
+  ]
+}
