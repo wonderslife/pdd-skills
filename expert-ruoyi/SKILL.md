@@ -1,10 +1,10 @@
 ---
 name: expert-ruoyi
-description: 若依(RuoYi)框架开发专家，精通项目搭建、代码生成、问题诊断、架构优化。当用户涉及若依框架开发、SpringBoot后台管理、权限系统、代码生成器、菜单路由配置等问题时自动触发。提供问题诊断、最佳实践和解决方案。
+description: RuoYi Framework Development Expert, proficient in project setup, code generation, problem diagnosis, and architecture optimization. Automatically triggered when users encounter RuoYi framework development, SpringBoot backend management, permission systems, code generators, menu routing configuration, and other related issues. Provides problem diagnosis, best practices, and solutions. 支持中文触发：若依框架开发、SpringBoot后台管理、权限系统、代码生成器、菜单路由配置、若依、RuoYi。
 license: MIT
-compatibility: 若依框架项目
+compatibility: RuoYi Framework Projects
 metadata:
-  author: asset-platform
+  author: neuqik@hotmail.com
   version: "3.0"
   triggers:
     - "/ruoyi" | "/若依"
@@ -13,173 +13,173 @@ metadata:
     - "代码生成器" | "代码生成" | "权限校验"
 ---
 
-# 若依框架开发专家
+# RuoYi Framework Development Expert
 
-## 1. 技能概述
+## 1. Skill Overview
 
-### 1.1 核心能力
+### 1.1 Core Capabilities
 
 ```yaml
-核心能力:
-  - 项目搭建: SpringBoot + MyBatis + Shiro/Security
-  - 代码生成: CRUD代码自动生成
-  - 权限管理: 菜单权限、按钮权限、数据权限
-  - 动态路由: 基于sys_menu表的动态路由
-  - 最佳实践: 若依框架开发规范
+Core Capabilities:
+  - Project Setup: SpringBoot + MyBatis + Shiro/Security
+  - Code Generation: Automatic CRUD code generation
+  - Permission Management: Menu permissions, button permissions, data permissions
+  - Dynamic Routing: Dynamic routing based on sys_menu table
+  - Best Practices: RuoYi framework development standards
 
-适用场景:
-  - 新功能开发遇到权限问题
-  - 菜单配置后页面404
-  - 代码生成器使用
-  - 权限注解不生效
-  - 数据范围过滤异常
+Applicable Scenarios:
+  - Permission issues during new feature development
+  - Page 404 after menu configuration
+  - Code generator usage
+  - Permission annotations not working
+  - Data scope filtering exceptions
 ```
 
-### 1.2 与其他技能协作
+### 1.2 Collaboration with Other Skills
 
-| 协作技能 | 协作方式 | 传入数据 | 期望输出 |
+| Collaborating Skill | Collaboration Method | Input Data | Expected Output |
 |---------|---------|---------|---------|
-| **pdd-implement-feature** | Consultation | 若依技术问题 | 解决方案 |
-| **pdd-code-reviewer** | Reference | 发现若依问题 | 框架最佳实践 |
-| **software-engineer** | Delegation | 代码实现任务 | 符合规范的代码 |
+| **pdd-implement-feature** | Consultation | RuoYi technical issues | Solutions |
+| **pdd-code-reviewer** | Reference | Discovered RuoYi issues | Framework best practices |
+| **software-engineer** | Delegation | Code implementation tasks | Standards-compliant code |
 
-## 2. 快速诊断模式
+## 2. Quick Diagnosis Mode
 
-### 2.1 问题分类索引
+### 2.1 Problem Classification Index
 
 ```yaml
-问题类型:
-  路由问题:
-    - 页面404
-    - 菜单不显示
-    - 路由404
+Problem Types:
+  Routing Issues:
+    - Page 404
+    - Menu not displaying
+    - Route 404
 
-  权限问题:
-    - 权限注解不生效
-    - 按钮不显示
-    - 数据范围错误
+  Permission Issues:
+    - Permission annotations not working
+    - Buttons not displaying
+    - Data scope errors
 
-  代码生成问题:
-    - 生成代码报错
-    - 生成后需要调整
+  Code Generation Issues:
+    - Generated code errors
+    - Adjustments needed after generation
 
-  配置问题:
-    - 数据库配置
-    - Redis缓存
-    - 会话管理
+  Configuration Issues:
+    - Database configuration
+    - Redis cache
+    - Session management
 ```
 
-### 2.2 路由问题诊断
+### 2.2 Routing Issue Diagnosis
 
 ```
-问题: 点击菜单后页面404
+Problem: Page 404 after clicking menu
 
-诊断流程:
-1. 检查 sys_menu 表配置
+Diagnosis Process:
+1. Check sys_menu table configuration
    SELECT * FROM sys_menu WHERE menu_name = 'XXX';
 
-2. 检查 component 路径
-   - 路径相对于 src/views
-   - 文件必须存在
+2. Check component path
+   - Path relative to src/views
+   - File must exist
 
-3. 检查 visible 字段
-   - '0' = 显示菜单
-   - '1' = 隐藏菜单
+3. Check visible field
+   - '0' = Show menu
+   - '1' = Hide menu
 
-4. 检查父菜单是否存在
+4. Check if parent menu exists
    SELECT * FROM sys_menu WHERE menu_id = parent_id;
 
-5. 检查角色权限分配
+5. Check role permission assignment
    SELECT * FROM sys_role_menu WHERE menu_id = menu_id;
 ```
 
-### 2.3 权限问题诊断
+### 2.3 Permission Issue Diagnosis
 
 ```
-问题: @PreAuthorize 注解不生效
+Problem: @PreAuthorize annotation not working
 
-诊断流程:
-1. 检查注解是否正确
+Diagnosis Process:
+1. Check if annotation is correct
    @PreAuthorize("@ss.hasPermi('xxx:xxx:xxx')")
 
-2. 检查 sys_menu 表中权限标识符
-   - perms 字段必须与注解中一致
+2. Check permission identifier in sys_menu table
+   - perms field must match the annotation
 
-3. 检查角色菜单分配
+3. Check role menu assignment
    SELECT * FROM sys_role_menu WHERE menu_id IN
    (SELECT menu_id FROM sys_menu WHERE perms = 'xxx:xxx:xxx');
 
-4. 检查用户角色
+4. Check user role
    SELECT * FROM sys_user_role WHERE user_id = user_id;
 
-5. 清除Redis缓存
+5. Clear Redis cache
    FLUSHDB
 ```
 
-## 3. 核心配置规范
+## 3. Core Configuration Standards
 
-### 3.1 菜单配置规范
+### 3.1 Menu Configuration Standards
 
 ```sql
--- 目录类型 (M)
+-- Directory Type (M)
 INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, menu_type, visible, perms, icon)
-VALUES ('资产管理', 0, 1, 'asset', NULL, 'M', '0', NULL, 'asset');
+VALUES ('Asset Management', 0, 1, 'asset', NULL, 'M', '0', NULL, 'asset');
 
--- 菜单类型 (C) - 列表页
+-- Menu Type (C) - List Page
 INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, menu_type, visible, perms, icon)
-VALUES ('资产列表', parent_id, 1, 'list', 'asset/index', 'C', '0', 'asset:list:list', 'list');
+VALUES ('Asset List', parent_id, 1, 'list', 'asset/index', 'C', '0', 'asset:list:list', 'list');
 
--- 菜单类型 (C) - 隐藏页面 (新增/编辑/详情)
+-- Menu Type (C) - Hidden Page (Add/Edit/Detail)
 INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, menu_type, visible, perms)
-VALUES ('资产新增', parent_id, 10, 'add', 'asset/form', 'C', '1', 'asset:list:add');
+VALUES ('Asset Add', parent_id, 10, 'add', 'asset/form', 'C', '1', 'asset:list:add');
 
--- 按钮类型 (F) - 权限控制
+-- Button Type (F) - Permission Control
 INSERT INTO sys_menu (menu_name, parent_id, order_num, path, component, menu_type, visible, perms)
-VALUES ('资产新增按钮', menu_id, 1, '', '', 'F', '0', 'asset:list:add');
+VALUES ('Asset Add Button', menu_id, 1, '', '', 'F', '0', 'asset:list:add');
 ```
 
-### 3.2 权限注解规范
+### 3.2 Permission Annotation Standards
 
 ```java
-// Controller 层
+// Controller Layer
 @RestController
 @RequestMapping("/asset/list")
 public class AssetListController {
 
-    // 列表查询 - 需要 list 权限
+    // List Query - Requires list permission
     @PreAuthorize("@ss.hasPermi('asset:list:list')")
     @GetMapping
     public AjaxResult list() { }
 
-    // 新增 - 需要 add 权限
+    // Add - Requires add permission
     @PreAuthorize("@ss.hasPermi('asset:list:add')")
     @PostMapping
     public AjaxResult add() { }
 
-    // 修改 - 需要 edit 权限
+    // Edit - Requires edit permission
     @PreAuthorize("@ss.hasPermi('asset:list:edit')")
     @PutMapping
     public AjaxResult edit() { }
 
-    // 删除 - 需要 remove 权限
+    // Delete - Requires remove permission
     @PreAuthorize("@ss.hasPermi('asset:list:remove')")
     @DeleteMapping
     public AjaxResult remove() { }
 
-    // 导出 - 需要 export 权限
+    // Export - Requires export permission
     @PreAuthorize("@ss.hasPermi('asset:list:export')")
     @GetMapping("/export")
     public void export() { }
 }
 ```
 
-### 3.3 数据权限规范
+### 3.3 Data Permission Standards
 
 ```java
-// Service 层
+// Service Layer
 public interface IAssetService {
 
-    // 添加 @DataScope 注解
+    // Add @DataScope annotation
     @DataScope(deptAlias = "d", userAlias = "u")
     List<Asset> selectAssetList(Asset asset);
 }
@@ -195,179 +195,179 @@ public interface IAssetService {
 </select>
 ```
 
-## 4. 代码生成器使用
+## 4. Code Generator Usage
 
-### 4.1 生成后必须调整项
+### 4.1 Required Adjustments After Generation
 
-| 调整项 | 原因 | 优先级 |
+| Adjustment Item | Reason | Priority |
 |--------|------|--------|
-| 添加 @Validated 注解 | 参数校验 | P0 |
-| 添加 @DataScope 注解 | 数据权限 | P0 |
-| 添加 @Xss 注解 | XSS防护 | P0 |
-| 配置 sys_menu 表 | 菜单路由 | P0 |
-| 分配角色菜单权限 | 权限生效 | P0 |
-| 清除Redis缓存 | 刷新权限缓存 | P0 |
+| Add @Validated annotation | Parameter validation | P0 |
+| Add @DataScope annotation | Data permissions | P0 |
+| Add @Xss annotation | XSS protection | P0 |
+| Configure sys_menu table | Menu routing | P0 |
+| Assign role menu permissions | Permissions take effect | P0 |
+| Clear Redis cache | Refresh permission cache | P0 |
 
-### 4.2 代码调整示例
+### 4.2 Code Adjustment Examples
 
 ```java
-// 调整前 (生成器默认)
+// Before Adjustment (Generator Default)
 @PostMapping
 public AjaxResult add(Asset asset) {
     return AjaxResult.success(assetService.insertAsset(asset));
 }
 
-// 调整后 (添加参数校验)
+// After Adjustment (Add Parameter Validation)
 @PreAuthorize("@ss.hasPermi('asset:list:add')")
-@Log(title = "资产管理", businessType = BusinessType.INSERT)
+@Log(title = "Asset Management", businessType = BusinessType.INSERT)
 @PostMapping
 public AjaxResult add(@Validated @RequestBody Asset asset) {
     return AjaxResult.success(assetService.insertAsset(asset));
 }
 
-// 实体类添加 XSS 防护
-@Excel(name = "资产名称")
+// Entity Class Add XSS Protection
+@Excel(name = "Asset Name")
 @Xss
 private String assetName;
 
-// 列表查询添加数据权限
+// List Query Add Data Permission
 @DataScope(deptAlias = "d", userAlias = "u")
 List<Asset> selectAssetList(Asset asset);
 ```
 
-## 5. 常见问题解决方案
+## 5. Common Problem Solutions
 
-### 5.1 页面404问题
+### 5.1 Page 404 Issue
 
-**问题**: 点击菜单后页面404
+**Problem**: Page 404 after clicking menu
 
-**排查步骤**:
+**Troubleshooting Steps**:
 ```sql
--- Step 1: 检查菜单是否存在
+-- Step 1: Check if menu exists
 SELECT * FROM sys_menu WHERE menu_name LIKE '%XXX%';
 
--- Step 2: 检查 component 路径是否正确
--- 路径格式: module/path (相对于 src/views)
--- 例如: equity-transfer/apply/index
+-- Step 2: Check if component path is correct
+-- Path format: module/path (relative to src/views)
+-- Example: equity-transfer/apply/index
 
--- Step 3: 检查文件是否存在
+-- Step 3: Check if file exists
 -- src/views/equity-transfer/apply/index.vue
 
--- Step 4: 检查父菜单
+-- Step 4: Check parent menu
 SELECT * FROM sys_menu WHERE menu_id = parent_id;
 
--- Step 5: 检查角色权限
+-- Step 5: Check role permissions
 SELECT * FROM sys_role_menu WHERE menu_id = menu_id;
 ```
 
-**解决方案**:
-1. 确认 sys_menu 表中 component 路径正确
-2. 确认 Vue 文件存在于正确位置
-3. 确认菜单已分配给用户角色
-4. 清除Redis缓存
-5. 重新登录
+**Solutions**:
+1. Confirm component path in sys_menu table is correct
+2. Confirm Vue file exists in correct location
+3. Confirm menu is assigned to user role
+4. Clear Redis cache
+5. Re-login
 
-### 5.2 权限注解不生效
+### 5.2 Permission Annotation Not Working
 
-**问题**: @PreAuthorize 注解不生效，所有用户都能访问
+**Problem**: @PreAuthorize annotation not working, all users can access
 
-**排查步骤**:
+**Troubleshooting Steps**:
 ```sql
--- Step 1: 检查权限标识符是否匹配
+-- Step 1: Check if permission identifier matches
 SELECT perms FROM sys_menu WHERE menu_name = 'XXX';
 
--- Step 2: 检查角色菜单分配
+-- Step 2: Check role menu assignment
 SELECT r.role_name, m.menu_name
 FROM sys_role_menu rm
 JOIN sys_menu m ON rm.menu_id = m.menu_id
 WHERE m.perms = 'xxx:xxx:xxx';
 
--- Step 3: 检查用户角色
+-- Step 3: Check user role
 SELECT u.user_name, r.role_name
 FROM sys_user_role ur
 JOIN sys_role r ON ur.role_id = r.role_id
 WHERE ur.user_id = user_id;
 ```
 
-**解决方案**:
-1. 确认注解中的权限标识符与 sys_menu.perms 一致
-2. 确认角色已分配对应菜单权限
-3. 确认用户已分配对应角色
-4. 清除Redis缓存
-5. 重新登录获取最新权限
+**Solutions**:
+1. Confirm permission identifier in annotation matches sys_menu.perms
+2. Confirm role is assigned corresponding menu permission
+3. Confirm user is assigned corresponding role
+4. Clear Redis cache
+5. Re-login to get latest permissions
 
-### 5.3 数据范围过滤不生效
+### 5.3 Data Scope Filtering Not Working
 
-**问题**: 用户能看到不属于自己部门的数据
+**Problem**: Users can see data not belonging to their department
 
-**排查步骤**:
+**Troubleshooting Steps**:
 ```sql
--- Step 1: 检查用户所属部门
+-- Step 1: Check user's department
 SELECT u.user_name, d.dept_name, d.dept_id
 FROM sys_user u
 JOIN sys_dept d ON u.dept_id = d.dept_id
 WHERE u.user_id = user_id;
 
--- Step 2: 检查数据权限配置
--- 查看 Mapper XML 是否正确配置了 ${params.dataScope}
+-- Step 2: Check data permission configuration
+-- Check if Mapper XML correctly configured ${params.dataScope}
 
--- Step 3: 检查 @DataScope 注解
--- 确认 deptAlias 和 userAlias 与 SQL 别名一致
+-- Step 3: Check @DataScope annotation
+-- Confirm deptAlias and userAlias match SQL aliases
 ```
 
-**解决方案**:
-1. 确认 @DataScope 注解配置正确
-2. 确认 Mapper XML 中表别名正确
-3. 确认 sys_user 表中 dept_id 正确
-4. 重新登录获取新的会话信息
+**Solutions**:
+1. Confirm @DataScope annotation is configured correctly
+2. Confirm table aliases in Mapper XML are correct
+3. Confirm dept_id in sys_user table is correct
+4. Re-login to get new session information
 
-### 5.4 按钮权限不显示
+### 5.4 Button Permission Not Displaying
 
-**问题**: 用户有权限但按钮不显示
+**Problem**: User has permission but button doesn't display
 
-**排查步骤**:
+**Troubleshooting Steps**:
 ```javascript
-// 检查前端是否有 v-hasPermi 指令
+// Check if frontend has v-hasPermi directive
 <el-button v-hasPermi="['asset:list:add']">
-  新增
+  Add
 </el-button>
 
-// 检查权限标识符是否一致
-// 前端: asset:list:add
-// 后端: @PreAuthorize("@ss.hasPermi('asset:list:add')")
-// 数据库: sys_menu.perms = 'asset:list:add'
+// Check if permission identifier is consistent
+// Frontend: asset:list:add
+// Backend: @PreAuthorize("@ss.hasPermi('asset:list:add')")
+// Database: sys_menu.perms = 'asset:list:add'
 ```
 
-**解决方案**:
-1. 确认前端按钮使用了 v-hasPermi 指令
-2. 确认权限标识符完全一致
-3. 确认按钮对应的菜单权限已分配
-4. 清除浏览器缓存
-5. 重新登录
+**Solutions**:
+1. Confirm frontend button uses v-hasPermi directive
+2. Confirm permission identifier is completely consistent
+3. Confirm button's corresponding menu permission is assigned
+4. Clear browser cache
+5. Re-login
 
-## 6. 最佳实践清单
+## 6. Best Practices Checklist
 
-### 6.1 开发检查清单
+### 6.1 Development Checklist
 
 ```yaml
-新增功能检查项:
-  - [ ] sys_menu 表配置完整 (目录/菜单/按钮)
-  - [ ] component 路径正确
-  - [ ] 权限标识符唯一且规范
-  - [ ] 角色菜单权限已分配
-  - [ ] @PreAuthorize 注解配置正确
-  - [ ] @DataScope 注解配置正确 (如需要)
-  - [ ] @Validated 参数校验添加
-  - [ ] @Xss 文本字段防护添加
-  - [ ] @Log 操作日志添加
-  - [ ] Redis缓存已清除
-  - [ ] 用户重新登录
+New Feature Checklist:
+  - [ ] sys_menu table configuration complete (directory/menu/button)
+  - [ ] component path correct
+  - [ ] Permission identifier unique and standardized
+  - [ ] Role menu permissions assigned
+  - [ ] @PreAuthorize annotation configured correctly
+  - [ ] @DataScope annotation configured correctly (if needed)
+  - [ ] @Validated parameter validation added
+  - [ ] @Xss text field protection added
+  - [ ] @Log operation log added
+  - [ ] Redis cache cleared
+  - [ ] User re-login
 ```
 
-### 6.2 API命名规范
+### 6.2 API Naming Standards
 
 ```javascript
-// 标准API命名
+// Standard API Naming
 export function listAsset(query) {
   return request({ url: '/asset/list', method: 'get', params: query });
 }
@@ -395,78 +395,78 @@ export function exportAsset(query) {
 
 ## 7. Guardrails
 
-### 7.1 必须遵守
+### 7.1 Must Follow
 
-- [ ] 所有页面（包括隐藏页）都必须在 sys_menu 表配置
-- [ ] 权限标识符必须与 sys_menu.perms 完全一致
-- [ ] 数据权限必须配置 ${params.dataScope}
-- [ ] @RequestBody 参数必须添加 @Validated 注解
-- [ ] 文本字段建议添加 @Xss 注解
+- [ ] All pages (including hidden pages) must be configured in sys_menu table
+- [ ] Permission identifier must match sys_menu.perms exactly
+- [ ] Data permissions must configure ${params.dataScope}
+- [ ] @RequestBody parameters must add @Validated annotation
+- [ ] Text fields should add @Xss annotation
 
-### 7.2 避免事项
+### 7.2 Avoid
 
-- ❌ 硬编码权限标识符
-- ❌ 跳过菜单配置直接访问页面
-- ❌ 前端验证替代后端验证
-- ❌ 忘记清除Redis缓存
+- ❌ Hardcoding permission identifiers
+- ❌ Skipping menu configuration to access pages directly
+- ❌ Frontend validation replacing backend validation
+- ❌ Forgetting to clear Redis cache
 
-## 8. 本地开发指南
+## 8. Local Development Guide
 
-本项目有特定的开发规范和历史经验，请在提供建议时优先参考：
+This project has specific development standards and historical experience, please prioritize reference when providing suggestions:
 
-### 8.1 项目规则文件
+### 8.1 Project Rule Files
 
-| 文件 | 路径 | 内容 |
+| File | Path | Content |
 |------|------|------|
-| **项目规则** | `.trae/rules/project_rules.md` | 目录结构、命名规范、开发规范、API命名规范 |
-| **经验教训** | `.trae/rules/lessons.md` | 历史问题和解决方案，包含若依框架特定问题 |
+| **Project Rules** | `.trae/rules/project_rules.md` | Directory structure, naming standards, development standards, API naming standards |
+| **Lessons Learned** | `.trae/rules/lessons.md` | Historical issues and solutions, including RuoYi framework specific issues |
 
-### 8.2 本地开发文档
+### 8.2 Local Development Documentation
 
-| 文档 | 路径 | 内容 |
+| Document | Path | Content |
 |------|------|------|
-| **若依框架样式修改方案** | `docs/plans/若依框架样式修改方案.md` | 样式调整、主题配置、品牌一致性 |
+| **RuoYi Framework Style Modification Plan** | `docs/plans/若依框架样式修改方案.md` | Style adjustments, theme configuration, brand consistency |
 
-### 8.3 历史问题参考
+### 8.3 Historical Issue Reference
 
-在 `.trae/rules/lessons.md` 中记录了以下若依框架相关问题：
+The following RuoYi framework related issues are recorded in `.trae/rules/lessons.md`:
 
-1. **菜单路由配置问题** (2026-03-08)
-   - 问题：新增页面404
-   - 原因：未在 sys_menu 表配置路由
-   - 解决：所有页面（包括隐藏页）都需要配置
+1. **Menu Routing Configuration Issue** (2026-03-08)
+   - Problem: New page 404
+   - Cause: Route not configured in sys_menu table
+   - Solution: All pages (including hidden pages) need configuration
 
-2. **API方法命名规范问题** (2026-03-08)
-   - 问题：前后端命名不一致
-   - 原因：未先定义规范
-   - 解决：设计文档先行，代码实现跟随
+2. **API Method Naming Standard Issue** (2026-03-08)
+   - Problem: Frontend-backend naming inconsistency
+   - Cause: Standards not defined first
+   - Solution: Design documentation first, code implementation follows
 
-3. **FP-ZCCZ1-001 Code Review实践** (2026-03-08)
-   - 问题：缺少参数校验、XSS防护、数据权限
-   - 解决：添加 @Validated、@Xss、@DataScope 注解
+3. **FP-ZCCZ1-001 Code Review Practice** (2026-03-08)
+   - Problem: Missing parameter validation, XSS protection, data permissions
+   - Solution: Add @Validated, @Xss, @DataScope annotations
 
-### 8.4 项目特定检查项
+### 8.4 Project Specific Checklist
 
 ```yaml
-项目特定检查项:
-  - [ ] 检查 lessons.md 中是否有相关问题的解决方案
-  - [ ] 遵循 project_rules.md 中的命名规范
-  - [ ] 参考现有代码的实现模式
-  - [ ] 确认数据库配置：mysql6.sqlpub.com:3311/asset_ruoyi
+Project Specific Checklist:
+  - [ ] Check if lessons.md has solutions for related issues
+  - [ ] Follow naming standards in project_rules.md
+  - [ ] Reference implementation patterns of existing code
+  - [ ] Confirm database configuration: mysql6.sqlpub.com:3311/asset_ruoyi
 ```
 
-## 9. 外部参考文档
+## 9. External Reference Documentation
 
-- [若依官网](http://ruoyi.vip/)
-- [若依文档](http://doc.ruoyi.vip/)
+- [RuoYi Official Website](http://ruoyi.vip/)
+- [RuoYi Documentation](http://doc.ruoyi.vip/)
 - [RuoYi-Vue GitHub](https://github.com/yangzongzhuan/RuoYi-Vue)
 - [RuoYi-Vue Gitee](https://gitee.com/y_project/RuoYi-Vue)
 
-## 10. 版本历史
+## 10. Version History
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Changes |
 |-----|------|---------|
-| 3.1 | 2026-03-22 | 添加本地开发指南和文档引用 |
-| 3.0 | 2026-03-21 | 标准化结构，添加诊断模式，增强协作指导 |
-| 2.0 | 早期 | 完善问题解决方案 |
-| 1.0 | 早期 | 初始版本 |
+| 3.1 | 2026-03-22 | Added local development guide and documentation references |
+| 3.0 | 2026-03-21 | Standardized structure, added diagnosis mode, enhanced collaboration guidance |
+| 2.0 | Early | Improved problem solutions |
+| 1.0 | Early | Initial version |

@@ -1,466 +1,468 @@
 ---
 name: expert-code-quality
-description: "代码质量专家，整合Martin Fowler重构技术和GoF设计模式，帮助开发者系统性地提升代码质量。当用户询问代码审查、重构、设计模式、代码异味、SOLID原则或软件架构改进时触发此技能。"
+description: "Code quality expert integrating Martin Fowler's refactoring techniques and GoF design patterns to help developers systematically improve code quality. Triggers when users ask about code review, refactoring, design patterns, code smells, SOLID principles, or software architecture improvements. 支持中文触发：代码审查、重构、设计模式、代码异味、SOLID原则、软件架构改进、代码质量。"
 license: "MIT"
-author: "wonderqi"
+author: "neuqik@hotmail.com"
 version: "2.0"
 ---
 
-# Code Quality Expert（代码质量专家）
+# Code Quality Expert
 
-## 概述
+## Overview
 
-本技能整合两大软件工程基础学科：
-1. **重构（Refactoring）** - 在不改变行为的前提下改善代码结构
-2. **设计模式（Design Patterns）** - 针对常见设计问题的已验证解决方案
+This skill integrates two foundational software engineering disciplines:
+1. **Refactoring** - Improving code structure without changing behavior
+2. **Design Patterns** - Proven solutions to common design problems
 
-两者结合，形成编写清晰、可维护、可扩展代码的强大工具包。
+Combined, they form a powerful toolkit for writing clean, maintainable, and extensible code.
 
-## 目录结构
+## Directory Structure
 
 ```
 expert-code-quality/
-├── SKILL.md              # 技能定义文件
-├── LICENSE               # MIT 许可证
-└── references/           # 参考文档
-    ├── refactoring-catalog.md    # 重构技术完整目录
-    ├── design-patterns.md         # 23种GoF模式
-    ├── code-smells.md             # 代码异味详细描述
-    └── solid-principles.md        # SOLID原则深入解析
+├── SKILL.md              # Skill definition file
+├── LICENSE               # MIT License
+└── references/           # Reference documents
+    ├── refactoring-catalog.md    # Complete catalog of refactoring techniques
+    ├── design-patterns.md         # 23 GoF patterns
+    ├── code-smells.md             # Detailed description of code smells
+    └── solid-principles.md        # In-depth analysis of SOLID principles
 ```
 
-## 触发条件
+## Trigger Conditions
 
-**自动触发：**
-- 用户询问代码质量问题
-- 需要识别代码异味
-- 要求推荐设计模式
-- 进行代码重构
-- 评估SOLID原则遵循情况
+**Automatic Triggers:**
+- User asks about code quality issues
+- Need to identify code smells
+- Request for design pattern recommendations
+- Performing code refactoring
+- Evaluating SOLID principle compliance
 
-**手动触发：**
-- 用户输入 `/code-quality`、`/refactor`、`/pattern` 等命令
+**Manual Triggers:**
+- User enters commands like `/code-quality`, `/refactor`, `/pattern`, etc.
 
 ---
 
-## 核心能力
+## Core Capabilities
 
-### 1. 代码异味检测
+### 1. Code Smell Detection
 
-#### 1.1 快速参考：22种代码异味
+#### 1.1 Quick Reference: 22 Code Smells
 
-**方法级异味：**
+**Method-Level Smells:**
 
-| 异味 | 检测模式 | 严重程度 |
-|------|---------|---------|
-| **Long Method（过长方法）** | 方法 > 20行 | 高 |
-| **Duplicated Code（重复代码）** | 相似代码块 | 严重 |
-| **Long Parameter List（过长参数列表）** | 参数 > 4个 | 中 |
-| **Switch Statements（Switch语句）** | 大型switch/case块 | 中 |
+| Smell | Detection Pattern | Severity |
+|-------|------------------|----------|
+| **Long Method** | Method > 20 lines | High |
+| **Duplicated Code** | Similar code blocks | Critical |
+| **Long Parameter List** | Parameters > 4 | Medium |
+| **Switch Statements** | Large switch/case blocks | Medium |
 
-**类级异味：**
+**Class-Level Smells:**
 
-| 异味 | 检测模式 | 严重程度 |
-|------|---------|---------|
-| **Large Class（过大类）** | 类 > 300行 或 > 10个字段 | 高 |
-| **Divergent Change（发散式变化）** | 一个类因多种原因变化 | 高 |
-| **Shotgun Surgery（霰弹式修改）** | 一次修改需要改很多类 | 高 |
-| **Feature Envy（特性依恋）** | 方法更多使用其他类的数据 | 中 |
+| Smell | Detection Pattern | Severity |
+|-------|------------------|----------|
+| **Large Class** | Class > 300 lines or > 10 fields | High |
+| **Divergent Change** | One class changes for multiple reasons | High |
+| **Shotgun Surgery** | One change requires modifying many classes | High |
+| **Feature Envy** | Method uses data from other classes more | Medium |
 
-**关系级异味：**
+**Relationship-Level Smells:**
 
-| 异味 | 检测模式 | 严重程度 |
-|------|---------|---------|
-| **Inappropriate Intimacy（不恰当的亲密）** | 类访问彼此私有部分 | 中 |
-| **Message Chains（消息链）** | `a.b().c().d()` 链 | 中 |
-| **Middle Man（中间人）** | 类只做委托 | 低 |
-| **Data Clumps（数据泥团）** | 相同数据项总是同时出现 | 中 |
+| Smell | Detection Pattern | Severity |
+|-------|------------------|----------|
+| **Inappropriate Intimacy** | Classes access each other's private parts | Medium |
+| **Message Chains** | `a.b().c().d()` chains | Medium |
+| **Middle Man** | Class only does delegation | Low |
+| **Data Clumps** | Same data items always appear together | Medium |
 
-#### 1.2 异味检测清单
+#### 1.2 Smell Detection Checklist
 
-审查代码时检查：
-- [ ] 是否有超过20行的方法？
-- [ ] 是否有重复代码？
-- [ ] 是否有超过10个字段的类？
-- [ ] 是否有可以使用多态的switch语句？
-- [ ] 是否有超过4个参数的方法？
-- [ ] 是否有深层继承层次（> 3层）？
-- [ ] 类是否因多种原因变化？
-- [ ] 是否有超过3次调用的消息链？
-- [ ] 是否有只包含数据没有行为的"数据类"？
-- [ ] 是否有几乎什么都不做的"懒类"？
+When reviewing code, check:
+- [ ] Are there methods longer than 20 lines?
+- [ ] Is there duplicated code?
+- [ ] Are there classes with more than 10 fields?
+- [ ] Are there switch statements that could use polymorphism?
+- [ ] Are there methods with more than 4 parameters?
+- [ ] Is there deep inheritance hierarchy (> 3 levels)?
+- [ ] Does the class change for multiple reasons?
+- [ ] Are there message chains with more than 3 calls?
+- [ ] Are there "data classes" with only data and no behavior?
+- [ ] Are there "lazy classes" that do almost nothing?
 
 ---
 
-### 2. 重构技术
+### 2. Refactoring Techniques
 
-#### 2.1 重构原则
+#### 2.1 Refactoring Principles
 
-**两顶帽子（Kent Beck）：**
+**Two Hats (Kent Beck):**
 
-| 帽子 | 活动 | 规则 |
-|------|------|------|
-| **添加功能** | 添加新功能 | 不修改现有代码 |
-| **重构** | 改善结构 | 不添加新功能 |
+| Hat | Activity | Rule |
+|-----|----------|------|
+| **Adding Features** | Add new functionality | Don't modify existing code |
+| **Refactoring** | Improve structure | Don't add new features |
 
-**永远不要同时戴两顶帽子！**
+**Never wear both hats at the same time!**
 
-**重构节奏：**
+**Refactoring Rhythm:**
 ```
-测试 → 小改变 → 测试 → 小改变 → 测试
+Test → Small Change → Test → Small Change → Test
 ```
 
-#### 2.2 关键重构技术
+#### 2.2 Key Refactoring Techniques
 
-**组合方法：**
+**Composing Methods:**
 
-| 重构 | 适用场景 | 步骤 |
-|------|---------|------|
-| **Extract Method（提取方法）** | 方法过长，需要命名的代码块 | 1.创建新方法 2.复制代码 3.替换原代码为调用 |
-| **Inline Method（内联方法）** | 方法体和名称一样清晰 | 1.用方法体替换调用 2.删除方法 |
-| **Replace Temp with Query（以查询替换临时变量）** | 临时变量保存表达式 | 1.将表达式提取为方法 2.用调用替换临时变量 |
-| **Replace Method with Method Object（以方法对象替换方法）** | 长方法中临时变量过多 | 1.为方法创建类 2.临时变量变为字段 |
+| Refactoring | When to Use | Steps |
+|-------------|-------------|-------|
+| **Extract Method** | Method too long, code block needs naming | 1.Create new method 2.Copy code 3.Replace original code with call |
+| **Inline Method** | Method body as clear as its name | 1.Replace calls with method body 2.Delete method |
+| **Replace Temp with Query** | Temporary variable holds expression | 1.Extract expression to method 2.Replace temp with call |
+| **Replace Method with Method Object** | Too many temporaries in long method | 1.Create class for method 2.Temporaries become fields |
 
-**移动特征：**
+**Moving Features:**
 
-| 重构 | 适用场景 | 步骤 |
-|------|---------|------|
-| **Move Method（移动方法）** | 方法更多使用其他类 | 1.复制到目标 2.在源中委托 3.删除源方法 |
-| **Extract Class（提取类）** | 类做太多 | 1.创建新类 2.移动字段/方法 3.关联类 |
-| **Hide Delegate（隐藏委托）** | 客户端知道委托链 | 1.添加委托方法 2.隐藏链 |
+| Refactoring | When to Use | Steps |
+|-------------|-------------|-------|
+| **Move Method** | Method uses other class more | 1.Copy to target 2.Delegate in source 3.Delete source method |
+| **Extract Class** | Class does too much | 1.Create new class 2.Move fields/methods 3.Link classes |
+| **Hide Delegate** | Client knows delegation chain | 1.Add delegate method 2.Hide chain |
 
-**简化条件：**
+**Simplifying Conditionals:**
 
-| 重构 | 适用场景 | 步骤 |
-|------|---------|------|
-| **Decompose Conditional（分解条件）** | 复杂条件逻辑 | 1.提取条件 2.提取then/else |
-| **Consolidate Conditional（合并条件）** | 多个检查结果相同 | 1.用&&或\|\|组合 2.提取方法 |
-| **Replace Nested Conditional with Guard Clauses（以卫语句替换嵌套条件）** | 深嵌套if-else | 1.添加卫语句返回 2.扁平化结构 |
-| **Replace Conditional with Polymorphism（以多态替换条件）** | 根据类型switch | 1.创建子类 2.将行为移到每个子类 |
+| Refactoring | When to Use | Steps |
+|-------------|-------------|-------|
+| **Decompose Conditional** | Complex conditional logic | 1.Extract condition 2.Extract then/else |
+| **Consolidate Conditional** | Multiple checks with same result | 1.Combine with && or \|\| 2.Extract method |
+| **Replace Nested Conditional with Guard Clauses** | Deeply nested if-else | 1.Add guard clause returns 2.Flatten structure |
+| **Replace Conditional with Polymorphism** | Switch by type | 1.Create subclasses 2.Move behavior to each subclass |
 
-#### 2.3 重构决策树
+#### 2.3 Refactoring Decision Tree
 
 ```
-发现代码异味？
+Found code smell?
     │
-    ├─ 有测试吗？
-    │   ├─ 没有 → 先写测试
-    │   └─ 有 → 继续
+    ├─ Do you have tests?
+    │   ├─ No → Write tests first
+    │   └─ Yes → Continue
     │
-    ├─ 你理解代码吗？
-    │   ├─ 不理解 → 重构以理解
-    │   └─ 理解 → 继续
+    ├─ Do you understand the code?
+    │   ├─ No → Refactor to understand
+    │   └─ Yes → Continue
     │
-    └─ 选择重构方式：
+    └─ Choose refactoring approach:
         │
-        ├─ 方法过长 → Extract Method
-        ├─ 重复代码 → Extract Method / Pull Up
-        ├─ 类过大 → Extract Class
-        ├─ 参数列表过长 → Introduce Parameter Object
-        ├─ Switch语句 → Replace with Polymorphism
-        └─ 复杂条件 → Decompose / Guard Clauses
+        ├─ Method too long → Extract Method
+        ├─ Duplicated code → Extract Method / Pull Up
+        ├─ Class too large → Extract Class
+        ├─ Parameter list too long → Introduce Parameter Object
+        ├─ Switch statement → Replace with Polymorphism
+        └─ Complex conditionals → Decompose / Guard Clauses
 ```
 
 ---
 
-### 3. 设计模式
+### 3. Design Patterns
 
-#### 3.1 SOLID原则基础
+#### 3.1 SOLID Principles Foundation
 
-应用模式前，确保理解SOLID原则：
+Before applying patterns, ensure understanding of SOLID principles:
 
-| 原则 | 名称 | 描述 |
-|------|------|------|
-| **S** | Single Responsibility（单一职责） | 一个变化原因 |
-| **O** | Open/Closed（开闭） | 对扩展开放，对修改关闭 |
-| **L** | Liskov Substitution（里氏替换） | 子类型必须可替换 |
-| **I** | Interface Segregation（接口隔离） | 小而专注的接口 |
-| **D** | Dependency Inversion（依赖倒置） | 依赖抽象 |
+| Principle | Name | Description |
+|-----------|------|-------------|
+| **S** | Single Responsibility | One reason to change |
+| **O** | Open/Closed | Open for extension, closed for modification |
+| **L** | Liskov Substitution | Subtypes must be substitutable |
+| **I** | Interface Segregation | Small, focused interfaces |
+| **D** | Dependency Inversion | Depend on abstractions |
 
-#### 3.2 按问题类型选择
+#### 3.2 Selection by Problem Type
 
-| 问题 | 模式 | 关键收益 |
-|------|------|---------|
-| 需要单一实例 | Singleton | 受控访问 |
-| 灵活创建对象 | Factory Method | 解耦创建 |
-| 创建对象族 | Abstract Factory | 一致产品 |
-| 构建复杂对象 | Builder | 逐步构建 |
-| 不兼容接口 | Adapter | 使不兼容工作 |
-| 动态添加职责 | Decorator | 灵活扩展 |
-| 控制访问 | Proxy | 间接层 |
-| 简化复杂系统 | Facade | 简洁接口 |
-| 树结构 | Composite | 统一处理 |
-| 切换算法 | Strategy | 可互换行为 |
-| 事件通知 | Observer | 松耦合 |
-| 封装请求 | Command | 撤销/重做支持 |
-| 状态相关行为 | State | 清晰状态转换 |
+| Problem | Pattern | Key Benefit |
+|---------|---------|-------------|
+| Need single instance | Singleton | Controlled access |
+| Flexible object creation | Factory Method | Decouple creation |
+| Create families of objects | Abstract Factory | Consistent products |
+| Build complex objects | Builder | Step-by-step construction |
+| Incompatible interfaces | Adapter | Make incompatible work |
+| Dynamically add responsibilities | Decorator | Flexible extension |
+| Control access | Proxy | Indirection layer |
+| Simplify complex system | Facade | Simple interface |
+| Tree structure | Composite | Uniform handling |
+| Switch algorithms | Strategy | Interchangeable behaviors |
+| Event notification | Observer | Loose coupling |
+| Encapsulate requests | Command | Undo/redo support |
+| State-dependent behavior | State | Clear state transitions |
 
-#### 3.3 按代码异味选择
+#### 3.3 Selection by Code Smell
 
-| 异味 | 模式解决方案 |
-|------|-------------|
-| 大型switch语句 | State, Strategy |
-| 多条件判断 | Strategy, State, Null Object |
-| 紧耦合 | Observer, Mediator, Facade |
-| 对象创建困难 | Factory, Builder |
-| 类难以扩展 | Decorator, Adapter |
-| 复杂子系统 | Facade |
-| 需要变化算法 | Strategy, Template Method |
+| Smell | Pattern Solution |
+|-------|------------------|
+| Large switch statement | State, Strategy |
+| Multiple conditionals | Strategy, State, Null Object |
+| Tight coupling | Observer, Mediator, Facade |
+| Difficult object creation | Factory, Builder |
+| Hard to extend class | Decorator, Adapter |
+| Complex subsystem | Facade |
+| Need varying algorithms | Strategy, Template Method |
 
-#### 3.4 模式快速参考
+#### 3.4 Pattern Quick Reference
 
-**创建型模式：**
+**Creational Patterns:**
 
-| 模式 | 使用时机 |
-|------|---------|
-| Singleton | 需要单一实例 |
-| Factory Method | 不知道确切要创建哪个类 |
-| Abstract Factory | 需要相关对象族 |
-| Builder | 复杂对象有多选项 |
-| Prototype | 克隆现有对象 |
+| Pattern | When to Use |
+|---------|-------------|
+| Singleton | Need single instance |
+| Factory Method | Don't know exact class to create |
+| Abstract Factory | Need families of related objects |
+| Builder | Complex object with many options |
+| Prototype | Clone existing objects |
 
-**结构型模式：**
+**Structural Patterns:**
 
-| 模式 | 使用时机 |
-|------|---------|
-| Adapter | 接口不兼容 |
-| Decorator | 动态添加职责 |
-| Proxy | 控制访问，延迟加载 |
-| Facade | 简化复杂接口 |
-| Composite | 树结构，统一处理 |
-| Flyweight | 许多相似对象，共享状态 |
-| Bridge | 分离抽象与实现 |
+| Pattern | When to Use |
+|---------|-------------|
+| Adapter | Incompatible interfaces |
+| Decorator | Dynamically add responsibilities |
+| Proxy | Control access, lazy loading |
+| Facade | Simplify complex interfaces |
+| Composite | Tree structure, uniform handling |
+| Flyweight | Many similar objects, share state |
+| Bridge | Separate abstraction from implementation |
 
-**行为型模式：**
+**Behavioral Patterns:**
 
-| 模式 | 使用时机 |
-|------|---------|
-| Strategy | 可互换算法 |
-| Observer | 一对多通知 |
-| Command | 封装请求，撤销/重做 |
-| State | 状态相关行为 |
-| Template Method | 算法骨架，步骤变化 |
-| Iterator | 统一遍历集合 |
-| Mediator | 复杂对象交互 |
-| Memento | 保存/恢复状态 |
-| Chain of Resp. | 请求有多个处理器 |
-| Visitor | 对对象结构添加操作 |
+| Pattern | When to Use |
+|---------|-------------|
+| Strategy | Interchangeable algorithms |
+| Observer | One-to-many notifications |
+| Command | Encapsulate requests, undo/redo |
+| State | State-dependent behavior |
+| Template Method | Algorithm skeleton, varying steps |
+| Iterator | Uniform collection traversal |
+| Mediator | Complex object interactions |
+| Memento | Save/restore state |
+| Chain of Resp. | Request has multiple handlers |
+| Visitor | Add operations to object structure |
 
 ---
 
-### 4. 集成工作流
+### 4. Integrated Workflow
 
-#### 4.1 代码质量提升流程
-
-```
-1. 识别（IDENTIFY）
-   └── 检测代码异味
-       └── 使用异味清单
-           └── 评定严重程度（Critical/High/Medium/Low）
-
-2. 诊断（DIAGNOSE）
-   └── 理解根本原因
-       └── 为什么存在这个异味？
-           └── 会导致什么问题？
-
-3. 规划（PLAN）
-   └── 选择重构或模式
-       └── 考虑依赖关系
-           └── 估计影响
-
-4. 准备（PREPARE）
-   └── 确保存在测试
-       └── 运行测试验证行为
-           └── 如缺少则创建测试
-
-5. 执行（EXECUTE）
-   └── 应用小更改
-       └── 每次更改后测试
-           └── 保持代码工作
-
-6. 验证（VERIFY）
-   └── 运行所有测试
-       └── 检查新异味
-           └── 确认改善
-```
-
-#### 4.2 异味→重构→模式流程
+#### 4.1 Code Quality Improvement Process
 
 ```
-检测到代码异味
+1. IDENTIFY
+   └── Detect code smells
+       └── Use smell checklist
+           └── Rate severity (Critical/High/Medium/Low)
+
+2. DIAGNOSE
+   └── Understand root cause
+       └── Why does this smell exist?
+           └── What problems will it cause?
+
+3. PLAN
+   └── Choose refactoring or pattern
+       └── Consider dependencies
+           └── Estimate impact
+
+4. PREPARE
+   └── Ensure tests exist
+       └── Run tests to verify behavior
+           └── Create tests if missing
+
+5. EXECUTE
+   └── Apply small changes
+       └── Test after each change
+           └── Keep code working
+
+6. VERIFY
+   └── Run all tests
+       └── Check for new smells
+           └── Confirm improvement
+```
+
+#### 4.2 Smell→Refactoring→Pattern Flow
+
+```
+Detected code smell
         │
         ▼
 ┌───────────────────┐
-│ 这是方法级别      │
-│ 问题吗？          │
+│ Is this a method  │
+│ level problem?    │
 └────────┬──────────┘
          │
     ┌────┴────┐
-    │ 是      │ 否
+    │ Yes     │ No
     ▼         ▼
-提取      这是类级别
-方法      问题吗？
+Extract    Is this a class
+Method     level problem?
               │
          ┌────┴────┐
-         │ 是      │ 否
+         │ Yes     │ No
          ▼         ▼
-    提取      这是关系
-    类       问题吗？
+    Extract    Is this a
+    Class      relationship
+              problem?
                   │
              ┌────┴────┐
-             │ 是      │ 否
+             │ Yes     │ No
              ▼         ▼
-        移动/隐藏   考虑
-        委托      模式
+        Move/Hide   Consider
+        Delegate    Pattern
                         │
                         ▼
                   ┌──────────────┐
-                  │ 哪个模式      │
-                  │ 最合适？      │
+                  │ Which        │
+                  │ pattern fits │
+                  │ best?        │
                   └──────┬───────┘
                          │
          ┌───────────────┼───────────────┐
          ▼               ▼               ▼
-    创建型          结构型          行为型
-    模式            模式            模式
+    Creational      Structural      Behavioral
+    Patterns        Patterns        Patterns
 ```
 
 ---
 
-### 5. 协作表
+### 5. Collaboration Table
 
-#### 5.1 与其他技能的协作
+#### 5.1 Collaboration with Other Skills
 
-| 协作技能 | 协作模式 | 说明 |
-|---------|---------|------|
-| **test-driven-development** | 顺序 | 重构前先写测试 |
-| **systematic-debugging** | 咨询 | 修复前先找根本原因 |
-| **requesting-code-review** | 参考 | 获取重构代码的反馈 |
-| **pdd-code-reviewer** | 参考 | 获取PDD项目代码审查 |
-| **software-engineer** | 委托 | 代码实现后进行质量检查 |
+| Collaborating Skill | Collaboration Mode | Description |
+|--------------------|-------------------|-------------|
+| **test-driven-development** | Sequential | Write tests before refactoring |
+| **systematic-debugging** | Consultation | Find root cause before fixing |
+| **requesting-code-review** | Reference | Get feedback on refactored code |
+| **pdd-code-reviewer** | Reference | Get PDD project code review |
+| **software-engineer** | Delegation | Quality check after code implementation |
 
-#### 5.2 协作流程
+#### 5.2 Collaboration Workflow
 
 ```
-代码质量问题检测
+Code quality issue detected
     ↓
-调用 expert-code-quality
+Invoke expert-code-quality
     ↓
-识别代码异味 + 推荐重构/模式
+Identify code smells + Recommend refactoring/patterns
     ↓
-（如需测试先写测试）→ 调用 test-driven-development
+(If tests needed first) → Invoke test-driven-development
     ↓
-（如需代码实现）→ 调用 software-engineer
+(If code implementation needed) → Invoke software-engineer
     ↓
-完成代码质量改进
+Complete code quality improvement
 ```
 
 ---
 
-### 6. 快速决策矩阵
+### 6. Quick Decision Matrix
 
-| 场景 | 首要行动 |
-|------|---------|
-| 发现重复代码 | Extract Method |
-| 方法过长 | Extract Method |
-| 类过大 | Extract Class |
-| 参数列表过长 | Introduce Parameter Object |
-| 按类型switch | Replace with Polymorphism |
-| 需要单一实例 | 考虑Singleton |
-| 需要灵活创建 | Factory Method 或 Builder |
-| 接口不兼容 | Adapter |
-| 需要添加行为 | Decorator |
-| 复杂子系统 | Facade |
-| 需要变化算法 | Strategy |
-| 需要事件通知 | Observer |
-
----
-
-### 7. 反模式
-
-#### 7.1 重构反模式
-
-| 反模式 | 描述 | 正确方法 |
-|--------|------|---------|
-| **Big Bang Refactoring** | 一次重写一切 | 小步增量更改 |
-| **Refactoring Without Tests** | 没有安全网就改代码 | 先写测试 |
-| **Over-Refactoring** | 重构干净的代码 | 代码清晰时停止 |
-| **Refactoring Addiction** | 只重构，不交付 | 平衡重构与功能 |
-| **Random Refactoring** | 没有明确目标 | 先识别异味 |
-
-#### 7.2 模式反模式
-
-| 反模式 | 描述 | 正确方法 |
-|--------|------|---------|
-| **Pattern Obsession** | 到处用模式 | 解决问题时用模式 |
-| **Singleton Abuse** | 一切都是单例 | 真正需要时才用 |
-| **Factory Overkill** | 单产品也用工厂 | 多产品时用工厂 |
-| **Decorator Nesting** | 太多装饰器层 | 限制嵌套深度 |
-| **Premature Pattern** | 需要前就用模式 | 让模式从重构中涌现 |
+| Scenario | Primary Action |
+|----------|---------------|
+| Found duplicated code | Extract Method |
+| Method too long | Extract Method |
+| Class too large | Extract Class |
+| Parameter list too long | Introduce Parameter Object |
+| Switch by type | Replace with Polymorphism |
+| Need single instance | Consider Singleton |
+| Need flexible creation | Factory Method or Builder |
+| Incompatible interfaces | Adapter |
+| Need to add behavior | Decorator |
+| Complex subsystem | Facade |
+| Need varying algorithms | Strategy |
+| Need event notification | Observer |
 
 ---
 
-### 8. 实践清单
+### 7. Anti-Patterns
 
-#### 8.1 代码审查清单
+#### 7.1 Refactoring Anti-Patterns
 
-批准代码前验证：
-- [ ] 无严重代码异味
-- [ ] 方法大小合理（< 20行）
-- [ ] 类有单一职责
-- [ ] 无重复代码
-- [ ] 条件清晰
-- [ ] 命名有意义
-- [ ] 测试存在且通过
-- [ ] 遵循SOLID原则
-- [ ] 模式使用恰当（不过度使用）
+| Anti-Pattern | Description | Correct Approach |
+|--------------|-------------|------------------|
+| **Big Bang Refactoring** | Rewrite everything at once | Small incremental changes |
+| **Refactoring Without Tests** | Change code without safety net | Write tests first |
+| **Over-Refactoring** | Refactor clean code | Stop when code is clear |
+| **Refactoring Addiction** | Only refactor, never deliver | Balance refactoring with features |
+| **Random Refactoring** | No clear goal | Identify smells first |
 
-#### 8.2 重构安全清单
+#### 7.2 Pattern Anti-Patterns
 
-重构前：
-- [ ] 所有测试通过
-- [ ] 测试覆盖要重构的代码
-- [ ] 理解代码功能
-- [ ] 有回滚计划
-- [ ] 做小更改
-- [ ] 每次更改后测试
+| Anti-Pattern | Description | Correct Approach |
+|--------------|-------------|------------------|
+| **Pattern Obsession** | Use patterns everywhere | Use patterns to solve problems |
+| **Singleton Abuse** | Everything is singleton | Use only when truly needed |
+| **Factory Overkill** | Factory for single product | Use factory for multiple products |
+| **Decorator Nesting** | Too many decorator layers | Limit nesting depth |
+| **Premature Pattern** | Use pattern before needed | Let patterns emerge from refactoring |
 
-#### 8.3 模式应用清单
+---
 
-应用模式前：
-- [ ] 问题匹配模式意图
-- [ ] 模式解决真问题（非想象）
-- [ ] 团队理解模式
-- [ ] 模式不过度复杂化
-- [ ] 考虑了替代方案
-- [ ] 模式符合项目上下文
+### 8. Practice Checklists
+
+#### 8.1 Code Review Checklist
+
+Before approving code, verify:
+- [ ] No critical code smells
+- [ ] Reasonable method size (< 20 lines)
+- [ ] Class has single responsibility
+- [ ] No duplicated code
+- [ ] Clear conditionals
+- [ ] Meaningful names
+- [ ] Tests exist and pass
+- [ ] Follows SOLID principles
+- [ ] Patterns used appropriately (not overused)
+
+#### 8.2 Refactoring Safety Checklist
+
+Before refactoring:
+- [ ] All tests pass
+- [ ] Tests cover code to refactor
+- [ ] Understand code functionality
+- [ ] Have rollback plan
+- [ ] Make small changes
+- [ ] Test after each change
+
+#### 8.3 Pattern Application Checklist
+
+Before applying pattern:
+- [ ] Problem matches pattern intent
+- [ ] Pattern solves real problem (not imagined)
+- [ ] Team understands pattern
+- [ ] Pattern doesn't overcomplicate
+- [ ] Alternatives considered
+- [ ] Pattern fits project context
 
 ---
 
 ## Guardrails
 
-- 必须基于Martin Fowler重构catalog和GoF设计模式提供建议
-- 重构建议需要包含具体的代码转换示例
-- 模式应用需要权衡利弊，不盲目推荐
-- 代码审查需要具体指出问题和改进建议
-- 不确定的问题需明确说明，避免误导
+- Must provide suggestions based on Martin Fowler's refactoring catalog and GoF design patterns
+- Refactoring suggestions need specific code transformation examples
+- Pattern application needs to weigh pros and cons, not blindly recommend
+- Code review needs to specifically point out problems and improvement suggestions
+- Clearly state uncertain issues to avoid misleading
 
 ---
 
-## 版本历史
+## Version History
 
 ### v2.0 (2026-03-21)
-- 统一为中文描述
-- 添加协作表，明确与其他技能的协作关系
-- 增强快速决策矩阵
-- 优化重构决策树
-- 添加反模式清单
+- Unified to Chinese description
+- Added collaboration table, clarified collaboration with other skills
+- Enhanced quick decision matrix
+- Optimized refactoring decision tree
+- Added anti-pattern checklist
 
-### v1.0 (初始版本)
-- 基础代码质量检测
-- 重构技术目录
-- 设计模式参考
+### v1.0 (Initial version)
+- Basic code quality detection
+- Refactoring technique catalog
+- Design pattern reference
 
 ---
 
-> **记住**：好的代码不是关于聪明——而是关于清晰。重构和模式是达到清晰度的工具，不是目标本身。
+> **Remember**: Good code isn't about being clever—it's about being clear. Refactoring and patterns are tools to achieve clarity, not ends in themselves.

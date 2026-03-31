@@ -1,126 +1,126 @@
 ---
 name: pdd-implement-feature
-description: 根据开发规格实现功能点代码。当用户想要开始编码实现时调用此Skill。
+description: Implement feature point code based on development specifications. Call this Skill when users want to start coding implementation. 支持中文触发：实现功能点、编码实现、开始编码、功能开发、代码实现、PDD实现。
 license: MIT
-compatibility: 需要先完成规格生成
+compatibility: Requires specification generation to be completed first
 metadata:
-  author: asset-platform
+  author: neuqik@hotmail.com
   version: "2.0"
   parent: pdd-main
 ---
 
-功能点实现 - 根据开发规格实现功能点代码
+Feature Point Implementation - Implement feature point code based on development specifications
 
-**输入**:
-- 开发规格 (spec.md)
-- 验收标准 (checklist.md)
-- 测试用例 (test-cases.md，可选)
+**Input**:
+- Development Specification (spec.md)
+- Acceptance Criteria (checklist.md)
+- Test Cases (test-cases.md, optional)
 
-**输出**:
-- 代码文件
-- 验收报告
+**Output**:
+- Code files
+- Acceptance report
 
 ---
 
-## 版本历史
+## Version History
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Changes |
 |-----|------|---------|
-| 3.2 | 2026-03-22 | 添加错误处理与回退规范、PDD实施规范引用 |
-| 3.1 | 2026-03-22 | 移除自动调用 pdd-pr-* 技能，改为只提示用户手动调用 |
-| 3.0 | 2026-03-21 | 新增 PR 管理层集成 (pdd-pr-*) |
-| 2.0 | 2026-03-21 | 新增 software-engineer 和 expert-xxx 调用整合 |
-| 1.0 | 早期 | 初始版本 |
+| 3.2 | 2026-03-22 | Added error handling and fallback specifications, PDD implementation specification references |
+| 3.1 | 2026-03-22 | Removed automatic calling of pdd-pr-* skills, changed to only prompt user for manual calling |
+| 3.0 | 2026-03-21 | Added PR management layer integration (pdd-pr-*) |
+| 2.0 | 2026-03-21 | Added software-engineer and expert-xxx calling integration |
+| 1.0 | Early | Initial version |
 
 ---
 
-## 1. 技能整合
+## 1. Skill Integration
 
-### 1.1 软件工程师调用
+### 1.1 Software Engineer Invocation
 
-在代码实现过程中，调用 `software-engineer` skill：
+During code implementation, call the `software-engineer` skill:
 
-| 调用时机 | 服务内容 |
+| Invocation Timing | Service Content |
 |---------|---------|
-| 代码实现 | 依据规格执行代码实现 |
-| 单元测试 | 编写单元测试和集成测试 |
-| 代码重构 | 遵循编码规范的代码优化 |
-| 缺陷修复 | 错误处理和问题修复 |
+| Code Implementation | Execute code implementation based on specifications |
+| Unit Testing | Write unit tests and integration tests |
+| Code Refactoring | Code optimization following coding standards |
+| Defect Fixing | Error handling and issue resolution |
 
-### 1.2 专家技能调用
+### 1.2 Expert Skill Invocation
 
-在实现过程中遇到技术问题时，按需调用 expert-xxx：
+When encountering technical issues during implementation, call expert-xxx as needed:
 
-| 专家技能 | 触发条件 | 期望输出 |
+| Expert Skill | Trigger Condition | Expected Output |
 |---------|---------|---------|
-| **expert-ruoyi** | 若依框架问题 | 解决方案 + 最佳实践 |
-| **expert-activiti** | 工作流问题 | BPMN设计建议 |
-| **expert-mysql** | 数据库问题 | SQL优化方案 |
-| **expert-code-quality** | 代码质量问题 | 重构方案 |
+| **expert-ruoyi** | RuoYi framework issues | Solution + Best practices |
+| **expert-activiti** | Workflow issues | BPMN design recommendations |
+| **expert-mysql** | Database issues | SQL optimization solution |
+| **expert-code-quality** | Code quality issues | Refactoring solution |
 
-### 1.3 调用条件
+### 1.3 Invocation Conditions
 
-**必须调用 software-engineer**：
-- 进入代码实现阶段
-- 需要编写测试代码
+**Must call software-engineer**:
+- Entering code implementation phase
+- Need to write test code
 
-**按需调用 expert-xxx**：
-- 遇到若依框架问题
-- 遇到数据库设计问题
-- 遇到代码质量问题
+**Call expert-xxx as needed**:
+- Encountering RuoYi framework issues
+- Encountering database design issues
+- Encountering code quality issues
 
 ---
 
-## 2. 流程步骤
+## 2. Process Steps
 
-### Step 1: 读取开发规格
+### Step 1: Read Development Specification
 
-从 `dev-specs/FP-{序号}/spec.md` 读取：
-- 接口定义
-- 数据模型
-- 业务逻辑
-- 测试用例
+Read from `dev-specs/FP-{sequence}/spec.md`:
+- Interface definitions
+- Data models
+- Business logic
+- Test cases
 
-### Step 2: 读取验收标准
+### Step 2: Read Acceptance Criteria
 
-从 `dev-specs/FP-{序号}/checklist.md` 读取验收项。
+Read acceptance items from `dev-specs/FP-{sequence}/checklist.md`.
 
-### Step 3: 确定实现顺序
+### Step 3: Determine Implementation Order
 
-根据功能点依赖关系确定实现顺序：
-- 数据模型 → 数据库脚本
-- 后端接口 → Controller/Service/Mapper
-- 前端页面 → Vue组件
+Determine implementation order based on feature point dependencies:
+- Data models → Database scripts
+- Backend interfaces → Controller/Service/Mapper
+- Frontend pages → Vue components
 
-### Step 4: 生成数据库脚本
+### Step 4: Generate Database Scripts
 
-根据数据模型生成SQL脚本：
+Generate SQL scripts based on data models:
 ```sql
 CREATE TABLE `{table_name}` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  -- 业务字段
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `create_by` varchar(64) DEFAULT NULL COMMENT '创建人',
-  `update_by` varchar(64) DEFAULT NULL COMMENT '更新人',
-  `status` char(1) DEFAULT '0' COMMENT '状态',
-  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
+  -- Business fields
+  `create_time` datetime DEFAULT NULL COMMENT 'Creation Time',
+  `update_time` datetime DEFAULT NULL COMMENT 'Update Time',
+  `create_by` varchar(64) DEFAULT NULL COMMENT 'Creator',
+  `update_by` varchar(64) DEFAULT NULL COMMENT 'Updater',
+  `status` char(1) DEFAULT '0' COMMENT 'Status',
+  `del_flag` char(1) DEFAULT '0' COMMENT 'Delete Flag',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='{表注释}';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='{Table Comment}';
 ```
 
-### Step 5: 生成后端代码
+### Step 5: Generate Backend Code
 
-**调用 software-engineer** 生成符合规范的代码：
+**Call software-engineer** to generate code that complies with standards:
 
-**a. Domain实体类**
+**a. Domain Entity Class**
 ```java
 @Data
 @TableName("{table_name}")
 public class {EntityName} {
     @TableId(type = IdType.AUTO)
     private Long id;
-    // 业务字段
+    // Business fields
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     @TableField(fill = FieldFill.INSERT_UPDATE)
@@ -129,27 +129,27 @@ public class {EntityName} {
 }
 ```
 
-**b. Mapper接口**
+**b. Mapper Interface**
 ```java
 @Mapper
 public interface {EntityName}Mapper extends BaseMapper<{EntityName}> {
-    // 自定义查询方法
+    // Custom query methods
 }
 ```
 
-**c. Service接口和实现**
+**c. Service Interface and Implementation**
 ```java
 public interface I{EntityName}Service extends IService<{EntityName}> {
-    // 业务方法
+    // Business methods
 }
 
 @Service
 public class {EntityName}ServiceImpl extends ServiceImpl<{EntityName}Mapper, {EntityName}> implements I{EntityName}Service {
-    // 业务实现
+    // Business implementation
 }
 ```
 
-**d. Controller控制器**
+**d. Controller**
 ```java
 @RestController
 @RequestMapping("/{module}")
@@ -157,15 +157,15 @@ public class {EntityName}Controller {
     @Autowired
     private I{EntityName}Service service;
 
-    // 接口方法
+    // Interface methods
 }
 ```
 
-### Step 6: 生成前端代码
+### Step 6: Generate Frontend Code
 
-**调用 software-engineer** 生成前端代码：
+**Call software-engineer** to generate frontend code:
 
-**a. API接口**
+**a. API Interface**
 ```javascript
 import request from '@/utils/request'
 
@@ -178,10 +178,10 @@ export function list{EntityName}(query) {
 }
 ```
 
-**b. Vue组件**
+**b. Vue Component**
 ```vue
 <template>
-  <!-- 页面模板 -->
+  <!-- Page template -->
 </template>
 
 <script>
@@ -189,328 +189,328 @@ export default {
   name: '{EntityName}',
   data() {
     return {
-      // 数据
+      // Data
     }
   },
   methods: {
-    // 方法
+    // Methods
   }
 }
 </script>
 ```
 
-### Step 7: 实现业务逻辑
+### Step 7: Implement Business Logic
 
-根据规格中的业务逻辑实现：
-- 处理流程
-- 校验规则
-- 状态转换
-- 异常处理
+Implement based on business logic in specifications:
+- Processing flow
+- Validation rules
+- State transitions
+- Exception handling
 
-**专家咨询（按需）**：
-- 若依问题 → `expert-ruoyi`
-- 数据库问题 → `expert-mysql`
+**Expert Consultation (as needed)**:
+- RuoYi issues → `expert-ruoyi`
+- Database issues → `expert-mysql`
 
-### Step 8: 运行测试验证
+### Step 8: Run Test Validation
 
-如果有测试用例，运行测试验证：
-- 单元测试
-- 接口测试
-- 集成测试
+If test cases exist, run test validation:
+- Unit tests
+- Interface tests
+- Integration tests
 
-### Step 9: 更新验收状态
+### Step 9: Update Acceptance Status
 
-更新 `checklist.md` 中的验收状态：
-- 业务验收项
-- 技术验收项
-- 集成验收项
+Update acceptance status in `checklist.md`:
+- Business acceptance items
+- Technical acceptance items
+- Integration acceptance items
 
-### Step 10: 生成验收报告
+### Step 10: Generate Acceptance Report
 
-输出验收结果：
+Output acceptance results:
 ```markdown
-## 验收报告
+## Acceptance Report
 
-**功能点**: FP-XXX-NNN
-**功能名称**: xxx
-**验收日期**: {日期}
+**Feature Point**: FP-XXX-NNN
+**Feature Name**: xxx
+**Acceptance Date**: {Date}
 
-### 业务验收
-| 序号 | 验收场景 | 预期结果 | 实际结果 | 状态 |
+### Business Acceptance
+| No. | Acceptance Scenario | Expected Result | Actual Result | Status |
 |------|---------|---------|---------|------|
 | 1 | xxx | xxx | xxx | ✓/✗ |
 
-### 技术验收
-| 序号 | 验收项 | 标准 | 实际 | 状态 |
+### Technical Acceptance
+| No. | Acceptance Item | Standard | Actual | Status |
 
-### 问题记录
-- [问题1]: 描述
-- [问题2]: 描述
+### Issue Log
+- [Issue1]: Description
+- [Issue2]: Description
 
-### 结论
-- [ ] 通过
-- [ ] 不通过，需修改
+### Conclusion
+- [ ] Pass
+- [ ] Fail, needs modification
 ```
 
 ---
 
-## 3. 专家咨询流程
+## 3. Expert Consultation Process
 
 ```
-pdd-implement-feature 开始
+pdd-implement-feature starts
     │
-    ├─► 识别若依框架问题
+    ├─► Identify RuoYi framework issues
     │       │
     │       ▼
-    │   expert-ruoyi 咨询
+    │   expert-ruoyi consultation
     │       │
     │       ▼
-    │   返回解决方案
+    │   Return solution
     │
-    ├─► 识别数据库问题
+    ├─► Identify database issues
     │       │
     │       ▼
-    │   expert-mysql 咨询
+    │   expert-mysql consultation
     │       │
     │       ▼
-    │   返回优化方案
+    │   Return optimization solution
     │
-    ├─► 识别代码质量问题
+    ├─► Identify code quality issues
     │       │
     │       ▼
-    │   expert-code-quality 咨询
+    │   expert-code-quality consultation
     │       │
     │       ▼
-    │   返回重构建议
+    │   Return refactoring recommendations
     │
-    └─► 继续实现
+    └─► Continue implementation
 ```
 
-### 3.1 expert-ruoyi 调用示例
+### 3.1 expert-ruoyi Invocation Example
 
 ```
-触发条件: 遇到权限校验问题
-调用: expert-ruoyi
-输入:
-  - 问题: @PreAuthorize 注解不生效
-  - 代码片段: [相关代码]
-  - 错误信息: 权限校验失败
+Trigger Condition: Encountering permission validation issues
+Call: expert-ruoyi
+Input:
+  - Issue: @PreAuthorize annotation not working
+  - Code snippet: [Related code]
+  - Error message: Permission validation failed
 
-返回:
-  - 解决方案
-  - 最佳实践
-  - sys_menu 配置建议
+Return:
+  - Solution
+  - Best practices
+  - sys_menu configuration recommendations
 ```
 
-### 3.2 expert-mysql 调用示例
+### 3.2 expert-mysql Invocation Example
 
 ```
-触发条件: 遇到查询性能问题
-调用: expert-mysql
-输入:
+Trigger Condition: Encountering query performance issues
+Call: expert-mysql
+Input:
   - SQL: SELECT * FROM large_table WHERE ...
-  - 表大小: 1000万条
-  - 执行计划: [EXPLAIN结果]
+  - Table size: 10 million records
+  - Execution plan: [EXPLAIN result]
 
-返回:
-  - 优化方案
-  - 索引建议
-  - SQL重写
+Return:
+  - Optimization solution
+  - Index recommendations
+  - SQL rewrite
 ```
 
 ---
 
-## 4. 代码规范
+## 4. Code Standards
 
-### 4.1 后端规范
+### 4.1 Backend Standards
 
-- 类名使用大驼峰命名
-- 方法名使用小驼峰命名
-- 常量使用全大写下划线分隔
-- 注释使用Javadoc格式
+- Class names use PascalCase
+- Method names use camelCase
+- Constants use UPPER_SNAKE_CASE
+- Comments use Javadoc format
 
-### 4.2 前端规范
+### 4.2 Frontend Standards
 
-- 组件名使用大驼峰命名
-- 方法名使用小驼峰命名
-- CSS类名使用kebab-case
-- 使用ES6+语法
+- Component names use PascalCase
+- Method names use camelCase
+- CSS class names use kebab-case
+- Use ES6+ syntax
 
-### 4.3 software-engineer 规范
+### 4.3 software-engineer Standards
 
-遵循 software-engineer skill 的核心规则：
-- 读取现有代码风格后再写新代码
-- 错误处理优先
-- 保持最小化
-- PR-ready 代码
+Follow the core rules of software-engineer skill:
+- Read existing code style before writing new code
+- Error handling first
+- Keep it minimal
+- PR-ready code
 
 ---
 
 ## 5. Guardrails
 
-- 代码必须符合项目规范
-- 必须实现规格中定义的所有接口
-- 必须处理规格中定义的所有异常
-- 必须通过所有验收项才能标记完成
-- 代码变更后必须同步更新规格文档
-- **遇到技术问题必须咨询专家技能**
-- **代码实现必须遵循 software-engineer 规范**
+- Code must comply with project standards
+- Must implement all interfaces defined in specifications
+- Must handle all exceptions defined in specifications
+- Must pass all acceptance items before marking as complete
+- Must synchronize specification documents after code changes
+- **Must consult expert skills when encountering technical issues**
+- **Code implementation must follow software-engineer standards**
 
 ---
 
-## 6. 与其他技能协作
+## 6. Collaboration with Other Skills
 
-| 协作技能 | 协作方式 | 传入数据 | 期望输出 |
+| Collaborative Skill | Collaboration Method | Input Data | Expected Output |
 |---------|---------|---------|---------|
-| **software-engineer** | Delegation | 规格文档 | 符合规范的代码 |
-| **expert-ruoyi** | Consultation | 技术问题 | 解决方案 |
-| **expert-mysql** | Consultation | SQL问题 | 优化方案 |
-| **expert-code-quality** | Consultation | 代码问题 | 重构建议 |
-| **pdd-code-reviewer** | Sequential | 代码+规格 | 审查报告 |
-| **pdd-pr-create** | Sequential | Change ID | PR + 审查报告 |
-| **pdd-pr-merge** | Sequential | Change ID | 合并 + 归档 |
+| **software-engineer** | Delegation | Specification documents | Standards-compliant code |
+| **expert-ruoyi** | Consultation | Technical issues | Solutions |
+| **expert-mysql** | Consultation | SQL issues | Optimization solutions |
+| **expert-code-quality** | Consultation | Code issues | Refactoring recommendations |
+| **pdd-code-reviewer** | Sequential | Code + Specifications | Review report |
+| **pdd-pr-create** | Sequential | Change ID | PR + Review report |
+| **pdd-pr-merge** | Sequential | Change ID | Merge + Archive |
 
 ---
 
-## 7. PR 管理层提示
+## 7. PR Management Layer Prompts
 
-### 7.1 功能点完成后的提示
+### 7.1 Prompt After Feature Point Completion
 
-功能点实现并验证通过后，**提示**用户可以使用 PR 管理技能：
+After feature point implementation and validation passes, **prompt** user that PR management skills can be used:
 
 ```
-## 功能点实现完成
+## Feature Point Implementation Complete
 
-**功能点**: FP-XXX-NNN
-**状态**: 验收通过
+**Feature Point**: FP-XXX-NNN
+**Status**: Acceptance passed
 
-### 可用的 PR 管理操作
+### Available PR Management Operations
 
-如需创建 PR，可手动调用以下技能：
-- `/pdd-pr-create {change-id}` - 创建 PR 并执行自动化审查
-- `/pdd-pr-review {change-id}` - 查看 PR 审查结果
-- `/pdd-pr-merge {change-id}` - 合并 PR 并归档
+If you need to create a PR, you can manually call the following skills:
+- `/pdd-pr-create {change-id}` - Create PR and execute automated review
+- `/pdd-pr-review {change-id}` - View PR review results
+- `/pdd-pr-merge {change-id}` - Merge PR and archive
 
-### 手动操作步骤
+### Manual Operation Steps
 
-1. 创建 OpenSpec Change（可选）:
+1. Create OpenSpec Change (optional):
    ```
    /openspec-new-change {change-name}
    ```
 
-2. 创建 PR:
+2. Create PR:
    ```
    /pdd-pr-create {change-id}
    ```
 
-3. 确认合并:
+3. Confirm merge:
    ```
    /pdd-pr-merge {change-id}
    ```
 ```
 
-### 7.2 不自动调用 PR 技能
+### 7.2 Do Not Automatically Call PR Skills
 
-**重要原则**：
-- PDD 框架 **不会自动调用** pdd-pr-* 技能
-- 用户需要 **手动决定** 是否使用 PR 管理功能
-- PR 管理技能是 **可选的**，不是必需的
+**Important Principles**:
+- PDD framework **will not automatically call** pdd-pr-* skills
+- Users need to **manually decide** whether to use PR management features
+- PR management skills are **optional**, not required
 
-### 7.3 PR 管理技能说明
+### 7.3 PR Management Skill Description
 
-| 技能 | 功能 | 调用方式 |
+| Skill | Function | Invocation Method |
 |------|------|---------|
-| `pdd-pr-create` | 创建 PR 并执行自动化审查 | 用户手动调用 |
-| `pdd-pr-review` | 查看 PR 审查结果 | 用户手动调用 |
-| `pdd-pr-merge` | 合并 PR 并归档 | 用户手动调用 |
-| `pdd-pr-batch` | 批量处理多个 PR | 用户手动调用 |
+| `pdd-pr-create` | Create PR and execute automated review | User manual call |
+| `pdd-pr-review` | View PR review results | User manual call |
+| `pdd-pr-merge` | Merge PR and archive | User manual call |
+| `pdd-pr-batch` | Batch process multiple PRs | User manual call |
 
 ---
 
-## 8. Guardrails（更新）
+## 8. Guardrails (Updated)
 
-- 代码必须符合项目规范
-- 必须实现规格中定义的所有接口
-- 必须处理规格中定义的所有异常
-- 必须通过所有验收项才能标记完成
-- 代码变更后必须同步更新规格文档
-- **遇到技术问题必须咨询专家技能**
-- **代码实现必须遵循 software-engineer 规范**
-- **功能点完成后提示用户可使用 PR 管理技能，但不自动调用**
+- Code must comply with project standards
+- Must implement all interfaces defined in specifications
+- Must handle all exceptions defined in specifications
+- Must pass all acceptance items before marking as complete
+- Must synchronize specification documents after code changes
+- **Must consult expert skills when encountering technical issues**
+- **Code implementation must follow software-engineer standards**
+- **Prompt user about available PR management skills after feature point completion, but do not automatically call**
 
 ---
 
-## 9. 错误处理与回退规范
+## 9. Error Handling and Fallback Specifications
 
-### 9.1 错误分级
+### 9.1 Error Classification
 
-| 级别 | 定义 | 阻塞性 |
+| Level | Definition | Blocking |
 |------|------|--------|
-| Critical | 必须修复，阻塞流程 | ✅ 阻塞 |
-| Warning | 建议修复，不阻塞 | ❌ 不阻塞 |
-| Suggestion | 可选优化 | ❌ 不阻塞 |
+| Critical | Must fix, blocks process | ✅ Blocking |
+| Warning | Recommended to fix, non-blocking | ❌ Non-blocking |
+| Suggestion | Optional optimization | ❌ Non-blocking |
 
-### 9.2 重试策略
+### 9.2 Retry Strategy
 
 ```yaml
-限制: 同一功能点最多3次
-计数: 每次修复后重新审查/验证算1次
-超过限制: 暂停流程，等待人工决策
+Limit: Maximum 3 times per feature point
+Count: Each re-review/validation after fix counts as 1 time
+Exceed limit: Pause process, wait for manual decision
 ```
 
-### 9.3 回退规则
+### 9.3 Fallback Rules
 
-| 失败场景 | 回退位置 | 重新执行 |
+| Failure Scenario | Fallback Position | Re-execution |
 |---------|---------|---------|
-| pdd-code-reviewer 审查失败 | pdd-implement-feature | 修复后重新审查 |
-| pdd-verify-feature 验证失败 | pdd-implement-feature | 修复后重新验证 |
+| pdd-code-reviewer review failed | pdd-implement-feature | Re-review after fix |
+| pdd-verify-feature validation failed | pdd-implement-feature | Re-validate after fix |
 
-### 9.4 失败记录
+### 9.4 Failure Recording
 
-- **位置**: `dev-specs/FP-{模块}-{序号}/review-report.md`
-- **记录内容**:
-  - 失败时间
-  - 失败阶段
-  - 失败原因
-  - 尝试次数
-  - 相关错误日志
+- **Location**: `dev-specs/FP-{module}-{sequence}/review-report.md`
+- **Record Content**:
+  - Failure time
+  - Failure stage
+  - Failure reason
+  - Number of attempts
+  - Related error logs
 
-### 9.5 人工介入流程
+### 9.5 Manual Intervention Process
 
 ```
-重试次数超过3次
+Retry count exceeds 3 times
     │
     ▼
-暂停流程
+Pause process
     │
     ▼
-生成暂停报告
-    ├── 当前状态
-    ├── 失败历史
-    ├── 已尝试的修复
-    └── 需人工决策的问题
+Generate pause report
+    ├── Current status
+    ├── Failure history
+    ├── Attempted fixes
+    └── Issues requiring manual decision
     │
     ▼
-等待人工决策
-    ├── 继续修复
-    ├── 跳过当前功能点
-    ├── 终止流程
-    └── 其他方案
+Wait for manual decision
+    ├── Continue fixing
+    ├── Skip current feature point
+    ├── Terminate process
+    └── Other solutions
 ```
 
 ---
 
-## 10. PDD实施规范引用
+## 10. PDD Implementation Specification Reference
 
-本Skill遵循PDD框架实施规范，详见 [pdd-framework-design.md 第9章](../docs/pdd-framework-design.md#9-pdd-实施规范)。
+This Skill follows the PDD framework implementation specifications. For details, see [pdd-framework-design.md Chapter 9](../docs/pdd-framework-design.md#9-pdd-实施规范).
 
-### 核心规范摘要
+### Core Specification Summary
 
-| 规范 | 核心内容 |
+| Specification | Core Content |
 |------|---------|
-| **技能边界** | pdd-code-reviewer（合规性）→ expert-code-quality（质量深度） |
-| **上下文传递** | 文件系统传递，目录结构规范，支持断点续传 |
-| **人工审核** | 批量审核 + 关键功能点详细审核 |
-| **错误处理** | Critical阻塞，3次重试后暂停等待人工 |
-| **PR管理** | 手动触发，Change粒度PR，手动归档 |
-| **文档体系** | 9种核心文档类型，命名规范，文档内变更历史 |
+| **Skill Boundaries** | pdd-code-reviewer (compliance) → expert-code-quality (quality depth) |
+| **Context Passing** | File system passing, directory structure standards, supports checkpoint resumption |
+| **Manual Review** | Batch review + detailed review of critical feature points |
+| **Error Handling** | Critical blocking, pause after 3 retries waiting for manual intervention |
+| **PR Management** | Manual trigger, Change-granularity PR, manual archiving |
+| **Documentation System** | 9 core document types, naming conventions, in-document change history |

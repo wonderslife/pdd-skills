@@ -1,346 +1,346 @@
 ---
 name: pdd-verify-feature
-description: 验证功能点实现是否符合开发规格和验收标准。当用户想要验证已实现的功能点时调用此Skill。此技能采用Completeness（完整性）、Correctness（正确性）、Coherence（一致性）三维验证模型，确保功能点实现符合规格要求。
+description: Verify whether feature implementation meets development specifications and acceptance criteria. Invoke this Skill when users want to verify implemented features. This skill adopts a three-dimensional verification model of Completeness, Correctness, and Coherence to ensure feature implementation meets specification requirements. 支持中文触发：验证功能、验收功能、功能验收、验证实现、PDD验证。
 license: MIT
-compatibility: 需要功能点代码和验收标准
+compatibility: Requires feature code and acceptance criteria
 metadata:
-  author: asset-platform
+  author: neuqik@hotmail.com
   version: "4.0"
   parent: pdd-main
   triggers:
-    - "验证功能" | "验收" | "/verify"
-    - "功能点验收" | "checklist验证"
+    - "verify feature" | "acceptance" | "/verify"
+    - "feature acceptance" | "checklist verification"
 ---
 
-# PDD-Verify Feature - 功能点验证技能
+# PDD-Verify Feature - Feature Verification Skill
 
-## 1. 技能概述
+## 1. Skill Overview
 
-### 1.1 核心定位
-验证功能点实现是否符合开发规格和验收标准，确保交付质量。
+### 1.1 Core Positioning
+Verify whether feature implementation meets development specifications and acceptance criteria to ensure delivery quality.
 
-### 1.2 三维度验证模型
+### 1.2 Three-Dimensional Verification Model
 
 ```yaml
-验证维度:
-  Completeness (完整性):
-    定义: 所有规格要求的功能是否都已实现
-    验证点:
-      - 接口是否完整
-      - 字段是否齐全
-      - 业务规则是否覆盖
+Verification Dimensions:
+  Completeness:
+    Definition: Whether all functions required by specifications have been implemented
+    Verification Points:
+      - Whether interfaces are complete
+      - Whether fields are comprehensive
+      - Whether business rules are covered
 
-  Correctness (正确性):
-    定义: 实现是否符合规格定义
-    验证点:
-      - 接口逻辑是否正确
-      - 数据处理是否准确
-      - 业务规则是否正确
+  Correctness:
+    Definition: Whether implementation conforms to specification definitions
+    Verification Points:
+      - Whether interface logic is correct
+      - Whether data processing is accurate
+      - Whether business rules are correct
 
-  Coherence (一致性):
-    定义: 前后端、文档与代码是否一致
-    验证点:
-      - 前后端接口是否一致
-      - 文档与代码是否一致
-      - 命名规范是否统一
+  Coherence:
+    Definition: Whether frontend and backend, documentation and code are consistent
+    Verification Points:
+      - Whether frontend and backend interfaces are consistent
+      - Whether documentation and code are consistent
+      - Whether naming conventions are unified
 ```
 
-### 1.3 问题分级
+### 1.3 Issue Classification
 
-| 级别 | 符号 | 说明 | 处理方式 |
+| Level | Symbol | Description | Handling Method |
 |------|------|------|---------|
-| **Critical** | 🔴 | 必须修复，否则验收不通过 | 修复后重新验证 |
-| **Warning** | 🟡 | 建议修复，不影响验收通过 | 记录，待后续处理 |
-| **Suggestion** | 🔵 | 可选优化 | 记录，作为后续改进项 |
+| **Critical** | 🔴 | Must be fixed, otherwise acceptance fails | Re-verify after fixing |
+| **Warning** | 🟡 | Recommended to fix, does not affect acceptance pass | Record, pending future processing |
+| **Suggestion** | 🔵 | Optional optimization | Record, as future improvement item |
 
-## 2. 验证流程
+## 2. Verification Process
 
-### Step 1: 收集验证材料
+### Step 1: Collect Verification Materials
 
 ```yaml
-验证材料:
-  代码文件:
-    - 后端代码: Controller, Service, Mapper
-    - 前端代码: Vue组件, API接口
-    - 数据库脚本: SQL文件
+Verification Materials:
+  Code Files:
+    - Backend Code: Controller, Service, Mapper
+    - Frontend Code: Vue Components, API Interfaces
+    - Database Scripts: SQL Files
 
-  规格文档:
-    - spec.md: 开发规格
-    - checklist.md: 验收标准
+  Specification Documents:
+    - spec.md: Development Specifications
+    - checklist.md: Acceptance Criteria
 
-  其他:
-    - 业务分析报告
-    - PRD文档
+  Others:
+    - Business Analysis Report
+    - PRD Document
 ```
 
-### Step 2: Completeness 验证 (完整性)
+### Step 2: Completeness Verification
 
 ```markdown
-### 2.1 接口完整性检查
+### 2.1 Interface Completeness Check
 
-| 规格要求的接口 | 实际实现 | 状态 |
+| Specification Required Interface | Actual Implementation | Status |
 |--------------|---------|------|
-| POST /api/xxx | ✓ 已实现 | 🟢 |
-| GET /api/xxx/{id} | ✓ 已实现 | 🟢 |
-| PUT /api/xxx | ✗ 未实现 | 🔴 |
-| DELETE /api/xxx/{id} | ✓ 已实现 | 🟢 |
+| POST /api/xxx | ✓ Implemented | 🟢 |
+| GET /api/xxx/{id} | ✓ Implemented | 🟢 |
+| PUT /api/xxx | ✗ Not Implemented | 🔴 |
+| DELETE /api/xxx/{id} | ✓ Implemented | 🟢 |
 
-### 2.2 字段完整性检查
+### 2.2 Field Completeness Check
 
-| 规格要求的字段 | 实际实现 | 状态 |
+| Specification Required Field | Actual Implementation | Status |
 |--------------|---------|------|
 | companyName | ✓ String | 🟢 |
 | evaluationValue | ✓ BigDecimal | 🟢 |
-| floorPrice | ✗ 缺失 | 🔴 |
+| floorPrice | ✗ Missing | 🔴 |
 ```
 
-### Step 3: Correctness 验证 (正确性)
+### Step 3: Correctness Verification
 
 ```markdown
-### 3.1 接口逻辑正确性
+### 3.1 Interface Logic Correctness
 
-| 检查项 | 验证结果 | 状态 |
+| Check Item | Verification Result | Status |
 |-------|---------|------|
-| 申请提交接口逻辑 | 正确 | 🟢 |
-| 状态转换逻辑 | 正确 | 🟢 |
-| 权限校验逻辑 | 缺失 | 🔴 |
+| Application Submission Interface Logic | Correct | 🟢 |
+| State Transition Logic | Correct | 🟢 |
+| Permission Verification Logic | Missing | 🔴 |
 
-### 3.2 业务规则正确性
+### 3.2 Business Rule Correctness
 
-| 业务规则 | 规格要求 | 实现情况 | 状态 |
+| Business Rule | Specification Requirement | Implementation Status | Status |
 |---------|---------|---------|------|
-| 转让底价 >= 评估价值 * 90% | 必须校验 | 已校验 | 🟢 |
-| 必须上传附件 | 必须校验 | 未校验 | 🔴 |
+| Transfer Floor Price >= Valuation * 90% | Must Verify | Verified | 🟢 |
+| Must Upload Attachments | Must Verify | Not Verified | 🔴 |
 ```
 
-### Step 4: Coherence 验证 (一致性)
+### Step 4: Coherence Verification
 
 ```markdown
-### 4.1 前后端一致性
+### 4.1 Frontend-Backend Consistency
 
-| 接口/字段 | 后端定义 | 前端定义 | 状态 |
+| Interface/Field | Backend Definition | Frontend Definition | Status |
 |----------|---------|---------|------|
 | companyName | String | String | 🟢 |
 | evaluationValue | BigDecimal | Number | 🟢 |
 | floorPrice | BigDecimal | String | 🟡 |
 
-### 4.2 文档代码一致性
+### 4.2 Documentation-Code Consistency
 
-| 文档描述 | 代码实现 | 状态 |
+| Documentation Description | Code Implementation | Status |
 |---------|---------|------|
-| 接口路径: /api/apply | @RequestMapping("/apply") | 🟢 |
-| 响应结构: {code, msg, data} | AjaxResult | 🟢 |
+| Interface Path: /api/apply | @RequestMapping("/apply") | 🟢 |
+| Response Structure: {code, msg, data} | AjaxResult | 🟢 |
 ```
 
-## 3. 验证检查清单
+## 3. Verification Checklist
 
-### 3.1 接口验证
+### 3.1 Interface Verification
 
 ```yaml
-接口验证项:
-  - [ ] 接口路径是否符合规格
-  - [ ] 请求方法是否正确
-  - [ ] 请求参数是否完整
-  - [ ] 响应结构是否符合规格
-  - [ ] 错误码是否正确
+Interface Verification Items:
+  - [ ] Whether interface path conforms to specifications
+  - [ ] Whether request method is correct
+  - [ ] Whether request parameters are complete
+  - [ ] Whether response structure conforms to specifications
+  - [ ] Whether error codes are correct
 ```
 
-### 3.2 业务逻辑验证
+### 3.2 Business Logic Verification
 
 ```yaml
-业务逻辑验证项:
-  - [ ] 状态转换是否正确
-  - [ ] 业务规则是否执行
-  - [ ] 校验逻辑是否完整
-  - [ ] 异常处理是否得当
+Business Logic Verification Items:
+  - [ ] Whether state transitions are correct
+  - [ ] Whether business rules are executed
+  - [ ] Whether validation logic is complete
+  - [ ] Whether exception handling is appropriate
 ```
 
-### 3.3 数据验证
+### 3.3 Data Verification
 
 ```yaml
-数据验证项:
-  - [ ] 字段类型是否正确
-  - [ ] 字段长度是否足够
-  - [ ] 必填字段是否校验
-  - [ ] 数据格式是否正确
+Data Verification Items:
+  - [ ] Whether field types are correct
+  - [ ] Whether field lengths are sufficient
+  - [ ] Whether required fields are validated
+  - [ ] Whether data formats are correct
 ```
 
-### 3.4 权限验证
+### 3.4 Permission Verification
 
 ```yaml
-权限验证项:
-  - [ ] 是否有权限注解
-  - [ ] 数据权限是否配置
-  - [ ] 按钮权限是否控制
+Permission Verification Items:
+  - [ ] Whether permission annotations exist
+  - [ ] Whether data permissions are configured
+  - [ ] Whether button permissions are controlled
 ```
 
-### 3.5 前后端一致性验证
+### 3.5 Frontend-Backend Consistency Verification
 
 ```yaml
-一致性验证项:
-  - [ ] 接口路径是否一致
-  - [ ] 字段名称是否一致
-  - [ ] 数据类型是否一致
-  - [ ] 校验规则是否一致
+Consistency Verification Items:
+  - [ ] Whether interface paths are consistent
+  - [ ] Whether field names are consistent
+  - [ ] Whether data types are consistent
+  - [ ] Whether validation rules are consistent
 ```
 
-## 4. 输出规范
+## 4. Output Specifications
 
-### 4.1 验收报告模板
+### 4.1 Acceptance Report Template
 
 ```markdown
-# [功能点名称] 验收报告
+# [Feature Name] Acceptance Report
 
-## 基本信息
-| 项目 | 内容 |
+## Basic Information
+| Item | Content |
 |------|------|
-| 功能点ID | FP-xxx |
-| 验收日期 | yyyy-MM-dd |
-| 验收人 | AI/人工 |
-| 验收结果 | 通过/不通过 |
+| Feature ID | FP-xxx |
+| Acceptance Date | yyyy-MM-dd |
+| Acceptance Person | AI/Manual |
+| Acceptance Result | Pass/Fail |
 
-## 三维度验证结果
+## Three-Dimensional Verification Results
 
-### Completeness (完整性)
-| 验证项 | 结果 | 问题数 |
+### Completeness
+| Verification Item | Result | Issue Count |
 |-------|------|-------|
-| 接口完整性 | 🟢 通过 | 0 |
-| 字段完整性 | 🟡 通过 | 2 |
-| 业务规则覆盖 | 🔴 不通过 | 1 |
+| Interface Completeness | 🟢 Pass | 0 |
+| Field Completeness | 🟡 Pass | 2 |
+| Business Rule Coverage | 🔴 Fail | 1 |
 
-### Correctness (正确性)
-| 验证项 | 结果 | 问题数 |
+### Correctness
+| Verification Item | Result | Issue Count |
 |-------|------|-------|
-| 接口逻辑 | 🟢 通过 | 0 |
-| 业务规则 | 🟢 通过 | 0 |
-| 数据处理 | 🟡 通过 | 1 |
+| Interface Logic | 🟢 Pass | 0 |
+| Business Rules | 🟢 Pass | 0 |
+| Data Processing | 🟡 Pass | 1 |
 
-### Coherence (一致性)
-| 验证项 | 结果 | 问题数 |
+### Coherence
+| Verification Item | Result | Issue Count |
 |-------|------|-------|
-| 前后端一致 | 🟢 通过 | 0 |
-| 文档代码一致 | 🟢 通过 | 0 |
-| 命名规范 | 🟡 通过 | 1 |
+| Frontend-Backend Consistency | 🟢 Pass | 0 |
+| Documentation-Code Consistency | 🟢 Pass | 0 |
+| Naming Conventions | 🟡 Pass | 1 |
 
-## 问题清单
+## Issue List
 
-### 🔴 Critical 问题
-| 序号 | 问题描述 | 位置 | 建议修复 |
+### 🔴 Critical Issues
+| No. | Issue Description | Location | Suggested Fix |
 |------|---------|------|---------|
-| 1 | [问题] | [文件] | [建议] |
+| 1 | [Issue] | [File] | [Suggestion] |
 
-### 🟡 Warning 问题
-| 序号 | 问题描述 | 位置 | 建议修复 |
+### 🟡 Warning Issues
+| No. | Issue Description | Location | Suggested Fix |
 |------|---------|------|---------|
-| 1 | [问题] | [文件] | [建议] |
+| 1 | [Issue] | [File] | [Suggestion] |
 
-### 🔵 Suggestion 问题
-| 序号 | 问题描述 | 位置 | 建议修复 |
+### 🔵 Suggestion Issues
+| No. | Issue Description | Location | Suggested Fix |
 |------|---------|------|---------|
-| 1 | [问题] | [文件] | [建议] |
+| 1 | [Issue] | [File] | [Suggestion] |
 
-## 验收结论
+## Acceptance Conclusion
 
-- [ ] **通过验收**: 所有Critical问题已修复
-- [ ] **有条件通过**: Critical问题已记录，待修复
-- [ ] **不通过验收**: 存在未修复的Critical问题
+- [ ] **Passed Acceptance**: All Critical issues have been fixed
+- [ ] **Conditionally Passed**: Critical issues recorded, pending fix
+- [ ] **Failed Acceptance**: Unfixed Critical issues exist
 
-## 签名
-| 角色 | 签名 | 日期 |
+## Signature
+| Role | Signature | Date |
 |------|------|------|
-| AI验证 |  |  |
-| 人工复核 |  |  |
+| AI Verification |  |  |
+| Manual Review |  |  |
 ```
 
-## 5. 验证启发式方法
+## 5. Verification Heuristics
 
-### 5.1 常见遗漏检查
+### 5.1 Common Omission Checks
 
 ```yaml
-遗漏检查:
-  - [ ] 分页参数是否处理
-  - [ ] 排序参数是否处理
-  - [ ] 导出功能是否实现
-  - [ ] 导入功能是否实现
-  - [ ] 批量操作是否处理
+Omission Checks:
+  - [ ] Whether pagination parameters are handled
+  - [ ] Whether sorting parameters are handled
+  - [ ] Whether export functionality is implemented
+  - [ ] Whether import functionality is implemented
+  - [ ] Whether batch operations are handled
 ```
 
-### 5.2 常见错误检查
+### 5.2 Common Error Checks
 
 ```yaml
-错误检查:
-  - [ ] 空指针异常处理
-  - [ ] 数组越界检查
-  - [ ] 类型转换检查
-  - [ ] 日期格式检查
-  - [ ] 数字精度检查
+Error Checks:
+  - [ ] Null pointer exception handling
+  - [ ] Array bounds checking
+  - [ ] Type conversion checking
+  - [ ] Date format checking
+  - [ ] Number precision checking
 ```
 
-### 5.3 降级处理策略
+### 5.3 Degraded Processing Strategy
 
-当无法完整验证时：
+When complete verification is not possible:
 
 ```yaml
-降级策略:
-  1. 代码审查降级:
-     - 缺少测试 -> 进行代码审查
-     - 缺少文档 -> 参考现有代码
+Degraded Strategy:
+  1. Code Review Degradation:
+     - Missing tests -> Perform code review
+     - Missing documentation -> Reference existing code
 
-  2. 部分验证:
-     - 核心功能优先验证
-     - 非核心功能可标记"待验证"
+  2. Partial Verification:
+     - Core functions verified first
+     - Non-core functions can be marked "pending verification"
 
-  3. 记录未验证项:
-     - 明确标记未验证的内容
-     - 记录原因和风险
+  3. Record Unverified Items:
+     - Clearly mark unverified content
+     - Record reasons and risks
 ```
 
 ## 6. Guardrails
 
-### 6.1 必须验证项
-- [ ] 所有Critical问题必须修复
-- [ ] 验收报告必须完整
-- [ ] 三维度验证必须覆盖
+### 6.1 Mandatory Verification Items
+- [ ] All Critical issues must be fixed
+- [ ] Acceptance report must be complete
+- [ ] Three-dimensional verification must be covered
 
-### 6.2 避免事项
-- ❌ 跳过任何Critical问题
-- ❌ 口头验收无文档记录
-- ❌ 降级处理无风险说明
+### 6.2 Avoidance Items
+- ❌ Skip any Critical issues
+- ❌ Verbal acceptance without documentation
+- ❌ Degraded processing without risk explanation
 
-## 7. 与其他技能协作
+## 7. Collaboration with Other Skills
 
-| 协作技能 | 协作方式 | 传入数据 | 期望输出 |
+| Collaborative Skill | Collaboration Method | Input Data | Expected Output |
 |---------|---------|---------|---------|
-| **pdd-code-reviewer** | Sequential | 审查报告 | 问题列表 |
-| **pdd-implement-feature** | Loop | 验收不通过 | 修复代码 |
-| **pdd-main** | Sequential | 验收报告 | 最终交付确认 |
+| **pdd-code-reviewer** | Sequential | Review Report | Issue List |
+| **pdd-implement-feature** | Loop | Acceptance Failed | Fixed Code |
+| **pdd-main** | Sequential | Acceptance Report | Final Delivery Confirmation |
 
-## 8. 版本历史
+## 8. Version History
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Changes |
 |-----|------|---------|
-| 4.1 | 2026-03-22 | 添加断点续传和错误处理规范引用 |
-| 4.0 | 2026-03-21 | 采用三维度验证模型(Completeness/Correctness/Coherence) |
+| 4.1 | 2026-03-22 | Added checkpoint resume and error handling specification references |
+| 4.0 | 2026-03-21 | Adopted three-dimensional verification model (Completeness/Correctness/Coherence) |
 
 ---
 
-## 9. 断点续传与错误处理规范
+## 9. Checkpoint Resume and Error Handling Specifications
 
-本Skill遵循PDD框架实施规范，详见 [pdd-framework-design.md 第9章](../docs/pdd-framework-design.md#9-pdd-实施规范)。
+This Skill follows PDD framework implementation specifications, see [pdd-framework-design.md Chapter 9](../docs/pdd-framework-design.md#9-pdd-实施规范).
 
-### 9.1 断点续传
+### 9.1 Checkpoint Resume
 
-- **状态文件**: `.pdd-state.json`
-- **触发方式**: 用户发出"继续执行"命令
-- **状态内容**: 当前阶段、已完成功能点、待处理功能点
+- **State File**: `.pdd-state.json`
+- **Trigger Method**: User issues "continue execution" command
+- **State Content**: Current stage, completed features, pending features
 
-### 9.2 错误处理
+### 9.2 Error Handling
 
-- **重试限制**: 同一功能点最多3次
-- **超过限制**: 暂停流程，等待人工决策
-- **失败记录**: 记录到 `dev-specs/FP-{模块}-{序号}/review-report.md`
+- **Retry Limit**: Maximum 3 times for the same feature
+- **Exceeded Limit**: Pause process, await manual decision
+- **Failure Record**: Record to `dev-specs/FP-{Module}-{Sequence}/review-report.md`
 
-### 9.3 质量改进任务
+### 9.3 Quality Improvement Tasks
 
-- **处理时机**: 模块所有功能点完成后，统一处理质量改进任务
-- **输出文件**: `dev-specs/FP-{模块}-{序号}/improvement-tasks.md`
+- **Processing Timing**: After all features in module are completed, process quality improvement tasks uniformly
+- **Output File**: `dev-specs/FP-{Module}-{Sequence}/improvement-tasks.md`

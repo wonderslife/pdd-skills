@@ -1,234 +1,234 @@
 ---
 name: pdd-code-reviewer
-description: PDD框架下的代码审查Skill，验证功能点实现是否符合开发规格和验收标准。在功能点实现后自动触发或手动调用。
+description: Code review Skill under PDD framework, verifying whether feature implementation meets development specifications and acceptance criteria. Automatically triggered after feature implementation or manually invoked. 支持中文触发：代码审查、代码评审、审查代码、检查代码、PDD代码审查。
 license: MIT
-compatibility: 需要先完成代码实现
+compatibility: Requires code implementation to be completed first
 metadata:
-  author: asset-platform
+  author: neuqik@hotmail.com
   version: "2.0"
   parent: pdd-main
 ---
 
-代码审查 - 验证功能点实现是否符合开发规格
+Code Review - Verify whether feature implementation meets development specifications
 
-**输入**:
-- 代码文件
-- 开发规格 (spec.md)
-- 验收标准 (checklist.md)
+**Input**:
+- Code files
+- Development specifications (spec.md)
+- Acceptance criteria (checklist.md)
 
-**输出**:
-- 审查报告 (docs/reviews/review-{timestamp}.md)
-- 问题列表 (issues)
+**Output**:
+- Review report (docs/reviews/review-{timestamp}.md)
+- Issue list (issues)
 
 ---
 
-## 版本历史
+## Version History
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Changes |
 |-----|------|---------|
-| 2.1 | 2026-03-22 | 添加与expert-code-quality协作规范：先审查后分析，质量问题不阻塞 |
-| 2.0 | 2026-03-21 | 新增架构师评审调用，集成 software-architect / system-architect |
-| 1.0 | 早期 | 初始版本 |
+| 2.1 | 2026-03-22 | Added collaboration with expert-code-quality: review first then analyze, quality issues do not block |
+| 2.0 | 2026-03-21 | Added architect review invocation, integrated software-architect / system-architect |
+| 1.0 | Early | Initial version |
 
 ---
 
-## 1. 技能整合
+## 1. Skill Integration
 
-### 1.1 架构师评审
+### 1.1 Architect Review
 
-代码审查中发现架构问题时，按需调用架构师技能：
+When architecture issues are discovered during code review, invoke architect skills as needed:
 
-| 架构师技能 | 触发条件 | 服务内容 |
+| Architect Skill | Trigger Condition | Service Content |
 |-----------|---------|---------|
-| **software-architect** | 发现架构偏离、接口设计问题 | 架构建议、设计模式 |
-| **system-architect** | 发现系统架构问题 | 系统架构评审 |
+| **software-architect** | Architecture deviation, interface design issues discovered | Architecture recommendations, design patterns |
+| **system-architect** | System architecture issues discovered | System architecture review |
 
-### 1.2 专家咨询
+### 1.2 Expert Consultation
 
-代码审查中发现技术问题时，按需调用 expert-xxx：
+When technical issues are discovered during code review, invoke expert-xxx as needed:
 
-| 专家技能 | 触发条件 | 服务内容 |
+| Expert Skill | Trigger Condition | Service Content |
 |-----------|---------|---------|
-| **expert-code-quality** | 发现代码异味、重构需求 | 重构方案、设计模式 |
-| **expert-ruoyi** | 发现若依框架使用问题 | 框架最佳实践 |
-| **expert-mysql** | 发现SQL问题 | 优化建议 |
+| **expert-code-quality** | Code smells, refactoring needs discovered | Refactoring solutions, design patterns |
+| **expert-ruoyi** | RuoYi framework usage issues discovered | Framework best practices |
+| **expert-mysql** | SQL issues discovered | Optimization recommendations |
 
-### 1.3 调用条件
+### 1.3 Invocation Conditions
 
-**必须进行基础审查**：
-- 所有代码文件必须经过基础审查
-- 对照规格验证实现完整性
+**Must perform basic review**:
+- All code files must undergo basic review
+- Verify implementation completeness against specifications
 
-**按需调用架构师**：
-- 发现模块边界不清
-- 发现接口设计偏离
-- 发现架构模式问题
+**Invoke architects as needed**:
+- Module boundaries unclear discovered
+- Interface design deviation discovered
+- Architecture pattern issues discovered
 
-**按需调用专家**：
-- 发现代码质量问题
-- 发现框架使用问题
-- 发现数据库设计问题
-
----
-
-## 2. 审查维度
-
-### 2.1 设计一致性
-
-- [ ] 代码实现是否与规格描述一致
-- [ ] 接口路径是否符合规格定义
-- [ ] 请求/响应结构是否符合规格
-- [ ] 业务逻辑是否遵循规格定义
-
-### 2.2 代码质量
-
-- [ ] 代码可读性
-- [ ] 命名规范性
-- [ ] 错误处理完整性
-- [ ] 注释质量
-
-### 2.3 安全性
-
-- [ ] 参数校验
-- [ ] SQL注入防护
-- [ ] XSS防护
-- [ ] 权限校验
-
-### 2.4 性能
-
-- [ ] 数据库查询效率
-- [ ] 循环处理优化
-- [ ] 缓存使用
-
-### 2.5 业务逻辑
-
-- [ ] 状态转换正确性
-- [ ] 业务规则执行
-- [ ] 异常处理
+**Invoke experts as needed**:
+- Code quality issues discovered
+- Framework usage issues discovered
+- Database design issues discovered
 
 ---
 
-## 3. 问题分级
+## 2. Review Dimensions
 
-### 3.1 CRITICAL - 必须修复
+### 2.1 Design Consistency
 
-- 功能实现与规格严重不符
-- 核心业务流程有错误
-- 严重的安全漏洞
-- 数据一致性问颗
+- [ ] Whether code implementation is consistent with specification description
+- [ ] Whether interface paths conform to specification definition
+- [ ] Whether request/response structures conform to specifications
+- [ ] Whether business logic follows specification definition
 
-### 3.2 WARNING - 建议修复
+### 2.2 Code Quality
 
-- 代码可读性问题
-- 错误处理不完善
-- 潜在性能问题
-- 不符合编码规范
+- [ ] Code readability
+- [ ] Naming conventions
+- [ ] Error handling completeness
+- [ ] Comment quality
 
-### 3.3 SUGGESTION - 可选优化
+### 2.3 Security
 
-- 代码优化建议
-- 重构建议
-- 最佳实践推荐
+- [ ] Parameter validation
+- [ ] SQL injection protection
+- [ ] XSS protection
+- [ ] Permission validation
+
+### 2.4 Performance
+
+- [ ] Database query efficiency
+- [ ] Loop processing optimization
+- [ ] Cache usage
+
+### 2.5 Business Logic
+
+- [ ] State transition correctness
+- [ ] Business rule execution
+- [ ] Exception handling
 
 ---
 
-## 4. 流程步骤
+## 3. Issue Classification
 
-### Step 1: 收集代码文件
+### 3.1 CRITICAL - Must Fix
 
-收集待审查的代码文件：
-- 后端代码：Controller、Service、Mapper、Domain
-- 前端代码：Vue组件、API接口
-- 数据库脚本：SQL文件
+- Feature implementation severely deviates from specifications
+- Core business process has errors
+- Severe security vulnerabilities
+- Data consistency issues
 
-### Step 2: 读取开发规格
+### 3.2 WARNING - Recommended to Fix
 
-从 `dev-specs/FP-{序号}/spec.md` 读取规格定义。
+- Code readability issues
+- Incomplete error handling
+- Potential performance issues
+- Non-compliance with coding standards
 
-### Step 3: 执行基础审查
+### 3.3 SUGGESTION - Optional Optimization
 
-逐项对照规格进行审查：
+- Code optimization suggestions
+- Refactoring suggestions
+- Best practice recommendations
 
-**a. 接口审查**
-- 接口路径是否正确
-- 请求方法是否正确
-- 参数处理是否完整
-- 响应结构是否匹配
+---
 
-**b. 业务逻辑审查**
-- 处理流程是否正确
-- 状态转换是否完整
-- 校验规则是否执行
+## 4. Process Steps
 
-**c. 数据模型审查**
-- 字段映射是否正确
-- 类型定义是否一致
-- 审计字段是否完整
+### Step 1: Collect Code Files
 
-### Step 4: 执行代码质量审查
+Collect code files to be reviewed:
+- Backend code: Controller, Service, Mapper, Domain
+- Frontend code: Vue components, API interfaces
+- Database scripts: SQL files
 
-**调用 expert-code-quality**（如发现代码质量问题）：
-- 代码异味检测
-- 重构建议
-- 设计模式推荐
+### Step 2: Read Development Specifications
 
-### Step 5: 架构偏离检查
+Read specification definitions from `dev-specs/FP-{number}/spec.md`.
 
-**调用 software-architect**（如发现架构问题）：
-- 模块边界检查
-- 接口设计检查
-- 架构模式检查
+### Step 3: Execute Basic Review
 
-### Step 6: 生成审查报告
+Review against specifications item by item:
 
-输出审查报告到 `docs/reviews/review-{timestamp}.md`：
+**a. Interface Review**
+- Whether interface path is correct
+- Whether request method is correct
+- Whether parameter handling is complete
+- Whether response structure matches
+
+**b. Business Logic Review**
+- Whether processing flow is correct
+- Whether state transitions are complete
+- Whether validation rules are executed
+
+**c. Data Model Review**
+- Whether field mapping is correct
+- Whether type definitions are consistent
+- Whether audit fields are complete
+
+### Step 4: Execute Code Quality Review
+
+**Invoke expert-code-quality** (if code quality issues discovered):
+- Code smell detection
+- Refactoring suggestions
+- Design pattern recommendations
+
+### Step 5: Architecture Deviation Check
+
+**Invoke software-architect** (if architecture issues discovered):
+- Module boundary check
+- Interface design check
+- Architecture pattern check
+
+### Step 6: Generate Review Report
+
+Output review report to `docs/reviews/review-{timestamp}.md`:
 
 ```markdown
-# 代码审查报告
+# Code Review Report
 
-## 基本信息
-| 项目 | 内容 |
+## Basic Information
+| Item | Content |
 |------|------|
-| 功能点 | FP-XXX-NNN |
-| 审查日期 | {日期} |
-| 审查人 | AI |
-| 代码文件 | [...files...] |
+| Feature Point | FP-XXX-NNN |
+| Review Date | {date} |
+| Reviewer | AI |
+| Code Files | [...files...] |
 
-## 审查结果
+## Review Results
 
-### 通过项
-| 审查项 | 状态 | 说明 |
+### Passed Items
+| Review Item | Status | Description |
 |--------|------|------|
-| 接口设计 | ✓ | 符合规格 |
+| Interface Design | ✓ | Conforms to specifications |
 | ... | ... | ... |
 
-### CRITICAL 问题
-| 序号 | 问题描述 | 文件 | 建议 |
+### CRITICAL Issues
+| No. | Issue Description | File | Recommendation |
 |------|---------|------|------|
-| 1 | ... | file.java | 修复方案 |
+| 1 | ... | file.java | Fix solution |
 
-### WARNING 问题
-| 序号 | 问题描述 | 文件 | 建议 |
+### WARNING Issues
+| No. | Issue Description | File | Recommendation |
 |------|---------|------|------|
-| 1 | ... | file.java | 优化建议 |
+| 1 | ... | file.java | Optimization suggestion |
 
-### SUGGESTION 问题
-| 序号 | 问题描述 | 文件 | 建议 |
+### SUGGESTION Issues
+| No. | Issue Description | File | Recommendation |
 |------|---------|------|------|
-| 1 | ... | file.java | 重构建议 |
+| 1 | ... | file.java | Refactoring suggestion |
 
-## 架构评审（如有）
-### software-architect 评审意见
-### system-architect 评审意见
+## Architecture Review (if any)
+### software-architect Review Comments
+### system-architect Review Comments
 
-## 结论
-- [ ] 通过审查
-- [ ] 需要修复后重新审查
+## Conclusion
+- [ ] Passed review
+- [ ] Requires fix and re-review
 ```
 
-### Step 7: 输出问题列表
+### Step 7: Output Issue List
 
-返回问题列表供修复使用：
+Return issue list for fixing:
 ```json
 {
   "critical": [...],
@@ -239,152 +239,152 @@ metadata:
 
 ---
 
-## 5. 架构评审流程
+## 5. Architecture Review Process
 
 ```
-pdd-code-reviewer 发现架构问题
+pdd-code-reviewer discovers architecture issues
     │
-    ├─► 判断架构问题类型
+    ├─► Determine architecture issue type
     │       │
-    │       ├── 软件架构问题
+    │       ├── Software architecture issues
     │       │       │
     │       │       ▼
-    │       │   software-architect 咨询
+    │       │   software-architect consultation
     │       │       │
     │       │       ▼
-    │       │   返回架构建议
+    │       │   Return architecture recommendations
     │       │
-    │       └── 系统架构问题
+    │       └── System architecture issues
     │               │
     │               ▼
-    │           system-architect 咨询
+    │           system-architect consultation
     │               │
     │               ▼
-    │           返回系统建议
+    │           Return system recommendations
     │
-    └─► 整合到审查报告
+    └─► Integrate into review report
 ```
 
-### 5.1 software-architect 调用示例
+### 5.1 software-architect Invocation Example
 
 ```
-触发条件: 发现模块边界不清晰
-调用: software-architect
-输入:
-  - 问题描述: 模块A依赖模块C，违反分层原则
-  - 相关代码: [代码片段]
-  - 现有架构: [模块关系图]
+Trigger condition: Module boundaries unclear discovered
+Invoke: software-architect
+Input:
+  - Problem description: Module A depends on Module C, violating layering principles
+  - Related code: [code snippet]
+  - Existing architecture: [module relationship diagram]
 
-返回:
-  - 架构问题分析
-  - 重构建议
-  - 设计模式推荐
+Return:
+  - Architecture issue analysis
+  - Refactoring recommendations
+  - Design pattern recommendations
 ```
 
-### 5.2 system-architect 调用示例
+### 5.2 system-architect Invocation Example
 
 ```
-触发条件: 发现系统扩展性问题
-调用: system-architect
-输入:
-  - 问题描述: 当前架构无法支持未来多租户扩展
-  - 现有架构: [架构图]
-  - 扩展需求: 支持100+租户
+Trigger condition: System scalability issues discovered
+Invoke: system-architect
+Input:
+  - Problem description: Current architecture cannot support future multi-tenant expansion
+  - Existing architecture: [architecture diagram]
+  - Expansion requirements: Support 100+ tenants
 
-返回:
-  - 架构评估
-  - 演进路线
-  - 技术决策建议
+Return:
+  - Architecture evaluation
+  - Evolution roadmap
+  - Technical decision recommendations
 ```
 
 ---
 
 ## 6. Guardrails
 
-- 必须对照规格逐项审查
-- 问题必须准确引用相关代码
-- CRITICAL问题必须修复后才能通过
-- 审查报告必须完整记录所有问题
-- **架构问题必须咨询架构师技能**
-- **代码质量问题必须咨询 expert-code-quality**
+- Must review against specifications item by item
+- Issues must accurately reference related code
+- CRITICAL issues must be fixed before passing
+- Review reports must completely record all issues
+- **Architecture issues must consult architect skills**
+- **Code quality issues must consult expert-code-quality**
 
 ---
 
-## 7. 与 expert-code-quality 协作规范
+## 7. Collaboration with expert-code-quality
 
-### 7.1 职责边界
+### 7.1 Responsibility Boundaries
 
-| 技能 | 定位 | 核心职责 | 阻塞性 |
+| Skill | Positioning | Core Responsibility | Blocking |
 |------|------|---------|--------|
-| **pdd-code-reviewer** | 流程合规性审查 | 验证代码是否实现规格要求 | Critical问题阻塞 |
-| **expert-code-quality** | 代码质量深度分析 | 识别代码异味、推荐设计模式、重构建议 | 不阻塞流程 |
+| **pdd-code-reviewer** | Process compliance review | Verify whether code implements specification requirements | Critical issues block |
+| **expert-code-quality** | Code quality deep analysis | Identify code smells, recommend design patterns, refactoring suggestions | Does not block process |
 
-### 7.2 协作流程
+### 7.2 Collaboration Process
 
 ```
-代码实现完成
+Code implementation completed
     │
     ▼
 ┌─────────────────────────────────┐
 │   pdd-code-reviewer             │
-│   (合规性审查)                   │
+│   (Compliance review)           │
 │                                 │
-│   - 验证规格实现                 │
-│   - 检查接口一致性               │
-│   - 验证业务规则                 │
+│   - Verify specification implementation │
+│   - Check interface consistency  │
+│   - Verify business rules        │
 └─────────────────────────────────┘
     │
-    ├── 有Critical问题 → 返回 pdd-implement-feature 修复
+    ├── Has Critical issues → Return to pdd-implement-feature for fixing
     │
-    └── 无Critical问题
+    └── No Critical issues
             │
             ▼
     ┌─────────────────────────────────┐
     │   expert-code-quality           │
-    │   (质量深度分析)                 │
+    │   (Quality deep analysis)       │
     │                                 │
-    │   - 代码异味检测                 │
-    │   - 设计模式推荐                 │
-    │   - 重构建议                     │
+    │   - Code smell detection        │
+    │   - Design pattern recommendations │
+    │   - Refactoring suggestions     │
     └─────────────────────────────────┘
             │
             ▼
     ┌─────────────────────────────────┐
-    │   生成质量改进任务               │
+    │   Generate quality improvement tasks │
     │   (improvement-tasks.md)        │
     │                                 │
-    │   - 不阻塞当前流程               │
-    │   - 记录到后续优化清单           │
+    │   - Does not block current process │
+    │   - Record to future optimization list │
     └─────────────────────────────────┘
             │
             ▼
-        进入 pdd-verify-feature
+        Enter pdd-verify-feature
 ```
 
-### 7.3 问题处理策略
+### 7.3 Issue Handling Strategy
 
-| 问题来源 | 级别 | 是否阻塞 | 处理方式 |
+| Issue Source | Level | Blocking | Handling Method |
 |---------|------|---------|---------|
-| pdd-code-reviewer | Critical | ✅ 阻塞 | 必须修复后才能继续 |
-| pdd-code-reviewer | Warning | ❌ 不阻塞 | 记录，建议修复 |
-| pdd-code-reviewer | Suggestion | ❌ 不阻塞 | 记录，可选优化 |
-| expert-code-quality | 任何级别 | ❌ 不阻塞 | 记录到质量改进清单 |
+| pdd-code-reviewer | Critical | ✅ Blocks | Must fix before continuing |
+| pdd-code-reviewer | Warning | ❌ Does not block | Record, recommend fixing |
+| pdd-code-reviewer | Suggestion | ❌ Does not block | Record, optional optimization |
+| expert-code-quality | Any level | ❌ Does not block | Record to quality improvement list |
 
-### 7.4 质量改进任务处理
+### 7.4 Quality Improvement Task Handling
 
-- **处理时机**：模块所有功能点完成后，统一处理
-- **输出文件**：`dev-specs/FP-{模块}-{序号}/improvement-tasks.md`
-- **处理流程**：批量重构 → 设计模式应用 → 代码优化 → 重新验证
+- **Timing**: Process uniformly after all feature points in module are completed
+- **Output file**: `dev-specs/FP-{module}-{number}/improvement-tasks.md`
+- **Process**: Batch refactoring → Design pattern application → Code optimization → Re-verification
 
 ---
 
-## 8. 与其他技能协作
+## 8. Collaboration with Other Skills
 
-| 协作技能 | 协作方式 | 传入数据 | 期望输出 |
+| Collaborative Skill | Collaboration Method | Input Data | Expected Output |
 |---------|---------|---------|---------|
-| **software-architect** | Consultation | 架构问题 | 架构建议 |
-| **system-architect** | Consultation | 系统问题 | 系统建议 |
-| **expert-code-quality** | Consultation | 代码问题 | 重构方案 |
-| **expert-ruoyi** | Consultation | 框架问题 | 最佳实践 |
-| **pdd-implement-feature** | Loop | 问题列表 | 修复后的代码 |
-| **pdd-verify-feature** | Sequential | 审查通过的代码 | 验收报告 |
+| **software-architect** | Consultation | Architecture issues | Architecture recommendations |
+| **system-architect** | Consultation | System issues | System recommendations |
+| **expert-code-quality** | Consultation | Code issues | Refactoring solutions |
+| **expert-ruoyi** | Consultation | Framework issues | Best practices |
+| **pdd-implement-feature** | Loop | Issue list | Fixed code |
+| **pdd-verify-feature** | Sequential | Code passed review | Acceptance report |

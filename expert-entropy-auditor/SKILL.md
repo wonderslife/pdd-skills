@@ -1,224 +1,228 @@
 ---
 name: expert-entropy-auditor
 description: |
-  熵增审计技能，发现"设计意图"与"代码实现"之间的裂痕。当用户需要技术债务审计、PRD与代码一致性检查、AI残渣检测时自动触发。
+  Entropy audit skill that discovers the gap between "design intent" and "code implementation". Automatically triggered when users need technical debt audit, PRD and code consistency check, or AI residue detection. 支持中文触发：审计技术债务、检查PRD一致性、检测AI残渣、技术债务审计、熵增审计。
   
-  核心职责：识别分散在代码库中的"AI残渣"，建议归集到共享的实用程序包中。
+  Core responsibility: Identify "AI residue" scattered in the codebase and suggest consolidating them into shared utility packages.
   
-  触发场景：
-  - 用户请求"审计技术债务"、"检查PRD一致性"、"检测AI残渣"
-  - pdd-entropy-reduction 协调器调用
-  - 定时触发（建议每周一次）
+  Trigger scenarios:
+  - User requests "audit technical debt", "check PRD consistency", "detect AI residue"
+  - pdd-entropy-reduction coordinator calls
+  - Scheduled trigger (recommended weekly)
+  
+  支持中文触发：熵增审计、技术债务审计、PRD一致性检查、AI残渣检测、PDD熵审计。
+author: neuqik@hotmail.com
+license: MIT
 ---
 
-# 熵增审计 (expert-entropy-auditor)
+# Entropy Audit (expert-entropy-auditor)
 
-## 核心理念
+## Core Philosophy
 
-> "像垃圾回收器一样，将分散在代码库中的'AI残渣'识别出来，并建议将其归集到共享的实用程序包中。" —— Harness Engineering
+> "Like a garbage collector, identify 'AI residue' scattered in the codebase and suggest consolidating them into shared utility packages." —— Harness Engineering
 
-熵增审计技能专门用于发现"设计意图"与"代码实现"之间的裂痕，识别代码库中的熵增点。
+The entropy audit skill is specifically designed to discover the gap between "design intent" and "code implementation", identifying entropy increase points in the codebase.
 
-## 审计维度
+## Audit Dimensions
 
-### 1. PRD 与代码一致性
+### 1. PRD and Code Consistency
 
-**审计方法**：
-- 解析 PRD 文档中的功能点
-- 扫描代码实现
-- 对比功能点与实现
+**Audit Method**:
+- Parse feature points in PRD documents
+- Scan code implementation
+- Compare feature points with implementation
 
-**示例**：
+**Example**:
 ```
-PRD 功能点：用户登录后显示欢迎消息
-代码实现：用户登录后直接跳转到首页
-→ 审计结果：实现与 PRD 不一致
-```
-
-### 2. Spec 文档与代码一致性
-
-**审计方法**：
-- 解析 Spec 文档中的技术规格
-- 检查代码是否符合规格
-- 标记偏差
-
-**示例**：
-```
-Spec 规格：API 返回 { code, data, message }
-代码实现：API 返回 { status, result }
-→ 审计结果：返回格式不符合规格
+PRD Feature: Display welcome message after user login
+Code Implementation: Redirect to homepage directly after user login
+→ Audit Result: Implementation inconsistent with PRD
 ```
 
-### 3. AI 残渣检测
+### 2. Spec Document and Code Consistency
 
-**什么是 AI 残渣**：
-- 重复生成的相似代码
-- 猜测的数据结构
-- 不一致的命名模式
-- 分散的辅助工具
+**Audit Method**:
+- Parse technical specifications in Spec documents
+- Check if code conforms to specifications
+- Mark deviations
 
-**检测方法**：
-- 代码相似度分析
-- 命名模式分析
-- 重复代码检测
-
-**示例**：
+**Example**:
 ```
-文件 A：function formatDate(date) { ... }
-文件 B：function formatDateString(d) { ... }
-文件 C：function dateFormat(dateVal) { ... }
-→ 审计结果：AI 残渣，建议提取到共享工具包
+Spec Specification: API returns { code, data, message }
+Code Implementation: API returns { status, result }
+→ Audit Result: Return format does not conform to specification
 ```
 
-### 4. 技术债务累积
+### 3. AI Residue Detection
 
-**检测方法**：
-- 扫描 TODO/FIXME/HACK 注释
-- 检查临时方案标记
-- 统计技术债务数量
+**What is AI Residue**:
+- Repeatedly generated similar code
+- Guessed data structures
+- Inconsistent naming patterns
+- Scattered helper utilities
 
-**示例**：
+**Detection Method**:
+- Code similarity analysis
+- Naming pattern analysis
+- Duplicate code detection
+
+**Example**:
 ```
-技术债务统计：
-- TODO: 15 个
-- FIXME: 3 个
-- HACK: 2 个
-→ 审计结果：技术债务累积，建议处理
+File A: function formatDate(date) { ... }
+File B: function formatDateString(d) { ... }
+File C: function dateFormat(dateVal) { ... }
+→ Audit Result: AI residue, suggest extracting to shared utility package
+```
+
+### 4. Technical Debt Accumulation
+
+**Detection Method**:
+- Scan TODO/FIXME/HACK comments
+- Check temporary solution markers
+- Count technical debt items
+
+**Example**:
+```
+Technical Debt Statistics:
+- TODO: 15 items
+- FIXME: 3 items
+- HACK: 2 items
+→ Audit Result: Technical debt accumulated, suggest handling
 ```
 
 ---
 
-## 审计流程
+## Audit Process
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   收集      │ ──→ │   分析      │ ──→ │   评分      │ ──→ │   报告      │
+│   Collect   │ ──→ │   Analyze   │ ──→ │    Score    │ ──→ │   Report    │
 │             │     │             │     │             │     │             │
-│ • PRD 文档  │     │ • 一致性    │     │ • 熵值计算  │     │ • 问题清单  │
-│ • Spec 文档 │     │ • 重复检测  │     │ • 债务评估  │     │ • 改进建议  │
-│ • 代码实现  │     │ • 模式分析  │     │ • 风险评级  │     │ • 优先排序  │
+│ • PRD Docs  │     │ • Consistency│    │ • Entropy   │     │ • Issues    │
+│ • Spec Docs │     │ • Duplication│    │ • Debt Eval │     │ • Suggestions│
+│ • Code Impl │     │ • Pattern    │     │ • Risk Rate │     │ • Prioritize │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
 ---
 
-## 熵值评分系统
+## Entropy Score System
 
-### 评分维度
+### Scoring Dimensions
 
-| 维度 | 权重 | 评分标准 |
-|------|------|---------|
-| PRD 一致性 | 25% | 功能点与实现匹配度 |
-| Spec 一致性 | 25% | 技术规格符合度 |
-| AI 残渣 | 25% | 重复代码比例 |
-| 技术债务 | 25% | 债务数量与严重度 |
+| Dimension | Weight | Scoring Criteria |
+|-----------|--------|-----------------|
+| PRD Consistency | 25% | Feature point and implementation match rate |
+| Spec Consistency | 25% | Technical specification compliance rate |
+| AI Residue | 25% | Duplicate code ratio |
+| Technical Debt | 25% | Debt quantity and severity |
 
-### 评分计算
+### Score Calculation
 
 ```
-熵值 = 100 - (不一致数 × 5 + AI残渣数 × 3 + 技术债务数 × 2)
+Entropy Score = 100 - (Inconsistencies × 5 + AI Residues × 3 + Tech Debts × 2)
 
-示例：
-- PRD 不一致：2 项 → 扣 10 分
-- Spec 不一致：1 项 → 扣 5 分
-- AI 残渣：5 项 → 扣 15 分
-- 技术债务：10 项 → 扣 20 分
+Example:
+- PRD Inconsistencies: 2 items → Deduct 10 points
+- Spec Inconsistencies: 1 item → Deduct 5 points
+- AI Residues: 5 items → Deduct 15 points
+- Tech Debts: 10 items → Deduct 20 points
 
-熵值 = 100 - (10 + 5 + 15 + 20) = 50
+Entropy Score = 100 - (10 + 5 + 15 + 20) = 50
 ```
 
-### 状态判定
+### Status Determination
 
-| 分数范围 | 状态 | 建议动作 |
-|---------|------|---------|
-| 90-100 | 优秀 | 维持现状 |
-| 70-89 | 良好 | 小额改进 |
-| 50-69 | 一般 | 计划性清理 |
-| 30-49 | 警告 | 优先处理 |
-| 0-29 | 危险 | 紧急重构 |
+| Score Range | Status | Recommended Action |
+|------------|--------|-------------------|
+| 90-100 | Excellent | Maintain current state |
+| 70-89 | Good | Minor improvements |
+| 50-69 | Fair | Planned cleanup |
+| 30-49 | Warning | Priority handling |
+| 0-29 | Critical | Emergency refactoring |
 
 ---
 
-## 输出格式
+## Output Format
 
-### 熵增审计报告
+### Entropy Audit Report
 
 ```markdown
-# 熵增审计报告 - YYYY-MM-DD
+# Entropy Audit Report - YYYY-MM-DD
 
-## 熵值评分：XX/100
+## Entropy Score: XX/100
 
-## 审计范围
-- PRD 文档：X 份
-- Spec 文档：X 份
-- 代码文件：X 个
+## Audit Scope
+- PRD Documents: X
+- Spec Documents: X
+- Code Files: X
 
-## 一致性审计
+## Consistency Audit
 
-### PRD 与代码不一致
-| PRD 功能点 | 代码实现 | 偏差描述 |
+### PRD and Code Inconsistencies
+| PRD Feature | Code Implementation | Deviation Description |
 |-----------|---------|---------|
-| FP-001 用户登录欢迎消息 | 未实现 | 缺少欢迎消息显示 |
+| FP-001 User login welcome message | Not implemented | Missing welcome message display |
 
-### Spec 与代码不一致
-| Spec 规格 | 代码实现 | 偏差描述 |
+### Spec and Code Inconsistencies
+| Spec Specification | Code Implementation | Deviation Description |
 |----------|---------|---------|
-| API 返回格式 | 不符合 | 缺少 message 字段 |
+| API return format | Non-compliant | Missing message field |
 
-## AI 残渣检测
+## AI Residue Detection
 
-### 重复代码
-| 文件 A | 文件 B | 相似度 | 建议 |
+### Duplicate Code
+| File A | File B | Similarity | Suggestion |
 |-------|-------|-------|------|
-| utils/formatDate.js | utils/dateFormat.js | 85% | 提取到共享工具包 |
+| utils/formatDate.js | utils/dateFormat.js | 85% | Extract to shared utility package |
 
-### 猜测的数据结构
-| 文件 | 问题 | 建议 |
+### Guessed Data Structures
+| File | Issue | Suggestion |
 |------|------|------|
-| service/UserService.ts | 硬编码字段名 | 定义类型接口 |
+| service/UserService.ts | Hardcoded field names | Define type interfaces |
 
-## 技术债务统计
+## Technical Debt Statistics
 
-| 类型 | 数量 | 平均存在时间 |
+| Type | Count | Average Age |
 |------|------|-------------|
-| TODO | 15 | 14 天 |
-| FIXME | 3 | 7 天 |
-| HACK | 2 | 30 天 |
+| TODO | 15 | 14 days |
+| FIXME | 3 | 7 days |
+| HACK | 2 | 30 days |
 
-## 改进建议
+## Improvement Suggestions
 
-### 高优先级
-1. 修复 PRD 不一致项（2 项）
-2. 提取重复代码到共享工具包（5 项）
+### High Priority
+1. Fix PRD inconsistencies (2 items)
+2. Extract duplicate code to shared utility package (5 items)
 
-### 中优先级
-1. 处理 FIXME 注释（3 项）
-2. 定义缺失的类型接口（3 项）
+### Medium Priority
+1. Handle FIXME comments (3 items)
+2. Define missing type interfaces (3 items)
 
-### 低优先级
-1. 清理过时 TODO（12 项）
+### Low Priority
+1. Clean up outdated TODOs (12 items)
 ```
 
 ---
 
-## 配置选项
+## Configuration Options
 
 ```yaml
 # entropy-auditor-config.yaml
 entropy_auditor:
-  # 审计范围
+  # Audit scope
   scope:
     prd_paths: ["docs/prd/", "docs/业务分析/"]
     spec_paths: ["docs/specs/", "docs/dev-specs/"]
     code_paths: ["src/"]
   
-  # 检测阈值
+  # Detection thresholds
   thresholds:
-    code_similarity: 0.8      # 代码相似度阈值
-    max_todo_age_days: 30     # TODO 最大存在时间
-    max_fixme_age_days: 14    # FIXME 最大存在时间
+    code_similarity: 0.8      # Code similarity threshold
+    max_todo_age_days: 30     # Maximum TODO age
+    max_fixme_age_days: 14    # Maximum FIXME age
   
-  # 评分权重
+  # Scoring weights
   weights:
     prd_consistency: 0.25
     spec_consistency: 0.25
@@ -228,50 +232,50 @@ entropy_auditor:
 
 ---
 
-## 使用示例
+## Usage Examples
 
-### 示例 1：全面熵增审计
-
-```
-用户：执行技术债务审计
-
-AI：
-1. 收集 PRD、Spec、代码
-2. 分析一致性
-3. 检测 AI 残渣
-4. 计算熵值评分
-5. 生成审计报告
-```
-
-### 示例 2：PRD 一致性检查
+### Example 1: Comprehensive Entropy Audit
 
 ```
-用户：检查 PRD 与代码是否一致
+User: Execute technical debt audit
 
-AI：
-1. 解析 PRD 功能点
-2. 扫描代码实现
-3. 对比功能点与实现
-4. 生成偏差报告
+AI:
+1. Collect PRD, Spec, code
+2. Analyze consistency
+3. Detect AI residue
+4. Calculate entropy score
+5. Generate audit report
 ```
 
-### 示例 3：AI 残渣检测
+### Example 2: PRD Consistency Check
 
 ```
-用户：检测代码中的 AI 残渣
+User: Check if PRD is consistent with code
 
-AI：
-1. 代码相似度分析
-2. 命名模式分析
-3. 识别重复代码
-4. 建议提取到共享工具包
+AI:
+1. Parse PRD feature points
+2. Scan code implementation
+3. Compare feature points with implementation
+4. Generate deviation report
+```
+
+### Example 3: AI Residue Detection
+
+```
+User: Detect AI residue in code
+
+AI:
+1. Code similarity analysis
+2. Naming pattern analysis
+3. Identify duplicate code
+4. Suggest extracting to shared utility package
 ```
 
 ---
 
-## 与其他技能的协作
+## Collaboration with Other Skills
 
-- **pdd-entropy-reduction**：作为子技能被协调调用
-- **pdd-doc-gardener**：传递文档不一致问题
-- **expert-auto-refactor**：传递重构建议
-- **pdd-code-reviewer**：集成熵增检查到代码审查
+- **pdd-entropy-reduction**: Called as a sub-skill by the coordinator
+- **pdd-doc-gardener**: Pass document inconsistency issues
+- **expert-auto-refactor**: Pass refactoring suggestions
+- **pdd-code-reviewer**: Integrate entropy checks into code review

@@ -1,115 +1,115 @@
 ---
 name: system-architect
-description: "系统架构师角色，设计健壮、可扩展、可维护的软件架构。强制执行行业标准（PEP 8、ESLint），模块化设计和安全最佳实践。当用户想要启动新项目、重构现有项目或讨论高层系统设计时使用此技能。此技能专注于项目初始化、技术栈选择和代码标准。"
+description: "Acts as a Senior System Architect to design robust, scalable, and maintainable software architectures. Enforces industry standards (PEP 8 for Python, ESLint for JS/TS), modular design, and security best practices. Use this skill when the user wants to start a new project, refactor an existing one, or discusses high-level system design. This skill focuses on project initialization, technology selection, and code standards. 支持中文触发：启动新项目、重构现有项目、系统设计、技术选型、代码标准、项目初始化、架构设计。"
 license: "MIT"
-author: "wonderqi"
+author: "neuqik@hotmail.com"
 version: "2.0"
 ---
 
-# System Architect（系统架构师）
+# System Architect
 
-## 概述
+## Overview
 
-本技能担任**技术负责人**角色，负责：
-- 项目脚手架和结构搭建
-- 技术栈决策
-- 代码标准执行
-- 文档模板创建
+This skill serves as a **Technical Lead** role, responsible for:
+- Project scaffolding and structure setup
+- Technology stack decision-making
+- Code standards enforcement
+- Documentation template creation
 
-**注意**：这是高层系统架构技能，专注于项目初始化和技术栈选择。详细架构设计请使用 **software-architect**。
+**Note**: This is a high-level system architecture skill focused on project initialization and technology stack selection. For detailed architecture design, please use **software-architect**.
 
-## 目录结构
+## Directory Structure
 
 ```
 system-architect/
-├── SKILL.md              # 技能定义文件
-├── LICENSE               # MIT 许可证
+├── SKILL.md              # Skill definition file
+├── LICENSE               # MIT License
 └── assets/
-    └── templates/        # 配置模板
+    └── templates/        # Configuration templates
         ├── README.md
         ├── ARCHITECTURE.md
         └── .editorconfig
 ```
 
-## 触发条件
+## Trigger Conditions
 
-**自动触发：**
-- 启动新项目或应用
-- 选择技术栈（语言、框架、数据库）
-- 设置项目结构和脚手架
-- 定义代码标准和linting规则
-- 创建项目文档（README、ARCHITECTURE）
-- 重构项目结构
+**Auto-trigger:**
+- Starting a new project or application
+- Selecting technology stack (language, framework, database)
+- Setting up project structure and scaffolding
+- Defining code standards and linting rules
+- Creating project documentation (README, ARCHITECTURE)
+- Refactoring project structure
 
-**手动触发：**
-- 用户输入 `/system-architect`、`/new-project`、`/setup` 等命令
+**Manual trigger:**
+- User inputs commands like `/system-architect`, `/new-project`, `/setup`, etc.
 
 ---
 
-## 核心能力
+## Core Capabilities
 
-### 1. 技术栈选择指南
+### 1. Technology Stack Selection Guide
 
-#### 1.1 后端技术
+#### 1.1 Backend Technologies
 
-| 技术 | 适用场景 | 优点 | 缺点 |
+| Technology | Use Cases | Pros | Cons |
 |------|---------|------|------|
-| **Python (FastAPI)** | API、微服务、ML/AI | 快速开发、异步支持、类型提示 | GIL限制CPU密集任务 |
-| **Python (Django)** | 全功能Web应用 | 包含电池、Admin面板、ORM | 单体、API较慢 |
-| **Java (Spring Boot)** | 企业应用 | 成熟生态、强类型 | 冗长、重量级 |
-| **Node.js (Express)** | 实时应用、API | JavaScript全栈、快速I/O | 回调地狱（用async/await） |
-| **Go** | 高性能服务 | 快速、简洁、出色并发 | 生态较小 |
-| **Rust** | 系统编程、性能 | 内存安全、零成本抽象 | 学习曲线陡峭 |
+| **Python (FastAPI)** | API, microservices, ML/AI | Rapid development, async support, type hints | GIL limits CPU-intensive tasks |
+| **Python (Django)** | Full-featured web applications | Batteries included, Admin panel, ORM | Monolithic, slower for APIs |
+| **Java (Spring Boot)** | Enterprise applications | Mature ecosystem, strong typing | Verbose, heavyweight |
+| **Node.js (Express)** | Real-time applications, APIs | JavaScript full-stack, fast I/O | Callback hell (use async/await) |
+| **Go** | High-performance services | Fast, simple, excellent concurrency | Smaller ecosystem |
+| **Rust** | Systems programming, performance | Memory safe, zero-cost abstractions | Steep learning curve |
 
-#### 1.2 前端技术
+#### 1.2 Frontend Technologies
 
-| 技术 | 适用场景 | 优点 | 缺点 |
+| Technology | Use Cases | Pros | Cons |
 |------|---------|------|------|
-| **React** | SPA、复杂UI | 大生态、灵活 | 需要选择库 |
-| **Vue.js** | SPA、渐进增强 | 易学、完整框架 | 生态比React小 |
-| **Angular** | 企业应用 | 完整框架、TypeScript | 学习曲线陡峭、冗长 |
-| **Svelte** | 性能关键应用 | 无虚拟DOM、包小 | 生态较小 |
+| **React** | SPA, complex UI | Large ecosystem, flexible | Need to choose libraries |
+| **Vue.js** | SPA, progressive enhancement | Easy to learn, complete framework | Smaller ecosystem than React |
+| **Angular** | Enterprise applications | Complete framework, TypeScript | Steep learning curve, verbose |
+| **Svelte** | Performance-critical applications | No virtual DOM, small bundle | Smaller ecosystem |
 
-#### 1.3 数据库
+#### 1.3 Databases
 
-| 数据库 | 适用场景 | 优点 | 缺点 |
+| Database | Use Cases | Pros | Cons |
 |--------|---------|------|------|
-| **PostgreSQL** | 关系数据、需要ACID | ACID、高级特性、JSONB | 垂直扩展限制 |
-| **MySQL** | 简单Web应用 |广泛采用、易设置 | 高级特性较少 |
-| **MongoDB** | 文档存储、灵活schema | 灵活schema、水平扩展 | 4.0前无ACID事务 |
-| **Redis** | 缓存、会话、队列 | 极快、多用途 | 内存限制 |
-| **Elasticsearch** | 搜索、日志分析 | 全文搜索、分析 | 资源密集 |
+| **PostgreSQL** | Relational data, ACID required | ACID, advanced features, JSONB | Vertical scaling limits |
+| **MySQL** | Simple web applications | Widely adopted, easy setup | Fewer advanced features |
+| **MongoDB** | Document storage, flexible schema | Flexible schema, horizontal scaling | No ACID transactions before 4.0 |
+| **Redis** | Caching, sessions, queues | Extremely fast, versatile | Memory limitations |
+| **Elasticsearch** | Search, log analysis | Full-text search, analytics | Resource intensive |
 
 ---
 
-### 2. 项目结构模板
+### 2. Project Structure Templates
 
-#### 2.1 Python项目结构
+#### 2.1 Python Project Structure
 
 ```
 project-name/
 ├── src/
 │   ├── __init__.py
-│   ├── main.py              # 应用入口
-│   ├── config/              # 配置管理
+│   ├── main.py              # Application entry point
+│   ├── config/              # Configuration management
 │   │   ├── __init__.py
 │   │   ├── settings.py
 │   │   └── logging.py
-│   ├── api/                 # API端点
+│   ├── api/                 # API endpoints
 │   │   ├── __init__.py
 │   │   ├── routes/
 │   │   └── dependencies.py
-│   ├── services/            # 业务逻辑
+│   ├── services/            # Business logic
 │   │   ├── __init__.py
 │   │   └── user_service.py
-│   ├── models/              # 数据模型
+│   ├── models/              # Data models
 │   │   ├── __init__.py
-│   │   ├── domain/          # 领域模型
-│   │   └── db/              # 数据库模型
-│   ├── repositories/        # 数据访问
+│   │   ├── domain/          # Domain models
+│   │   └── db/              # Database models
+│   ├── repositories/        # Data access
 │   │   ├── __init__.py
 │   │   └── user_repository.py
-│   └── utils/               # 工具函数
+│   └── utils/               # Utility functions
 │       ├── __init__.py
 │       └── helpers.py
 ├── tests/
@@ -132,32 +132,32 @@ project-name/
 └── README.md
 ```
 
-#### 2.2 Node.js/TypeScript项目结构
+#### 2.2 Node.js/TypeScript Project Structure
 
 ```
 project-name/
 ├── src/
-│   ├── index.ts             # 应用入口
-│   ├── config/              # 配置
+│   ├── index.ts             # Application entry point
+│   ├── config/              # Configuration
 │   │   ├── index.ts
 │   │   └── database.ts
-│   ├── routes/              # API路由
+│   ├── routes/              # API routes
 │   │   ├── index.ts
 │   │   └── userRoutes.ts
-│   ├── controllers/         # 请求处理器
+│   ├── controllers/         # Request handlers
 │   │   └── userController.ts
-│   ├── services/            # 业务逻辑
+│   ├── services/            # Business logic
 │   │   └── userService.ts
-│   ├── models/              # 数据模型
+│   ├── models/              # Data models
 │   │   └── User.ts
-│   ├── repositories/        # 数据访问
+│   ├── repositories/        # Data access
 │   │   └── userRepository.ts
-│   ├── middleware/          # Express中间件
+│   ├── middleware/          # Express middleware
 │   │   ├── auth.ts
 │   │   └── errorHandler.ts
-│   ├── types/               # TypeScript类型
+│   ├── types/               # TypeScript types
 │   │   └── index.ts
-│   └── utils/               # 工具函数
+│   └── utils/               # Utility functions
 │       └── helpers.ts
 ├── tests/
 │   ├── unit/
@@ -180,7 +180,7 @@ project-name/
 
 ---
 
-### 3. 配置模板
+### 3. Configuration Templates
 
 #### 3.1 .editorconfig
 
@@ -277,7 +277,7 @@ build-backend = "poetry.core.masonry.api"
 }
 ```
 
-#### 3.4 ESLint配置
+#### 3.4 ESLint Configuration
 
 ```javascript
 import js from '@eslint/js';
@@ -301,9 +301,9 @@ export default [
 
 ---
 
-### 4. 文档模板
+### 4. Documentation Templates
 
-#### 4.1 README模板
+#### 4.1 README Template
 
 ```markdown
 # Project Name
@@ -404,7 +404,7 @@ npm run test:coverage  # Node.js
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
 
-#### 4.2 ARCHITECTURE模板
+#### 4.2 ARCHITECTURE Template
 
 ```markdown
 # Architecture Overview
@@ -501,128 +501,128 @@ graph TB
 
 ---
 
-### 5. 决策框架
+### 5. Decision Framework
 
-选择技术或做出架构决策时，遵循此流程：
+When selecting technologies or making architectural decisions, follow this process:
 
-1. **理解需求**
-   - 功能需求
-   - 非功能需求（性能、可扩展性、安全）
-   - 约束（预算、团队技能、时间线）
+1. **Understand Requirements**
+   - Functional requirements
+   - Non-functional requirements (performance, scalability, security)
+   - Constraints (budget, team skills, timeline)
 
-2. **生成选项**
-   - 列出至少3个替代方案
-   - 考虑build vs buy vs 开源
+2. **Generate Options**
+   - List at least 3 alternatives
+   - Consider build vs buy vs open source
 
-3. **评估权衡**
-   - 性能 vs 可维护性
-   - 成本 vs 特性
-   - 学习曲线 vs 生产力
+3. **Evaluate Trade-offs**
+   - Performance vs maintainability
+   - Cost vs features
+   - Learning curve vs productivity
 
-4. **做出决策**
-   - 记录决策
-   - 记录理由
-   - 记录考虑的替代方案
+4. **Make Decision**
+   - Document the decision
+   - Document the rationale
+   - Document alternatives considered
 
-5. **验证**
-   - 必要时做原型
-   - 获取团队认同
-   - 如需要则规划迁移
+5. **Validate**
+   - Prototype if necessary
+   - Get team buy-in
+   - Plan migration if needed
 
 ---
 
-### 6. 协作表
+### 6. Collaboration Table
 
-#### 6.1 与其他技能的协作
+#### 6.1 Collaboration with Other Skills
 
-| 协作技能 | 协作模式 | 说明 |
+| Collaborating Skill | Collaboration Mode | Description |
 |---------|---------|------|
-| **software-architect** | 委托 | 项目初始化后，详细架构设计委托 |
-| **software-engineer** | 委托 | 具体功能实现委托 |
-| **expert-code-quality** | 咨询 | 代码标准制定前咨询 |
-| **pdd-main** | 顺序 | 新项目使用PDD框架流程 |
-| **expert-mysql** | 咨询 | 数据库选型前咨询 |
-| **expert-ruoyi** | 咨询 | Java项目使用若依框架时咨询 |
+| **software-architect** | Delegate | After project initialization, delegate detailed architecture design |
+| **software-engineer** | Delegate | Delegate specific feature implementation |
+| **expert-code-quality** | Consult | Consult before establishing code standards |
+| **pdd-main** | Sequential | Use PDD framework process for new projects |
+| **expert-mysql** | Consult | Consult before database selection |
+| **expert-ruoyi** | Consult | Consult when using RuoYi framework for Java projects |
 
-#### 6.2 协作流程
+#### 6.2 Collaboration Workflow
 
 ```
-新项目启动
+New Project Startup
     ↓
-调用 system-architect
+Invoke system-architect
     ↓
-项目脚手架 + 技术栈选择
+Project scaffolding + Technology stack selection
     ↓
-（如需详细架构设计）→ 调用 software-architect
+(If detailed architecture design needed) → Invoke software-architect
     ↓
-（如需代码实现）→ 调用 software-engineer
+(If code implementation needed) → Invoke software-engineer
     ↓
-（如需代码质量检查）→ 调用 expert-code-quality
+(If code quality check needed) → Invoke expert-code-quality
     ↓
-项目初始化完成
+Project initialization complete
 ```
 
 ---
 
-### 7. 规则
+### 7. Rules
 
-1. **安全优先**：所有决策优先考虑安全
-2. **可扩展性**：从一开始为增长设计
-3. **最小化**：遵循YAGNI（你不会需要它）原则
-4. **容器化**：默认使用Docker进行部署
-5. **Linting**：强制执行严格的代码质量标准
+1. **Security First**: All decisions prioritize security
+2. **Scalability**: Design for growth from the start
+3. **Minimization**: Follow YAGNI (You Aren't Gonna Need It) principle
+4. **Containerization**: Use Docker by default for deployment
+5. **Linting**: Enforce strict code quality standards
 
 ---
 
-### 8. 快速诊断模式
+### 8. Quick Diagnosis Mode
 
-#### 8.1 技术栈快速诊断
+#### 8.1 Technology Stack Quick Diagnosis
 
-| 问题症状 | 建议技术 |
+| Problem Symptoms | Suggested Technology |
 |---------|---------|
-| 快速API开发 | FastAPI (Python) / Express (Node.js) |
-| 企业级应用 | Spring Boot (Java) / Django (Python) |
-| 高并发服务 | Go / Java |
-| 实时应用 | Node.js / Socket.io |
-| 微服务架构 | Go / Java / Node.js |
-| 数据分析 | Python (pandas, numpy) |
-| AI/ML集成 | Python (TensorFlow, PyTorch) |
+| Rapid API development | FastAPI (Python) / Express (Node.js) |
+| Enterprise applications | Spring Boot (Java) / Django (Python) |
+| High concurrency services | Go / Java |
+| Real-time applications | Node.js / Socket.io |
+| Microservices architecture | Go / Java / Node.js |
+| Data analysis | Python (pandas, numpy) |
+| AI/ML integration | Python (TensorFlow, PyTorch) |
 
-#### 8.2 项目结构快速诊断
+#### 8.2 Project Structure Quick Diagnosis
 
-| 场景 | 建议结构 |
+| Scenario | Suggested Structure |
 |------|---------|
-| 单体应用 | 分层结构（api/service/repo） |
-| 微服务 | 独立服务目录 + 共享库 |
-| 事件驱动 | 目录按领域/事件类型组织 |
-| 六边形架构 | core/ports/adapters |
+| Monolithic application | Layered structure (api/service/repo) |
+| Microservices | Independent service directories + shared libraries |
+| Event-driven | Directories organized by domain/event type |
+| Hexagonal architecture | core/ports/adapters |
 
 ---
 
 ### 9. Guardrails
 
-- 技术栈选择必须考虑团队现有技能
-- 项目结构必须符合行业标准和最佳实践
-- 安全必须作为默认考虑因素
-- 必须提供清晰的文档和配置模板
-- 决策必须包含权衡分析和替代方案
+- Technology stack selection must consider existing team skills
+- Project structure must follow industry standards and best practices
+- Security must be a default consideration
+- Must provide clear documentation and configuration templates
+- Decisions must include trade-off analysis and alternatives
 
 ---
 
-## 版本历史
+## Version History
 
 ### v2.0 (2026-03-21)
-- 统一为中文描述
-- 添加协作表，明确与其他技能的协作关系
-- 增强快速诊断模式
-- 添加决策框架
-- 标准化输出格式
+- Unified to English descriptions
+- Added collaboration table to clarify relationships with other skills
+- Enhanced quick diagnosis mode
+- Added decision framework
+- Standardized output format
 
-### v1.0 (初始版本)
-- 基础项目脚手架模板
-- 技术栈选择指南
-- 配置模板
+### v1.0 (Initial version)
+- Basic project scaffolding templates
+- Technology stack selection guide
+- Configuration templates
 
 ---
 
-> **记住**：系统架构师的职责是为项目奠定坚实基础。选择简洁直到被证明不足——复杂性是成本，不是特性。
+> **Remember**: The system architect's responsibility is to lay a solid foundation for the project. Choose simplicity until proven insufficient—complexity is a cost, not a feature.

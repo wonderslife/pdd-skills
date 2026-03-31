@@ -1,135 +1,140 @@
 ---
 name: expert-arch-enforcer
 description: |
-  架构约束强制技能，监控代码是否违反预设的不变量和架构边界。当用户需要架构检查、依赖检查、模块边界检查时自动触发。
+  Architecture constraint enforcement skill that monitors code for violations of preset invariants and architectural boundaries. Automatically triggered when users need architecture checks, dependency checks, or module boundary checks. 支持中文触发：检查架构约束、检查依赖方向、检查模块边界、架构检查、架构强制。
   
-  核心职责：确保架构连贯性，防止架构漂移。
+  Core responsibility: Ensure architectural coherence and prevent architectural drift.
   
-  触发场景：
-  - 用户请求"检查架构约束"、"检查依赖方向"、"检查模块边界"
-  - pdd-entropy-reduction 协调器调用
-  - 代码提交后自动触发
+  Trigger scenarios:
+  - User requests "check architecture constraints", "check dependency direction", "check module boundaries"
+  - Called by pdd-entropy-reduction coordinator
+  - Automatically triggered after code commits
+  
+  支持中文触发：架构约束检查、依赖检查、模块边界检查、架构强制、架构漂移、PDD架构约束。
+author: neuqik@hotmail.com
+license: MIT
 ---
 
-# 架构约束强制 (expert-arch-enforcer)
+# Architecture Constraint Enforcement (expert-arch-enforcer)
 
-## 核心理念
+## Core Philosophy
 
-> "在智能体优先的世界中，架构连贯性容易随时间漂移。约束是速度的保障，不是束缚。" —— Harness Engineering
+> "In an agent-first world, architectural coherence easily drifts over time. Constraints are the guarantee of speed, not constraints." —— Harness Engineering
 
-架构约束强制技能负责监控代码是否违反了预设的不变量和架构边界，确保代码结构保持一致性。
+The architecture constraint enforcement skill is responsible for monitoring whether code violates preset invariants and architectural boundaries, ensuring code structure maintains consistency.
 
-## 架构约束模型
+## Architecture Constraint Model
 
-### 六层依赖模型
+### Six-Layer Dependency Model
 
 ```
 Types → Config → Repo → Service → Runtime → UI
 
-规则：只能向前依赖，不能反向依赖
+Rule: Only forward dependencies allowed, no backward dependencies
 ```
 
-| 层级 | 职责 | 允许依赖 |
+| Layer | Responsibility | Allowed Dependencies |
 |------|------|---------|
-| Types | 类型定义、数据模型 | 无 |
-| Config | 配置管理、常量定义 | Types |
-| Repo | 数据访问、外部服务调用 | Types, Config |
-| Service | 业务逻辑、领域服务 | Types, Config, Repo |
-| Runtime | 运行时、应用入口 | Types, Config, Repo, Service |
-| UI | 用户界面、展示层 | 所有层 |
+| Types | Type definitions, data models | None |
+| Config | Configuration management, constant definitions | Types |
+| Repo | Data access, external service calls | Types, Config |
+| Service | Business logic, domain services | Types, Config, Repo |
+| Runtime | Runtime, application entry | Types, Config, Repo, Service |
+| UI | User interface, presentation layer | All layers |
 
-### 边界约束
+### Boundary Constraints
 
-**数据边界**：
-- 所有外部数据必须验证
-- API 入口参数必须有 Schema 验证
-- 不允许猜测数据结构
+**Data Boundaries**:
+- All external data must be validated
+- API entry parameters must have Schema validation
+- Guessing data structures is not allowed
 
-**模块边界**：
-- 模块间通过接口通信
-- 禁止跨层直接访问
-- 共享状态必须显式声明
+**Module Boundaries**:
+- Modules communicate through interfaces
+- Direct cross-layer access is prohibited
+- Shared state must be explicitly declared
 
 ---
 
-## 检测项
+## Detection Items
 
-### 1. 模块依赖方向违规
+### 1. Module Dependency Direction Violation
 
-**检测方法**：
-- 解析 import/require 语句
-- 构建依赖图
-- 检查是否违反依赖方向
+**Detection Method**:
+- Parse import/require statements
+- Build dependency graph
+- Check for dependency direction violations
 
-**示例**：
+**Example**:
 ```
-文件：src/types/User.ts
+File: src/types/User.ts
 import: import { UserService } from '../service/UserService'
-→ 检测结果：Types 层依赖 Service 层，违反依赖方向
+→ Detection result: Types layer depends on Service layer, violates dependency direction
 ```
 
-### 2. 边界数据验证缺失
+### 2. Boundary Data Validation Missing
 
-**检测方法**：
-- 扫描 API 入口函数
-- 检查是否有 Schema 验证
-- 标记缺失验证的入口
+**Detection Method**:
+- Scan API entry functions
+- Check for Schema validation
+- Mark entries lacking validation
 
-**示例**：
+**Example**:
 ```
-API 入口：POST /api/users
-参数验证：无
-→ 检测结果：缺少参数验证 Schema
-```
-
-### 3. 文件大小超限
-
-**检测方法**：
-- 统计文件行数
-- 对比配置的最大行数
-- 标记超限文件
-
-**示例**：
-```
-文件：src/service/UserService.ts
-行数：450 行
-限制：300 行
-→ 检测结果：文件过大，建议拆分
+API entry: POST /api/users
+Parameter validation: None
+→ Detection result: Missing parameter validation Schema
 ```
 
-### 4. 命名规范违反
+### 3. File Size Exceeded
 
-**检测方法**：
-- 检查文件名、函数名、变量名
-- 对比命名规范
-- 标记违规命名
+**Detection Method**:
+- Count file lines
+- Compare against configured maximum lines
+- Mark exceeded files
 
-**示例**：
+**Example**:
 ```
-函数名：get_data
-规范：camelCase
-→ 检测结果：命名不规范，应为 getData
+File: src/service/UserService.ts
+Lines: 450 lines
+Limit: 300 lines
+→ Detection result: File too large, suggest splitting
+```
+
+### 4. Naming Convention Violation
+
+**Detection Method**:
+- Check file names, function names, variable names
+- Compare against naming conventions
+- Mark violating names
+
+**Example**:
+```
+Function name: get_data
+Convention: camelCase
+→ Detection result: Non-compliant naming, should be getData
 ```
 
 ---
 
-## 执行流程
+## Execution Flow
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   解析      │ ──→ │   构建      │ ──→ │   检测      │ ──→ │   报告      │
+│   Parse     │ ──→ │   Build     │ ──→ │   Detect    │ ──→ │   Report    │
 │             │     │             │     │             │     │             │
-│ • 代码文件  │     │ • 依赖图    │     │ • 依赖违规  │     │ • 问题清单  │
-│ • import    │     │ • 调用关系  │     │ • 边界违规  │     │ • 修复建议  │
-│ • 函数签名  │     │ • 模块结构  │     │ • 大小违规  │     │ • PR 创建   │
+│ • Code files│     │ • Dependency│     │ • Dependency│     │ • Issue list│
+│ • import    │     │   graph     │     │   violation │     │ • Fix       │
+│ • Function  │     │ • Call      │     │ • Boundary  │     │   suggestions│
+│   signatures│     │   relations │     │   violation │     │ • PR creation│
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
 ---
 
-## 工具集成
+## Tool Integration
 
-### 自定义 Linter
+### Custom Linter
 
 ```javascript
 // custom-linter.js
@@ -137,7 +142,7 @@ module.exports = {
   rules: {
     'layer-dependency': {
       meta: {
-        docs: { description: '强制六层依赖方向' }
+        docs: { description: 'Enforce six-layer dependency direction' }
       },
       create(context) {
         const layers = ['types', 'config', 'repo', 'service', 'runtime', 'ui'];
@@ -150,7 +155,7 @@ module.exports = {
             if (layers.indexOf(targetLayer) < layers.indexOf(currentLayer)) {
               context.report({
                 node,
-                message: `违反依赖方向: ${currentLayer} 不能依赖 ${targetLayer}`
+                message: `Dependency direction violation: ${currentLayer} cannot depend on ${targetLayer}`
               });
             }
           }
@@ -161,7 +166,7 @@ module.exports = {
 };
 ```
 
-### ArchUnit 测试
+### ArchUnit Test
 
 ```java
 // ArchitectureTest.java
@@ -184,51 +189,51 @@ public class ArchitectureTest {
 
 ---
 
-## 输出格式
+## Output Format
 
-### 架构约束报告
+### Architecture Constraint Report
 
 ```markdown
-# 架构约束报告 - YYYY-MM-DD
+# Architecture Constraint Report - YYYY-MM-DD
 
-## 架构健康度：XX/100
+## Architecture Health Score: XX/100
 
-## 依赖图
+## Dependency Graph
 
-[依赖关系可视化图]
+[Dependency relationship visualization]
 
-## 发现问题
+## Issues Found
 
-### Critical（必须修复）
-| 文件 | 问题 | 违规类型 |
+### Critical (Must Fix)
+| File | Issue | Violation Type |
 |------|------|---------|
-| src/types/User.ts | 依赖 Service 层 | 依赖方向违规 |
+| src/types/User.ts | Depends on Service layer | Dependency direction violation |
 
-### Warning（建议修复）
-| 文件 | 问题 | 违规类型 |
+### Warning (Suggested Fix)
+| File | Issue | Violation Type |
 |------|------|---------|
-| src/api/users.ts | 缺少参数验证 | 边界验证缺失 |
+| src/api/users.ts | Missing parameter validation | Boundary validation missing |
 
-### Info（可选修复）
-| 文件 | 问题 | 违规类型 |
+### Info (Optional Fix)
+| File | Issue | Violation Type |
 |------|------|---------|
-| src/service/UserService.ts | 文件 450 行 | 大小超限 |
+| src/service/UserService.ts | File 450 lines | Size exceeded |
 
-## 修复建议
+## Fix Recommendations
 
-### Critical 修复
-1. 移除 User.ts 中对 UserService 的依赖
-2. 将共享逻辑提取到 Types 层
+### Critical Fixes
+1. Remove dependency on UserService in User.ts
+2. Extract shared logic to Types layer
 ```
 
 ---
 
-## 配置选项
+## Configuration Options
 
 ```yaml
 # arch-enforcer-config.yaml
 arch_enforcer:
-  # 层级定义
+  # Layer definitions
   layers:
     - name: types
       paths: ["src/types/", "src/models/"]
@@ -243,13 +248,13 @@ arch_enforcer:
     - name: ui
       paths: ["src/ui/", "src/components/"]
   
-  # 约束规则
+  # Constraint rules
   constraints:
     max_file_lines: 300
     max_function_lines: 50
     require_schema_validation: true
   
-  # 执行配置
+  # Execution configuration
   execution:
     run_linter: true
     run_arch_test: true
@@ -258,36 +263,36 @@ arch_enforcer:
 
 ---
 
-## 使用示例
+## Usage Examples
 
-### 示例 1：全面架构检查
-
-```
-用户：检查架构约束
-
-AI：
-1. 解析代码文件
-2. 构建依赖图
-3. 运行 Linter 和 ArchUnit
-4. 生成报告
-```
-
-### 示例 2：依赖方向检查
+### Example 1: Comprehensive Architecture Check
 
 ```
-用户：检查模块依赖方向
+User: Check architecture constraints
 
-AI：
-1. 解析 import 语句
-2. 构建依赖图
-3. 检查是否违反六层模型
-4. 生成违规报告
+AI:
+1. Parse code files
+2. Build dependency graph
+3. Run Linter and ArchUnit
+4. Generate report
+```
+
+### Example 2: Dependency Direction Check
+
+```
+User: Check module dependency direction
+
+AI:
+1. Parse import statements
+2. Build dependency graph
+3. Check for violations of six-layer model
+4. Generate violation report
 ```
 
 ---
 
-## 与其他技能的协作
+## Collaboration with Other Skills
 
-- **pdd-entropy-reduction**：作为子技能被协调调用
-- **expert-auto-refactor**：接收架构违规，执行重构
-- **pdd-code-reviewer**：集成架构检查到代码审查
+- **pdd-entropy-reduction**: Called as a sub-skill by the coordinator
+- **expert-auto-refactor**: Receives architecture violations, executes refactoring
+- **pdd-code-reviewer**: Integrates architecture checks into code review

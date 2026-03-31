@@ -1,243 +1,253 @@
 ---
 name: pdd-entropy-reduction
 description: |
-  PDD熵减智能体，持续监控和偿还技术债务，防止系统腐化。当用户需要代码清理、文档更新、技术债务管理、架构对齐、熵减、垃圾回收时自动触发。
+  PDD Entropy Reduction Agent, continuously monitors and repays technical debt to prevent system decay. Automatically triggered when users need code cleanup, documentation updates, technical debt management, architecture alignment, entropy reduction, or garbage collection. 支持中文触发：熵减、清理技术债务、代码清理、垃圾回收、技术债务管理、架构对齐。
   
-  核心目标：对抗系统的"熵增"与"衰减"，通过定期运行智能体来发现文档不一致或违反架构约束的情况。
+  Core Objective: Combat system "entropy increase" and "decay" by periodically running agents to discover documentation inconsistencies or architecture constraint violations.
   
-  触发场景：
-  - 用户请求"熵减"、"清理技术债务"、"代码清理"、"垃圾回收"
-  - 用户请求检查文档与代码一致性
-  - 用户请求架构约束检查
-  - 用户请求技术债务审计
-  - 定时触发（建议每周一次）
-  - 代码提交后自动触发（可选）
-  - PR 合并后自动触发（可选）
+  Trigger Scenarios:
+  - User requests "entropy reduction", "clean up technical debt", "code cleanup", "garbage collection"
+  - User requests checking documentation and code consistency
+  - User requests architecture constraint checking
+  - User requests technical debt audit
+  - Scheduled trigger (recommended weekly)
+  - Automatic trigger after code commit (optional)
+  - Automatic trigger after PR merge (optional)
+  
+  支持中文触发：熵减、清理技术债务、代码清理、文档更新、技术债务管理、架构对齐、垃圾回收、PDD熵减。
+author: neuqik@hotmail.com
+license: MIT
 ---
 
-# PDD 熵减智能体
+# PDD Entropy Reduction Agent
 
-## 核心理念
+## Core Philosophy
 
-> "技术债务就像一笔高息贷款：不断地以小额贷款的方式偿还债务，总比让债务不断累积，再痛苦地一次解决要好得多。" —— OpenAI Harness Engineering
+> "Technical debt is like a high-interest loan: it's better to continuously repay the debt in small amounts than to let it accumulate and then painfully resolve it all at once." —— OpenAI Harness Engineering
 
-在 PDD（PRD驱动开发）方法论中，熵减机制的核心目标是**对抗系统的"熵增"与"衰减"**，通过定期运行智能体来发现文档不一致或违反架构约束的情况。
+In the PDD (PRD-Driven Development) methodology, the core objective of the entropy reduction mechanism is to **combat system "entropy increase" and "decay"** by periodically running agents to discover documentation inconsistencies or architecture constraint violations.
 
-### 熵增的自然趋势
+### Natural Trend of Entropy Increase
 
 ```
-熵增（自然趋势）：
-- 代码腐化：重复代码、过长函数、命名不一致
-- 文档过时：代码与文档脱节、注释过时
-- 技术债务累积：TODO 未处理、临时方案未优化
-- 架构漂移：违反依赖方向、边界模糊
-- 测试缺失：覆盖率下降、测试过时
+Entropy Increase (Natural Trend):
+- Code decay: Duplicate code, overly long functions, inconsistent naming
+- Documentation obsolescence: Code and documentation out of sync, outdated comments
+- Technical debt accumulation: Unhandled TODOs, unoptimized temporary solutions
+- Architecture drift: Violating dependency directions, blurred boundaries
+- Test deficiency: Decreasing coverage, outdated tests
 
-熵减（需要能量输入）：
-- 重构：消除重复、简化复杂度
-- 文档更新：同步文档与代码
-- 技术债务偿还：处理 TODO、优化临时方案
-- 架构对齐：修复违规、强化边界
-- 测试补充：提高覆盖率、更新测试
+Entropy Reduction (Requires Energy Input):
+- Refactoring: Eliminate duplication, simplify complexity
+- Documentation updates: Synchronize documentation with code
+- Technical debt repayment: Handle TODOs, optimize temporary solutions
+- Architecture alignment: Fix violations, strengthen boundaries
+- Test supplementation: Increase coverage, update tests
 ```
 
-## 四大专业子技能
+## Four Professional Sub-Skills
 
-熵减智能体协调四个专业子技能，形成完整的熵减闭环：
+The entropy reduction agent coordinates four professional sub-skills to form a complete entropy reduction closed loop:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                  pdd-entropy-reduction                       │
-│                      （主协调器）                             │
+│                      (Main Coordinator)                      │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐│
 │  │ pdd-doc-    │  │ expert-arch │  │ expert-     │  │ expert-auto ││
 │  │ gardener    │  │ -enforcer   │  │ entropy-    │  │ -refactor   ││
 │  │             │  │             │  │ auditor     │  │             ││
-│  │ 文档园丁    │  │ 架构强制    │  │ 熵增审计    │  │ 自动重构    ││
+│  │ Document    │  │ Architecture│  │ Entropy     │  │ Auto        ││
+│  │ Gardener    │  │ Enforcer    │  │ Auditor     │  │ Refactor    ││
 │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘│
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 1. pdd-doc-gardener（文档园丁）
+### 1. pdd-doc-gardener (Document Gardener)
 
-**职责**：定期扫描代码仓库中的 `docs/` 目录，识别那些不再反映真实代码行为的过时或废弃文档。
+**Responsibility**: Periodically scans the `docs/` directory in the code repository to identify outdated or deprecated documentation that no longer reflects actual code behavior.
 
-**检测项**：
-- 代码与文档不一致
-- 注释过时（TODO 存在超过 N 天）
-- 文档引用的代码已删除
-- API 文档与实现不匹配
+**Detection Items**:
+- Code and documentation inconsistency
+- Outdated comments (TODOs existing for more than N days)
+- Code referenced in documentation has been deleted
+- API documentation doesn't match implementation
 
-**动作**：当发现文档与实现脱节时，自动发起修复用的 Pull Request。
+**Action**: When documentation is found to be out of sync with implementation, automatically initiate a Pull Request for fixes.
 
-### 2. expert-arch-enforcer（架构约束强制）
+### 2. expert-arch-enforcer (Architecture Constraint Enforcer)
 
-**职责**：监控代码是否违反了预设的不变量和架构边界。
+**Responsibility**: Monitors whether code violates preset invariants and architecture boundaries.
 
-**检测项**：
-- 模块依赖方向违规（如：Types → Config → Repo → Service → Runtime → UI）
-- 边界数据验证缺失
-- 文件大小超限
-- 命名规范违反
+**Detection Items**:
+- Module dependency direction violations (e.g., Types → Config → Repo → Service → Runtime → UI)
+- Missing boundary data validation
+- File size exceeding limits
+- Naming convention violations
 
-**工具集成**：利用自定义 Linter 或结构测试（如 ArchUnit），在后台定期运行以扫描偏差。
+**Tool Integration**: Utilizes custom Linters or structural tests (like ArchUnit), running periodically in the background to scan for deviations.
 
-### 3. expert-entropy-auditor（熵增审计）
+### 3. expert-entropy-auditor (Entropy Increase Auditor)
 
-**职责**：发现"设计意图"与"代码实现"之间的裂痕。
+**Responsibility**: Discovers gaps between "design intent" and "code implementation".
 
-**检测项**：
-- PRD 与代码实现不一致
-- Spec 文档与代码不一致
-- 重复代码（AI 残渣）
-- 猜测的数据结构
-- 分散的辅助工具
+**Detection Items**:
+- PRD and code implementation inconsistency
+- Spec documentation and code inconsistency
+- Duplicate code (AI residue)
+- Guessed data structures
+- Scattered utility tools
 
-**作用**：像垃圾回收器一样，识别分散在代码库中的"AI 残渣"，建议归集到共享的实用程序包中。
+**Function**: Like a garbage collector, identifies "AI residue" scattered in the codebase and recommends consolidating them into shared utility packages.
 
-### 4. expert-auto-refactor（自动化重构）
+### 4. expert-auto-refactor (Automated Refactoring)
 
-**职责**：将收集到的质量改进任务转化为具体的代码操作。
+**Responsibility**: Transforms collected quality improvement tasks into concrete code operations.
 
-**策略**：以"小额还贷"的方式定期发起针对性的重构 PR，防止技术债务堆积。
+**Strategy**: Periodically initiates targeted refactoring PRs using a "small loan repayment" approach to prevent technical debt accumulation.
 
-**重构类型**：
-- 提取公共方法
-- 消除重复代码
-- 简化复杂逻辑
-- 优化命名
+**Refactoring Types**:
+- Extract common methods
+- Eliminate duplicate code
+- Simplify complex logic
+- Optimize naming
 
 ---
 
-## 工作流程
+## Workflow
 
-### 熵减执行流程
+### Entropy Reduction Execution Process
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   触发      │ ──→ │   扫描      │ ──→ │   分析      │ ──→ │   执行      │
+│   Trigger   │ ──→ │   Scan      │ ──→ │   Analyze   │ ──→ │   Execute   │
 │             │     │             │     │             │     │             │
-│ • 手动触发  │     │ • 文档扫描  │     │ • 熵值计算  │     │ • 自动修复  │
-│ • 定时触发  │     │ • 代码扫描  │     │ • 问题分类  │     │ • 创建 PR   │
-│ • 事件触发  │     │ • 架构扫描  │     │ • 优先排序  │     │ • 更新文档  │
+│ • Manual    │     │ • Doc scan  │     │ • Entropy   │     │ • Auto fix  │
+│ • Scheduled │     │ • Code scan │     │   score     │     │ • Create PR │
+│ • Event     │     │ • Arch scan │     │ • Classify  │     │ • Update    │
+│             │     │             │     │ • Prioritize│     │   docs      │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
-### 熵值评分系统
+### Entropy Score System
 
-熵值评分范围：0-100（100 = 最有序）
+Entropy score range: 0-100 (100 = most orderly)
 
-| 分数范围 | 状态 | 建议动作 |
+| Score Range | Status | Recommended Action |
 |---------|------|---------|
-| 90-100 | 优秀 | 维持现状 |
-| 70-89 | 良好 | 小额改进 |
-| 50-69 | 一般 | 计划性清理 |
-| 30-49 | 警告 | 优先处理 |
-| 0-29 | 危险 | 紧急重构 |
+| 90-100 | Excellent | Maintain current state |
+| 70-89 | Good | Small improvements |
+| 50-69 | Fair | Planned cleanup |
+| 30-49 | Warning | Priority handling |
+| 0-29 | Critical | Emergency refactoring |
 
 ---
 
-## 执行指南
+## Execution Guide
 
-### 第一步：熵检测
+### Step 1: Entropy Detection
 
-根据用户请求或触发条件，选择合适的检测范围：
+Based on user request or trigger condition, select appropriate detection scope:
 
-1. **全面检测**：扫描所有熵增点
-2. **文档检测**：仅扫描文档相关问题
-3. **架构检测**：仅扫描架构约束违规
-4. **代码检测**：仅扫描代码质量问题
+1. **Full Detection**: Scan all entropy increase points
+2. **Documentation Detection**: Only scan documentation-related issues
+3. **Architecture Detection**: Only scan architecture constraint violations
+4. **Code Detection**: Only scan code quality issues
 
-### 第二步：生成熵报告
+### Step 2: Generate Entropy Report
 
-使用 `references/entropy-report-template.md` 生成熵报告，包含：
+Use `references/entropy-report-template.md` to generate entropy report, including:
 
-- 熵值评分
-- 问题清单（按优先级排序）
-- 修复建议
-- 预计工作量
+- Entropy score
+- Issue list (sorted by priority)
+- Fix recommendations
+- Estimated workload
 
-### 第三步：熵减执行
+### Step 3: Entropy Reduction Execution
 
-根据问题类型选择执行策略：
+Select execution strategy based on issue type:
 
-| 问题类型 | 执行方式 | 人工确认 |
+| Issue Type | Execution Method | Manual Confirmation |
 |---------|---------|---------|
-| 简单修复（命名、格式） | 自动修复并提交 | 否 |
-| 中等修复（文档更新） | 创建 PR | 是 |
-| 复杂修复（重构） | 创建 Issue + PR | 是 |
+| Simple fixes (naming, formatting) | Auto fix and commit | No |
+| Medium fixes (documentation updates) | Create PR | Yes |
+| Complex fixes (refactoring) | Create Issue + PR | Yes |
 
 ---
 
-## 与 PDD 框架的集成
+## Integration with PDD Framework
 
 ```
-PDD 正向流程                          PDD 熵减流程
+PDD Forward Process                      PDD Entropy Reduction Process
     │                                     │
     ▼                                     ▼
 ┌─────────────┐                    ┌─────────────┐
-│ PRD 文档    │                    │ 熵检测      │
+│ PRD Document │                    │ Entropy     │
+├─────────────┤                    │ Detection   │
+│ Feature     │                    ├─────────────┤
+│ Extraction  │                    │ Entropy     │
+├─────────────┤                    │ Report      │
+│ Spec Design │                    ├─────────────┤
+├─────────────┤                    │ Entropy     │
+│ Code        │  ←───────────────  │ Reduction   │
+│ Implementation│                   │ Execution   │
 ├─────────────┤                    ├─────────────┤
-│ 功能点提取  │                    │ 熵报告      │
-├─────────────┤                    ├─────────────┤
-│ 规格设计    │                    │ 熵减执行    │
-├─────────────┤                    ├─────────────┤
-│ 代码实现    │  ←───────────────  │ 自动修复    │
-├─────────────┤                    ├─────────────┤
-│ 验收测试    │                    │ PR 创建     │
-└─────────────┘                    └─────────────┘
+│ Acceptance  │                    │ Auto Fix    │
+│ Testing     │                    ├─────────────┤
+└─────────────┘                    │ PR Creation │
+                                   └─────────────┘
 ```
 
 ---
 
-## 黄金原则
+## Golden Principles
 
-基于 Harness Engineering 的最佳实践，定义以下黄金原则：
+Based on Harness Engineering best practices, define the following golden principles:
 
-1. **使用共享工具包，避免手写辅助函数**
-   - 将不变式集中管理
-   - 减少重复代码
+1. **Use Shared Toolkits, Avoid Handwritten Helper Functions**
+   - Centralize invariant management
+   - Reduce duplicate code
 
-2. **验证边界数据，不猜测数据结构**
-   - 所有 API 入口必须有 Schema 验证
-   - 不依赖隐式类型推断
+2. **Validate Boundary Data, Don't Guess Data Structures**
+   - All API entry points must have Schema validation
+   - Don't rely on implicit type inference
 
-3. **保持代码简洁，优先可读性**
-   - 单个文件不超过 300 行
-   - 单个函数不超过 50 行
+3. **Keep Code Concise, Prioritize Readability**
+   - Single file no more than 300 lines
+   - Single function no more than 50 lines
 
-4. **文档即代码，保持同步**
-   - 代码变更必须同步文档
-   - 文档过时即视为技术债务
+4. **Documentation as Code, Keep Synchronized**
+   - Code changes must synchronize documentation
+   - Outdated documentation is considered technical debt
 
-5. **小额还贷，持续改进**
-   - 每次提交都是改进机会
-   - 不让技术债务堆积
+5. **Small Loan Repayment, Continuous Improvement**
+   - Every commit is an improvement opportunity
+   - Don't let technical debt accumulate
 
 ---
 
-## 配置文件
+## Configuration File
 
-熵减行为可通过 `entropy-config.yaml` 配置：
+Entropy reduction behavior can be configured via `entropy-config.yaml`:
 
 ```yaml
 # entropy-config.yaml
 entropy_reduction:
-  # 触发配置
+  # Trigger configuration
   triggers:
-    schedule: "0 2 * * *"  # 每天凌晨 2 点
-    on_commit: false       # 提交时触发
-    on_pr_merge: true      # PR 合并时触发
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    on_commit: false       # Trigger on commit
+    on_pr_merge: true      # Trigger on PR merge
   
-  # 检测配置
+  # Detection configuration
   detection:
     docs:
       enabled: true
       paths: ["docs/", "*.md"]
-      max_age_days: 30     # 文档最大过期天数
+      max_age_days: 30     # Maximum documentation age in days
     architecture:
       enabled: true
       layers: ["types", "config", "repo", "service", "runtime", "ui"]
@@ -249,13 +259,13 @@ entropy_reduction:
       enabled: true
       min_coverage: 80
   
-  # 执行配置
+  # Execution configuration
   execution:
-    auto_fix: true         # 自动修复简单问题
-    create_pr: true        # 创建 PR
-    max_pr_per_run: 5      # 每次运行最大 PR 数
+    auto_fix: true         # Auto fix simple issues
+    create_pr: true        # Create PR
+    max_pr_per_run: 5      # Maximum PRs per run
   
-  # 评分配置
+  # Scoring configuration
   scoring:
     weights:
       docs: 0.25
@@ -266,84 +276,84 @@ entropy_reduction:
 
 ---
 
-## 输出格式
+## Output Format
 
-### 熵报告格式
+### Entropy Report Format
 
-每次熵减执行后，生成熵报告保存到 `docs/entropy-reports/` 目录：
+After each entropy reduction execution, generate an entropy report saved to the `docs/entropy-reports/` directory:
 
 ```markdown
-# 熵减报告 - YYYY-MM-DD
+# Entropy Reduction Report - YYYY-MM-DD
 
-## 熵值评分：XX/100
+## Entropy Score: XX/100
 
-## 问题清单
+## Issue List
 
-### Critical（必须修复）
-- [ ] 问题描述
+### Critical (Must Fix)
+- [ ] Issue description
 
-### Warning（建议修复）
-- [ ] 问题描述
+### Warning (Recommended Fix)
+- [ ] Issue description
 
-### Info（可选修复）
-- [ ] 问题描述
+### Info (Optional Fix)
+- [ ] Issue description
 
-## 修复建议
+## Fix Recommendations
 
-### Critical 修复
-1. 修复建议详情
+### Critical Fixes
+1. Fix recommendation details
 
-## 执行结果
-- 自动修复：X 项
-- 创建 PR：X 项
-- 跳过：X 项
+## Execution Results
+- Auto fixed: X items
+- Created PR: X items
+- Skipped: X items
 ```
 
 ---
 
-## 使用示例
+## Usage Examples
 
-### 示例 1：全面熵减
-
-```
-用户：执行全面熵减
-
-AI：
-1. 触发所有检测器
-2. 生成熵报告
-3. 按优先级执行修复
-4. 汇报结果
-```
-
-### 示例 2：文档熵减
+### Example 1: Full Entropy Reduction
 
 ```
-用户：检查文档一致性
+User: Execute full entropy reduction
 
-AI：
-1. 触发 pdd-doc-gardener
-2. 扫描 docs/ 目录
-3. 对比代码与文档
-4. 生成修复 PR
+AI:
+1. Trigger all detectors
+2. Generate entropy report
+3. Execute fixes by priority
+4. Report results
 ```
 
-### 示例 3：架构熵减
+### Example 2: Documentation Entropy Reduction
 
 ```
-用户：检查架构约束
+User: Check documentation consistency
 
-AI：
-1. 触发 expert-arch-enforcer
-2. 运行自定义 Linter
-3. 检测依赖违规
-4. 生成修复建议
+AI:
+1. Trigger pdd-doc-gardener
+2. Scan docs/ directory
+3. Compare code with documentation
+4. Generate fix PR
+```
+
+### Example 3: Architecture Entropy Reduction
+
+```
+User: Check architecture constraints
+
+AI:
+1. Trigger expert-arch-enforcer
+2. Run custom Linter
+3. Detect dependency violations
+4. Generate fix recommendations
 ```
 
 ---
 
-## 参考资料
+## References
 
 - [Harness Engineering - Martin Fowler](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html)
 - [Harness Engineering - OpenAI](https://openai.com/zh-Hans-CN/index/harness-engineering/)
-- `references/entropy-report-template.md` - 熵报告模板
-- `references/golden-principles.md` - 黄金原则详解
+- `references/entropy-report-template.md` - Entropy report template
+- `references/golden-principles.md` - Golden principles detailed explanation

@@ -205,7 +205,7 @@ python scripts/install_fonts.py
 
 ## 作者
 
-- 作者: wonderqi
+- 作者: neuqik@hotmail.com
 - 许可证: MIT
 
 ## 相关标准

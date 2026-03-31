@@ -1,116 +1,120 @@
 ---
 name: expert-auto-refactor
 description: |
-  自动化重构专家技能，将收集到的质量改进任务转化为具体的代码操作。当用户需要代码重构、消除重复、简化复杂度时自动触发。
+  Automated refactoring expert skill that transforms collected quality improvement tasks into concrete code operations. Automatically triggers when users need code refactoring, duplicate elimination, or complexity simplification. 支持中文触发：重构代码、消除重复、简化代码、代码重构、自动重构。
   
-  核心职责：以"小额还贷"的方式定期发起针对性的重构 PR，防止技术债务堆积。
+  Core responsibility: Initiate targeted refactoring PRs regularly in a "small debt repayment" manner to prevent technical debt accumulation.
   
-  触发场景：
-  - 用户请求"重构代码"、"消除重复"、"简化代码"
-  - pdd-entropy-reduction 协调器调用
-  - expert-entropy-auditor 传递重构建议
+  Trigger scenarios:
+  - User requests "refactor code", "eliminate duplicates", "simplify code"
+  - Called by pdd-entropy-reduction coordinator
+  - Refactoring suggestions passed from expert-entropy-auditor
+  
+  支持中文触发：自动重构、代码重构、消除重复、简化代码、重构专家、PDD重构。
+author: neuqik@hotmail.com
+license: MIT
 ---
 
-# 自动化重构专家 (expert-auto-refactor)
+# Automated Refactoring Expert (expert-auto-refactor)
 
-## 核心理念
+## Core Philosophy
 
-> "以'小额还贷'的方式定期发起针对性的重构 PR，防止技术债务堆积成无法解决的'痛苦利息'。" —— Harness Engineering
+> "Initiate targeted refactoring PRs regularly in a 'small debt repayment' manner to prevent technical debt from accumulating into unmanageable 'painful interest'." —— Harness Engineering
 
-自动化重构专家是 `expert-code-quality` 的升级版，不只是记录问题，而是主动执行重构操作。
+The automated refactoring expert is an upgraded version of `expert-code-quality`, not just recording issues but actively executing refactoring operations.
 
-## 重构类型
+## Refactoring Types
 
-### 1. 提取公共方法
+### 1. Extract Common Methods
 
-**场景**：多个地方有相似的代码逻辑
+**Scenario**: Similar code logic in multiple places
 
-**重构方法**：
-1. 识别相似代码
-2. 提取公共方法
-3. 替换原有调用
+**Refactoring Method**:
+1. Identify similar code
+2. Extract common methods
+3. Replace original calls
 
-**示例**：
+**Example**:
 
-重构前：
+Before refactoring:
 ```javascript
-// 文件 A
+// File A
 function formatDate(date) {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 
-// 文件 B
+// File B
 function formatDateString(d) {
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 }
 ```
 
-重构后：
+After refactoring:
 ```javascript
 // utils/dateUtils.ts
 export function formatDate(date: Date): string {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 
-// 文件 A
+// File A
 import { formatDate } from '../utils/dateUtils';
 
-// 文件 B
+// File B
 import { formatDate } from '../utils/dateUtils';
 ```
 
-### 2. 消除重复代码
+### 2. Eliminate Duplicate Code
 
-**场景**：完全相同或高度相似的代码块
+**Scenario**: Identical or highly similar code blocks
 
-**重构方法**：
-1. 检测重复代码
-2. 提取到共享模块
-3. 更新引用
+**Refactoring Method**:
+1. Detect duplicate code
+2. Extract to shared module
+3. Update references
 
-**示例**：
+**Example**:
 
-重构前：
+Before refactoring:
 ```javascript
-// 多处重复的验证逻辑
+// Repeated validation logic in multiple places
 if (!user.email || !user.email.includes('@')) {
   throw new Error('Invalid email');
 }
 ```
 
-重构后：
+After refactoring:
 ```javascript
 // utils/validators.ts
 export function validateEmail(email: string): boolean {
   return email && email.includes('@');
 }
 
-// 使用
+// Usage
 if (!validateEmail(user.email)) {
   throw new Error('Invalid email');
 }
 ```
 
-### 3. 简化复杂逻辑
+### 3. Simplify Complex Logic
 
-**场景**：函数过长、嵌套过深、逻辑复杂
+**Scenario**: Functions that are too long, deeply nested, or have complex logic
 
-**重构方法**：
-1. 拆分长函数
-2. 提取子函数
-3. 简化条件判断
+**Refactoring Method**:
+1. Split long functions
+2. Extract sub-functions
+3. Simplify conditional logic
 
-**示例**：
+**Example**:
 
-重构前：
+Before refactoring:
 ```javascript
 function processOrder(order) {
   if (order.status === 'pending') {
     if (order.items.length > 0) {
       if (order.payment) {
-        // 处理逻辑...
+        // Processing logic...
         if (order.shipping) {
-          // 更多处理...
+          // More processing...
         }
       }
     }
@@ -118,7 +122,7 @@ function processOrder(order) {
 }
 ```
 
-重构后：
+After refactoring:
 ```javascript
 function processOrder(order) {
   if (!canProcessOrder(order)) return;
@@ -135,25 +139,25 @@ function canProcessOrder(order) {
 }
 ```
 
-### 4. 优化命名
+### 4. Optimize Naming
 
-**场景**：命名不规范、含义不清
+**Scenario**: Non-standard naming, unclear meaning
 
-**重构方法**：
-1. 分析命名上下文
-2. 生成更好的命名
-3. 批量替换
+**Refactoring Method**:
+1. Analyze naming context
+2. Generate better naming
+3. Batch replacement
 
-**示例**：
+**Example**:
 
-重构前：
+Before refactoring:
 ```javascript
 function calc(a, b) {
   return a * b * 0.1;
 }
 ```
 
-重构后：
+After refactoring:
 ```javascript
 function calculateTax(basePrice: number, quantity: number): number {
   const TAX_RATE = 0.1;
@@ -163,159 +167,162 @@ function calculateTax(basePrice: number, quantity: number): number {
 
 ---
 
-## 重构流程
+## Refactoring Process
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   分析      │ ──→ │   规划      │ ──→ │   执行      │ ──→ │   验证      │
+│   Analyze   │ ──→ │    Plan     │ ──→ │   Execute   │ ──→ │   Verify    │
 │             │     │             │     │             │     │             │
-│ • 代码结构  │     │ • 重构策略  │     │ • 代码修改  │     │ • 测试运行  │
-│ • 依赖关系  │     │ • 影响范围  │     │ • 引用更新  │     │ • 功能验证  │
-│ • 测试覆盖  │     │ • 风险评估  │     │ • 文档同步  │     │ • PR 创建   │
+│ • Code      │     │ • Refactor  │     │ • Code      │     │ • Test      │
+│   structure │     │   strategy  │     │   changes   │     │   execution │
+│ •           │     │ • Impact    │     │ • Reference │     │ • Function  │
+│ Dependencies│     │   scope     │     │   updates   │     │   validation│
+│ • Test      │     │ • Risk      │     │ • Document  │     │ • PR        │
+│   coverage  │     │   assessment│     │   sync      │     │   creation  │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
 ---
 
-## 重构策略
+## Refactoring Strategy
 
-### 小额还贷原则
+### Small Debt Repayment Principle
 
-每次重构应该：
-1. **小步前进**：每次只改一小部分
-2. **保持测试**：确保测试始终通过
-3. **频繁提交**：每完成一个小步骤就提交
-4. **可回滚**：保持每个提交可以独立回滚
+Each refactoring should:
+1. **Small steps**: Only change a small part each time
+2. **Maintain tests**: Ensure tests always pass
+3. **Frequent commits**: Commit after each small step
+4. **Rollback capable**: Keep each commit independently rollbackable
 
-### 风险评估
+### Risk Assessment
 
-| 风险等级 | 条件 | 策略 |
+| Risk Level | Condition | Strategy |
 |---------|------|------|
-| 低 | 有完整测试覆盖 | 自动执行 |
-| 中 | 有部分测试覆盖 | 创建 PR |
-| 高 | 无测试覆盖 | 先补充测试再重构 |
+| Low | Complete test coverage | Auto execute |
+| Medium | Partial test coverage | Create PR |
+| High | No test coverage | Add tests first then refactor |
 
 ---
 
-## 输出格式
+## Output Format
 
-### 重构报告
+### Refactoring Report
 
 ```markdown
-# 重构报告 - YYYY-MM-DD
+# Refactoring Report - YYYY-MM-DD
 
-## 重构范围
-- 目标文件：X 个
-- 影响文件：X 个
-- 测试覆盖：X%
+## Refactoring Scope
+- Target files: X
+- Affected files: X
+- Test coverage: X%
 
-## 重构操作
+## Refactoring Operations
 
-### 提取公共方法
-| 原文件 | 新文件 | 方法名 | 状态 |
+### Extract Common Methods
+| Original File | New File | Method Name | Status |
 |-------|-------|-------|------|
-| utils/formatDate.js | utils/dateUtils.ts | formatDate | ✅ 完成 |
+| utils/formatDate.js | utils/dateUtils.ts | formatDate | ✅ Completed |
 
-### 消除重复代码
-| 文件 A | 文件 B | 重复行数 | 状态 |
+### Eliminate Duplicate Code
+| File A | File B | Duplicate Lines | Status |
 |-------|-------|---------|------|
-| service/UserService.ts | service/OrderService.ts | 25 行 | ✅ 完成 |
+| service/UserService.ts | service/OrderService.ts | 25 lines | ✅ Completed |
 
-### 简化复杂逻辑
-| 文件 | 函数名 | 原行数 | 新行数 | 状态 |
+### Simplify Complex Logic
+| File | Function Name | Original Lines | New Lines | Status |
 |------|-------|-------|-------|------|
-| service/OrderService.ts | processOrder | 80 | 35 | ✅ 完成 |
+| service/OrderService.ts | processOrder | 80 | 35 | ✅ Completed |
 
-## 验证结果
-- 单元测试：✅ 全部通过
-- 集成测试：✅ 全部通过
-- 功能验证：✅ 无异常
+## Verification Results
+- Unit tests: ✅ All passed
+- Integration tests: ✅ All passed
+- Functional verification: ✅ No anomalies
 
-## PR 信息
-- PR 编号：#XXX
-- 分支：refactor/entropy-reduction-YYYYMMDD
-- 状态：待审核
+## PR Information
+- PR number: #XXX
+- Branch: refactor/entropy-reduction-YYYYMMDD
+- Status: Pending review
 ```
 
 ---
 
-## 配置选项
+## Configuration Options
 
 ```yaml
 # auto-refactor-config.yaml
 auto_refactor:
-  # 重构范围
+  # Refactoring scope
   scope:
     code_paths: ["src/"]
     exclude: ["node_modules/", "dist/", "build/"]
   
-  # 重构规则
+  # Refactoring rules
   rules:
     max_file_lines: 300
     max_function_lines: 50
     min_similarity: 0.8
   
-  # 执行策略
+  # Execution strategy
   execution:
-    auto_fix_low_risk: true   # 自动修复低风险
-    create_pr: true           # 创建 PR
-    max_changes_per_run: 10   # 每次运行最大变更数
+    auto_fix_low_risk: true   # Auto fix low risk
+    create_pr: true           # Create PR
+    max_changes_per_run: 10   # Max changes per run
   
-  # 测试要求
+  # Testing requirements
   testing:
-    require_tests: true       # 要求有测试
-    min_coverage: 80          # 最低覆盖率
+    require_tests: true       # Require tests
+    min_coverage: 80          # Minimum coverage
 ```
 
 ---
 
-## 使用示例
+## Usage Examples
 
-### 示例 1：提取重复代码
-
-```
-用户：消除代码中的重复
-
-AI：
-1. 检测重复代码
-2. 分析相似度
-3. 提取到共享模块
-4. 更新所有引用
-5. 创建 PR
-```
-
-### 示例 2：简化复杂函数
+### Example 1: Extract Duplicate Code
 
 ```
-用户：简化 processOrder 函数
+User: Eliminate duplicates in code
 
-AI：
-1. 分析函数结构
-2. 识别可提取的子函数
-3. 执行拆分重构
-4. 运行测试验证
-5. 创建 PR
+AI:
+1. Detect duplicate code
+2. Analyze similarity
+3. Extract to shared module
+4. Update all references
+5. Create PR
 ```
 
-### 示例 3：优化命名
+### Example 2: Simplify Complex Function
 
 ```
-用户：优化代码命名
+User: Simplify processOrder function
 
-AI：
-1. 扫描不规范命名
-2. 分析上下文
-3. 生成更好的命名
-4. 批量替换
-5. 创建 PR
+AI:
+1. Analyze function structure
+2. Identify extractable sub-functions
+3. Execute split refactoring
+4. Run test verification
+5. Create PR
+```
+
+### Example 3: Optimize Naming
+
+```
+User: Optimize code naming
+
+AI:
+1. Scan non-standard naming
+2. Analyze context
+3. Generate better naming
+4. Batch replacement
+5. Create PR
 ```
 
 ---
 
-## 与其他技能的协作
+## Collaboration with Other Skills
 
-- **pdd-entropy-reduction**：作为子技能被协调调用
-- **expert-entropy-auditor**：接收重构建议
-- **expert-arch-enforcer**：接收架构违规修复
-- **pdd-code-reviewer**：重构后触发代码审查
-- **pdd-doc-change**：同步更新相关文档
+- **pdd-entropy-reduction**: Called as a sub-skill by the coordinator
+- **expert-entropy-auditor**: Receive refactoring suggestions
+- **expert-arch-enforcer**: Receive architecture violation fixes
+- **pdd-code-reviewer**: Trigger code review after refactoring
+- **pdd-doc-change**: Synchronously update related documentation

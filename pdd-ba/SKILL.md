@@ -1,128 +1,128 @@
 ---
 name: pdd-ba
-description: 业务分析技能，运用5W1H、MECE、CRUD等方法论进行需求分析和业务建模。当用户需要分析业务流程、进行需求建模、或审核PRD文档时触发。此技能是PDD方法论的起点，为后续功能点提取和规格生成提供业务分析基础。
+description: Business analysis skill that applies methodologies such as 5W1H, MECE, and CRUD for requirements analysis and business modeling. Triggered when users need to analyze business processes, perform requirements modeling, or review PRD documents. This skill is the starting point of the PDD methodology, providing a business analysis foundation for subsequent feature extraction and specification generation. 支持中文触发：业务分析、需求分析、业务建模、PRD文档分析、5W1H分析、MECE分析。
 license: MIT
-compatibility: 需要PRD文档或业务需求描述
+compatibility: Requires PRD documents or business requirement descriptions
 metadata:
-  author: asset-platform
+  author: neuqik@hotmail.com
   version: "2.0"
   parent: pdd-main
   triggers:
     - "/analyze" | "/audit" | "/doc"
-    - "分析业务流程" | "需求建模" | "PRD审核"
-    - "业务分析" | "5W1H" | "MECE"
+    - "analyze business processes" | "requirements modeling" | "PRD review"
+    - "business analysis" | "5W1H" | "MECE"
 ---
 
-# PDD-Business Analysis - 业务分析技能
+# PDD-Business Analysis - Business Analysis Skill
 
-## 1. 技能概述
+## 1. Skill Overview
 
-### 1.1 核心定位
-运用专业方法论进行需求分析和业务建模，输出结构化的业务分析结果，为后续功能点提取和开发规格生成提供基础。
+### 1.1 Core Positioning
+Applies professional methodologies for requirements analysis and business modeling, outputs structured business analysis results, and provides a foundation for subsequent feature extraction and development specification generation.
 
-### 1.2 技能边界
-- **输入**: PRD文档、业务需求描述、流程说明
-- **输出**: 业务分析报告、用例图、流程图、状态图、CRUD矩阵
-- **不负责**: 代码实现、测试编写、架构设计
+### 1.2 Skill Boundaries
+- **Input**: PRD documents, business requirement descriptions, process descriptions
+- **Output**: Business analysis reports, use case diagrams, process diagrams, state diagrams, CRUD matrices
+- **Not responsible for**: Code implementation, test writing, architecture design
 
-## 2. 方法论工具箱
+## 2. Methodology Toolbox
 
-### 2.1 5W1H 分析法
+### 2.1 5W1H Analysis Method
 
-用于全面理解业务需求的六个维度：
+Six dimensions for comprehensively understanding business requirements:
 
-| 维度 | 问题 | 分析要点 |
+| Dimension | Question | Analysis Points |
 |------|------|---------|
-| **Why** | 为什么做？ | 业务背景、目标、价值 |
-| **What** | 做什么？ | 功能范围、业务内容 |
-| **Who** | 谁来做？ | 角色划分、职责边界 |
-| **When** | 何时做？ | 时间要求、里程碑 |
-| **Where** | 在哪做？ | 使用场景、环境 |
-| **How** | 怎么做？ | 实现方式、流程 |
+| **Why** | Why do it? | Business background, objectives, value |
+| **What** | What to do? | Functional scope, business content |
+| **Who** | Who does it? | Role division, responsibility boundaries |
+| **When** | When to do it? | Time requirements, milestones |
+| **Where** | Where to do it? | Usage scenarios, environment |
+| **How** | How to do it? | Implementation methods, processes |
 
-### 2.2 MECE 原则
+### 2.2 MECE Principle
 
-确保业务分析无遗漏、无重叠：
+Ensures business analysis is complete and non-overlapping:
 
 ```
 MECE (Mutually Exclusive, Collectively Exhaustive)
-├── 相互独立：各分析项不交叉重叠
-└── 完全穷尽：覆盖所有业务场景
+├── Mutually Exclusive: Each analysis item does not overlap
+└── Collectively Exhaustive: Covers all business scenarios
 ```
 
-**MECE 检验清单**：
-- [ ] 子类别是否相互独立？
-- [ ] 所有类别是否覆盖完整？
-- [ ] 是否有遗漏的业务场景？
-- [ ] 是否有重叠的功能定义？
+**MECE Checklist**:
+- [ ] Are subcategories mutually exclusive?
+- [ ] Are all categories completely covered?
+- [ ] Are there any missing business scenarios?
+- [ ] Are there any overlapping function definitions?
 
-### 2.3 CRUD 矩阵
+### 2.3 CRUD Matrix
 
-分析实体与操作的对应关系：
+Analyze the correspondence between entities and operations:
 
-| 实体 | Create | Read | Update | Delete |
+| Entity | Create | Read | Update | Delete |
 |------|--------|------|--------|--------|
-| 用户 | ✓ | ✓ | ✓ | ✓ |
-| 角色 | ✓ | ✓ | ✓ | ✓ |
-| 权限 | ✓ | ✓ | ✓ | ✓ |
-| 菜单 | ✓ | ✓ | ✓ | ✓ |
+| User | ✓ | ✓ | ✓ | ✓ |
+| Role | ✓ | ✓ | ✓ | ✓ |
+| Permission | ✓ | ✓ | ✓ | ✓ |
+| Menu | ✓ | ✓ | ✓ | ✓ |
 
-## 3. 分析流程
+## 3. Analysis Process
 
-### Step 1: 需求收集
+### Step 1: Requirements Collection
 
-**收集内容**：
-- PRD文档原文
-- 业务流程描述
-- 业务规则文档
-- 现有系统截图/文档
-- 竞品分析资料
+**Collection Content**:
+- Original PRD document
+- Business process description
+- Business rules document
+- Existing system screenshots/documents
+- Competitive analysis materials
 
-**输出**: 原始需求清单
+**Output**: Raw requirements list
 
-### Step 2: 5W1H 分析
+### Step 2: 5W1H Analysis
 
-对每个需求进行5W1H分析：
+Perform 5W1H analysis for each requirement:
 
 ```
-需求编号: REQ-001
-需求名称: [名称]
+Requirement ID: REQ-001
+Requirement Name: [Name]
 
-Why (为什么):
-  - 业务背景: [描述]
-  - 核心价值: [描述]
-  - 成功标准: [描述]
+Why:
+  - Business Background: [Description]
+  - Core Value: [Description]
+  - Success Criteria: [Description]
 
-What (做什么):
-  - 功能描述: [描述]
-  - 范围边界: [描述]
-  - 不做事项: [描述]
+What:
+  - Function Description: [Description]
+  - Scope Boundaries: [Description]
+  - Out of Scope: [Description]
 
-Who (谁):
-  - 发起角色: [角色]
-  - 参与角色: [角色]
-  - 审批角色: [角色]
-  - 受益角色: [角色]
+Who:
+  - Initiator Role: [Role]
+  - Participant Roles: [Roles]
+  - Approver Roles: [Roles]
+  - Beneficiary Roles: [Roles]
 
-When (何时):
-  - 开始时间: [时间点]
-  - 结束时间: [时间点]
-  - 周期特性: [实时/周期/事件]
+When:
+  - Start Time: [Time Point]
+  - End Time: [Time Point]
+  - Cycle Characteristics: [Real-time/Periodic/Event]
 
-Where (在哪):
-  - 使用场景: [描述]
-  - 使用环境: [描述]
-  - 接入方式: [描述]
+Where:
+  - Usage Scenario: [Description]
+  - Usage Environment: [Description]
+  - Access Method: [Description]
 
-How (怎么做):
-  - 实现方式: [描述]
-  - 关键流程: [描述]
-  - 技术约束: [描述]
+How:
+  - Implementation Method: [Description]
+  - Key Processes: [Description]
+  - Technical Constraints: [Description]
 ```
 
-### Step 3: 业务建模
+### Step 3: Business Modeling
 
-**a. 用例图 (Use Case Diagram)**
+**a. Use Case Diagram**
 
 ```mermaid
 graph LR
@@ -132,28 +132,28 @@ graph LR
     B --> E[用例]
 ```
 
-**用例模板**:
+**Use Case Template**:
 ```markdown
-### UC-[编号]: [用例名称]
+### UC-[Number]: [Use Case Name]
 
-**参与者**: [主要参与者]
-**前置条件**: [进入系统前的状态]
-**后置条件**: [成功完成后的状态]
-**基本流程**:
-1. [步骤1]
-2. [步骤2]
-3. [步骤3]
+**Actors**: [Primary Actor]
+**Preconditions**: [State before entering the system]
+**Postconditions**: [State after successful completion]
+**Basic Flow**:
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
 
-**扩展流程**:
-- [条件A]: [扩展1]
-- [条件B]: [扩展2]
+**Extended Flow**:
+- [Condition A]: [Extension 1]
+- [Condition B]: [Extension 2]
 
-**异常流程**:
-- [异常1]: [处理方式]
-- [异常2]: [处理方式]
+**Exception Flow**:
+- [Exception 1]: [Handling Method]
+- [Exception 2]: [Handling Method]
 ```
 
-**b. 流程图 (Process Flow)**
+**b. Process Flow Diagram**
 
 ```mermaid
 graph TD
@@ -166,7 +166,7 @@ graph TD
     D --> F
 ```
 
-**c. 状态图 (State Diagram)**
+**c. State Diagram**
 
 ```mermaid
 graph LR
@@ -175,173 +175,173 @@ graph LR
     C -->|事件| D[终止状态]
 ```
 
-**状态定义模板**:
+**State Definition Template**:
 ```markdown
-### 实体状态机
+### Entity State Machine
 
-**实体**: [实体名称]
-**状态列表**:
-| 状态 | 代码 | 含义 | 可转入 |
+**Entity**: [Entity Name]
+**State List**:
+| State | Code | Meaning | Can Transition To |
 |------|------|------|--------|
-| 草稿 | DRAFT | 初始状态 | SUBMITTED |
-| 已提交 | SUBMITTED | 已提交待审核 | APPROVED, REJECTED |
-| 已审批 | APPROVED | 审批通过 | ARCHIVED |
-| 已拒绝 | REJECTED | 审批拒绝 | DRAFT |
+| Draft | DRAFT | Initial state | SUBMITTED |
+| Submitted | SUBMITTED | Submitted for review | APPROVED, REJECTED |
+| Approved | APPROVED | Approval passed | ARCHIVED |
+| Rejected | REJECTED | Approval rejected | DRAFT |
 ```
 
-### Step 4: CRUD 矩阵生成
+### Step 4: CRUD Matrix Generation
 
 ```markdown
-### CRUD 矩阵
+### CRUD Matrix
 
-| 实体 | 创建 | 读取 | 更新 | 删除 | 列表 | 导出 |
+| Entity | Create | Read | Update | Delete | List | Export |
 |------|------|------|------|------|------|------|
-| 用户 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| 角色 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| User | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Role | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 ```
 
-### Step 5: 业务规则提取
+### Step 5: Business Rule Extraction
 
 ```markdown
-### 业务规则
+### Business Rules
 
-| 规则ID | 规则描述 | 约束类型 | 优先级 |
+| Rule ID | Rule Description | Constraint Type | Priority |
 |--------|---------|---------|--------|
-| BR-001 | 转账金额不能为负 | 硬性规则 | P0 |
-| BR-002 | 审批人不能是申请人 | 硬性规则 | P0 |
-| BR-003 | 建议定期更换密码 | 软性规则 | P1 |
+| BR-001 | Transfer amount cannot be negative | Hard Rule | P0 |
+| BR-002 | Approver cannot be the applicant | Hard Rule | P0 |
+| BR-003 | Recommend changing password regularly | Soft Rule | P1 |
 ```
 
-## 4. 输出规范
+## 4. Output Specification
 
-### 4.1 业务分析报告结构
+### 4.1 Business Analysis Report Structure
 
 ```markdown
-# [模块名称] 业务分析报告
+# [Module Name] Business Analysis Report
 
-## 1. 概述
-### 1.1 文档信息
-| 项目 | 内容 |
+## 1. Overview
+### 1.1 Document Information
+| Item | Content |
 |------|------|
-| 模块编号 | [编号] |
-| 模块名称 | [名称] |
-| 分析日期 | [日期] |
-| 分析人 | [姓名] |
-| 版本 | v1.0 |
+| Module ID | [ID] |
+| Module Name | [Name] |
+| Analysis Date | [Date] |
+| Analyst | [Name] |
+| Version | v1.0 |
 
-### 1.2 业务背景
-[业务背景描述]
+### 1.2 Business Background
+[Business background description]
 
-### 1.3 目标与价值
-[目标与价值描述]
+### 1.3 Objectives and Value
+[Objectives and value description]
 
-## 2. 5W1H 分析
-[详见 3.2 节]
+## 2. 5W1H Analysis
+[See Section 3.2]
 
-## 3. 用例分析
-[详见 3.3.a 节]
+## 3. Use Case Analysis
+[See Section 3.3.a]
 
-## 4. 流程分析
-[详见 3.3.b 节]
+## 4. Process Analysis
+[See Section 3.3.b]
 
-## 5. 状态分析
-[详见 3.3.c 节]
+## 5. State Analysis
+[See Section 3.3.c]
 
-## 6. CRUD 矩阵
-[详见 3.4 节]
+## 6. CRUD Matrix
+[See Section 3.4]
 
-## 7. 业务规则
-[详见 3.5 节]
+## 7. Business Rules
+[See Section 3.5]
 
-## 8. 风险与假设
-### 8.1 风险
-| 风险ID | 风险描述 | 影响 | 概率 | 应对 |
+## 8. Risks and Assumptions
+### 8.1 Risks
+| Risk ID | Risk Description | Impact | Probability | Response |
 |--------|---------|------|------|------|
-| R-001 | [描述] | [影响] | [概率] | [应对] |
+| R-001 | [Description] | [Impact] | [Probability] | [Response] |
 
-### 8.2 假设
-| 假设ID | 假设描述 | 验证方式 |
+### 8.2 Assumptions
+| Assumption ID | Assumption Description | Validation Method |
 |--------|---------|---------|
-| A-001 | [描述] | [验证] |
+| A-001 | [Description] | [Validation] |
 
-## 9. 附录
-### 9.1 术语表
-| 术语 | 定义 |
+## 9. Appendix
+### 9.1 Glossary
+| Term | Definition |
 |------|------|
-| [术语] | [定义] |
+| [Term] | [Definition] |
 
-### 9.2 参考文档
-- [文档1]
-- [文档2]
+### 9.2 Reference Documents
+- [Document 1]
+- [Document 2]
 ```
 
 ## 5. Guardrails
 
-### 5.1 必须遵守
-- [ ] 每个需求必须有明确的5W1H分析
-- [ ] 每个业务实体必须有状态定义
-- [ ] CRUD矩阵必须覆盖所有业务操作
-- [ ] 业务规则必须标注优先级
+### 5.1 Must Follow
+- [ ] Each requirement must have clear 5W1H analysis
+- [ ] Each business entity must have state definitions
+- [ ] CRUD matrix must cover all business operations
+- [ ] Business rules must be marked with priority
 
-### 5.2 避免事项
-- ❌ 遗漏关键业务流程
-- ❌ 状态定义不完整或不互斥
-- ❌ 业务规则与实际业务不符
-- ❌ 用例与流程描述不一致
+### 5.2 Things to Avoid
+- ❌ Missing key business processes
+- ❌ Incomplete or non-exclusive state definitions
+- ❌ Business rules inconsistent with actual business
+- ❌ Use cases inconsistent with process descriptions
 
-## 6. 与其他技能协作
+## 6. Collaboration with Other Skills
 
-| 协作技能 | 协作方式 | 传入数据 | 期望输出 |
+| Collaborative Skill | Collaboration Method | Input Data | Expected Output |
 |---------|---------|---------|---------|
-| **pdd-main** | 流程调度 | 分析请求 | 业务分析报告 |
-| **pdd-extract-features** | Sequential | 分析报告 | 功能点矩阵 |
-| **pdd-generate-spec** | Sequential | 分析报告 | 开发规格 |
+| **pdd-main** | Process orchestration | Analysis request | Business analysis report |
+| **pdd-extract-features** | Sequential | Analysis report | Feature matrix |
+| **pdd-generate-spec** | Sequential | Analysis report | Development specification |
 
-## 7. 示例
+## 7. Examples
 
-### 7.1 输入示例
+### 7.1 Input Example
 
 ```
-用户: 分析国有产权转让的业务需求
-PRD文档: docs/PRDs/ZCCZ-1-PRD.md
+User: Analyze the business requirements for property rights transfer
+PRD Document: docs/PRDs/ZCCZ-1-PRD.md
 ```
 
-### 7.2 输出示例
+### 7.2 Output Example
 
 ```markdown
-# 国有产权转让 业务分析报告
+# Property Rights Transfer Business Analysis Report
 
-## 1. 概述
-| 项目 | 内容 |
+## 1. Overview
+| Item | Content |
 |------|------|
-| 模块编号 | ZCCZ-1 |
-| 模块名称 | 国有产权（股权）转让 |
-| 分析日期 | 2026-03-21 |
+| Module ID | ZCCZ-1 |
+| Module Name | Property Rights (Equity) Transfer |
+| Analysis Date | 2026-03-21 |
 
-## 2. 5W1H 分析 (示例: 转让申请)
+## 2. 5W1H Analysis (Example: Transfer Application)
 
-| 维度 | 分析 |
+| Dimension | Analysis |
 |------|------|
-| Why | 规范国有资产转让流程，防止国有资产流失 |
-| What | 转让申请、审核、挂牌、交易、结算全流程 |
-| Who | 子公司经办人、集团审批人、交易所 |
-| When | 依据国资委规定的时间节点 |
-| Where | 资产管理系统 + 外部交易所系统 |
-| How | 线上申请+审批，线下交易+结算 |
+| Why | Standardize asset transfer process, ensure compliant asset circulation |
+| What | Full process of transfer application, review, listing, transaction, settlement |
+| Who | Subsidiary operator, group approver, exchange |
+| When | According to SASAC prescribed time nodes |
+| Where | Asset management system + External exchange system |
+| How | Online application + approval, offline transaction + settlement |
 
-## 3. 用例图
-[用例图]
+## 3. Use Case Diagram
+[Use Case Diagram]
 
-## 4. 状态图
-[状态图]
+## 4. State Diagram
+[State Diagram]
 
-## 5. CRUD 矩阵
-[CRUD矩阵]
+## 5. CRUD Matrix
+[CRUD Matrix]
 ```
 
-## 8. 版本历史
+## 8. Version History
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Change Content |
 |-----|------|---------|
-| 2.0 | 2026-03-21 | 增强方法论指导，添加MECE检验清单 |
-| 1.0 | 早期 | 初始版本 |
+| 2.0 | 2026-03-21 | Enhanced methodology guidance, added MECE checklist |
+| 1.0 | Early | Initial version |

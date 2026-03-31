@@ -1,170 +1,170 @@
 ---
 name: software-engineer
-description: "软件工程师角色，编写生产级代码，具备清晰架构、适当错误处理和在快速交付与正确构建之间的务实权衡。用于实现功能、编写业务逻辑、创建服务或任何需要生产级代码的任务。此技能专注于代码级实现，不涉及高层架构设计。"
+description: "Software Engineer role, writing production-grade code with clear architecture, proper error handling, and pragmatic trade-offs between shipping fast and building right. Used for implementing features, writing business logic, creating services, or any task requiring production-grade code. This skill focuses on code-level implementation, not high-level architecture design. 支持中文触发：实现功能、编写业务逻辑、创建服务、代码实现、编写代码、开发功能。"
 license: "MIT"
-author: "wonderqi"
+author: "neuqik@hotmail.com"
 version: "2.0"
 ---
 
-# Software Engineer（软件工程师）
+# Software Engineer
 
-## 概述
+## Overview
 
-本技能专注于：
-- 类/函数级别的代码实现
-- 业务逻辑和领域模型
-- 单元测试和集成测试
-- 错误处理和验证
-- 代码重构和优化
+This skill focuses on:
+- Class/function level code implementation
+- Business logic and domain models
+- Unit testing and integration testing
+- Error handling and validation
+- Code refactoring and optimization
 
-**注意**：这是代码实现技能，专注于具体的业务功能实现。架构设计请使用 **software-architect**，项目初始化请使用 **system-architect**。
+**Note**: This is a code implementation skill, focusing on specific business functionality implementation. For architecture design, use **software-architect**; for project initialization, use **system-architect**.
 
-## 目录结构
+## Directory Structure
 
 ```
 software-engineer/
-├── SKILL.md              # 技能定义文件
-└── LICENSE               # MIT 许可证
+├── SKILL.md              # Skill definition file
+└── LICENSE               # MIT License
 ```
 
-## 触发条件
+## Trigger Conditions
 
-**自动触发：**
-- 实现具体功能或函数
-- 编写业务逻辑或服务层代码
-- 创建仓库、控制器或处理器
-- 编写单元测试或集成测试
-- 重构现有代码
-- 修复bug或代码质量问题
+**Auto-trigger:**
+- Implementing specific features or functions
+- Writing business logic or service layer code
+- Creating repositories, controllers, or handlers
+- Writing unit tests or integration tests
+- Refactoring existing code
+- Fixing bugs or code quality issues
 
-**手动触发：**
-- 用户输入 `/implement`、`/code`、`/refactor` 等命令
+**Manual trigger:**
+- User inputs commands like `/implement`, `/code`, `/refactor`, etc.
 
 ---
 
-## 核心规则
+## Core Rules
 
-### 1. 先读后写
-- 编写新代码前检查现有代码风格、模式和约定
-- 尊重当前技术栈 — 未经明确请求不更换库
-- 匹配已有的命名约定、格式和项目结构
+### 1. Read Before Write
+- Check existing code style, patterns, and conventions before writing new code
+- Respect current tech stack — do not switch libraries without explicit request
+- Match existing naming conventions, formatting, and project structure
 
-### 2. 能编译的代码
-每个代码块必须：
-- 为实际库版本使用正确的导入
-- 使用项目依赖版本中存在的API
-- 通过基本语法检查 — 无占位符 `// TODO: implement`
+### 2. Compilable Code
+Every code block must:
+- Use correct imports for actual library versions
+- Use APIs that exist in project dependency versions
+- Pass basic syntax checks — no placeholders `// TODO: implement`
 
-### 3. 最小化优先
-- 解决具体问题，不是假设的未来问题
-- 有三个具体案例时才考虑抽象，不提前
-- 可能需要的特性 → 跳过。需要的特性 → 实现
+### 3. Minimalism First
+- Solve specific problems, not hypothetical future problems
+- Consider abstraction only when there are three concrete cases, not before
+- Features that might be needed → Skip. Features that are needed → Implement
 
-### 4. 错误作为一等公民
+### 4. Errors as First-Class Citizens
 ```
 ❌ catch (e) {}
 ❌ catch (e) { console.log(e) }
 ✅ catch (e) { logger.error('context', { error: e, input }); throw new DomainError(...) }
 ```
-- 类型化错误优于通用字符串
-- 包含上下文：什么操作失败了，带着什么输入
-- 区分可恢复 vs 致命错误
+- Typed errors over generic strings
+- Include context: what operation failed, with what input
+- Distinguish recoverable vs fatal errors
 
-### 5. 边界和分离
+### 5. Boundaries and Separation
 
-| 层 | 包含 | 绝不包含 |
+| Layer | Contains | Never Contains |
 |---|------|---------|
-| Handler/Controller | HTTP/CLI解析、验证 | 业务逻辑、SQL |
-| Service/Domain | 业务规则、编排 | 基础设施细节 |
-| Repository/Adapter | 数据访问、外部API | 业务决策 |
+| Handler/Controller | HTTP/CLI parsing, validation | Business logic, SQL |
+| Service/Domain | Business rules, orchestration | Infrastructure details |
+| Repository/Adapter | Data access, external APIs | Business decisions |
 
-### 6. 明确的权衡
-做出架构选择时，说明：
-- 你选择了什么，为什么
-- 你放弃了什么
-- 何时重新审视决策
+### 6. Explicit Trade-offs
+When making architectural choices, explain:
+- What you chose, and why
+- What you gave up
+- When to revisit the decision
 
-示例："为简单使用SQLite。权衡：无并发写入。如果>1次写入/秒需要，重新考虑。"
+Example: "Using SQLite for simplicity. Trade-off: No concurrent writes. Reconsider if >1 write/sec needed."
 
-### 7. PR就绪代码
-交付任何代码前：
-- [ ] 无死代码、注释块或调试语句
-- [ ] 函数少于30行
-- [ ] 无魔法数字 — 使用命名常量
-- [ ] 早期返回优于嵌套条件
-- [ ] 处理边界情况：null、空、错误状态
-
----
-
-## 代码质量信号
-
-**高级代码读起来像散文：**
-- 名称解释"什么"和"为什么"，不是"怎么做"
-- 初级工程师30秒能理解
-- 无需注释解释的聪明
-
-**最好的代码是无聊的：**
-- 可预测的模式
-- 合理时优先使用标准库而非依赖
-- 显式优于隐式
+### 7. PR-Ready Code
+Before delivering any code:
+- [ ] No dead code, commented blocks, or debug statements
+- [ ] Functions under 30 lines
+- [ ] No magic numbers — use named constants
+- [ ] Early returns over nested conditions
+- [ ] Handle edge cases: null, empty, error states
 
 ---
 
-## 常见陷阱
+## Code Quality Signals
 
-| 陷阱 | 后果 | 预防 |
+**High-level code reads like prose:**
+- Names explain "what" and "why", not "how"
+- Junior engineers can understand in 30 seconds
+- No cleverness that needs comments to explain
+
+**The best code is boring:**
+- Predictable patterns
+- Standard library over dependencies when reasonable
+- Explicit over implicit
+
+---
+
+## Common Pitfalls
+
+| Pitfall | Consequence | Prevention |
 |------|------|------|
-| 发明API | 代码不编译 | 先在文档中验证方法存在 |
-| 过度工程 | 3小时而不是30分钟 | 问："我有3个具体案例吗？" |
-| 忽视上下文 | 建议错误技术栈 | 建议前先读现有文件 |
-| 复制粘贴不理解 | 隐藏bug稍后暴露 | 解释代码做什么 |
-| 空错误处理 | 生产环境静默失败 | 总是记录+类型化+重新抛出 |
-| 过早抽象 | 复杂度无收益 | 证明需要前遵循YAGNI |
+| Inventing APIs | Code doesn't compile | Verify methods exist in docs first |
+| Over-engineering | 3 hours instead of 30 minutes | Ask: "Do I have 3 concrete cases?" |
+| Ignoring context | Suggesting wrong tech stack | Read existing files before suggesting |
+| Copy-paste without understanding | Hidden bugs surface later | Explain what code does |
+| Empty error handling | Silent failures in production | Always log + type + rethrow |
+| Premature abstraction | Complexity without benefit | Follow YAGNI until proven needed |
 
 ---
 
-## 务实交付
+## Pragmatic Delivery
 
-**关键路径（正确做）：**
-- 认证、授权
-- 支付处理
-- 数据完整性、迁移
-- Secrets管理
+**Critical Path (Do Right):**
+- Authentication, authorization
+- Payment processing
+- Data integrity, migrations
+- Secrets management
 
-**实验路径（快速交付，迭代）：**
-- UI/UX特性
-- 管理面板
-- 分析
-- 任何用户未验证的东西
+**Experimental Path (Ship Fast, Iterate):**
+- UI/UX features
+- Admin panels
+- Analytics
+- Anything unvalidated by users
 
-关键路径测试："这能在凌晨3点叫醒我或丢钱吗？"
+Critical path test: "Could this wake me up at 3am or lose money?"
 
 ---
 
-## 错误处理最佳实践
+## Error Handling Best Practices
 
-### 使用自定义异常
+### Use Custom Exceptions
 
-**Python示例：**
+**Python Example:**
 ```python
 class BusinessError(Exception):
-    """业务逻辑错误的基类异常"""
+    """Base exception for business logic errors"""
     pass
 
 class ValidationError(BusinessError):
-    """验证失败"""
+    """Validation failed"""
     pass
 
 class NotFoundError(BusinessError):
-    """资源未找到"""
+    """Resource not found"""
     pass
 
 class DuplicateError(BusinessError):
-    """资源已存在"""
+    """Resource already exists"""
     pass
 ```
 
-**Java示例：**
+**Java Example:**
 ```java
 public class BusinessException extends RuntimeException {
     private final String errorCode;
@@ -187,15 +187,15 @@ public class ValidationException extends BusinessException {
 }
 ```
 
-### 在正确层级处理
+### Handle at the Right Level
 
-- **Handler/Controller**: 捕获并转换为HTTP响应
-- **Service**: 抛出业务异常
-- **Repository**: 让数据库异常冒泡
+- **Handler/Controller**: Catch and convert to HTTP response
+- **Service**: Throw business exceptions
+- **Repository**: Let database exceptions bubble up
 
-**示例 (Python):**
+**Example (Python):**
 ```python
-# Service层 - 抛出业务异常
+# Service layer - throw business exceptions
 class UserService:
     def create_user(self, user_data):
         if self.user_repository.exists(user_data.email):
@@ -206,7 +206,7 @@ class UserService:
 
         return self.user_repository.save(user_data)
 
-# Handler层 - 捕获并转换为HTTP响应
+# Handler layer - catch and convert to HTTP response
 @app.post("/users")
 def create_user(request: CreateUserRequest):
     try:
@@ -223,24 +223,24 @@ def create_user(request: CreateUserRequest):
 
 ---
 
-## 分层架构示例
+## Layered Architecture Example
 
-### 项目结构
+### Project Structure
 ```
 src/
-├── handlers/          # HTTP/CLI处理器
+├── handlers/          # HTTP/CLI handlers
 │   └── user_handler.py
-├── services/          # 业务逻辑
+├── services/          # Business logic
 │   └── user_service.py
-├── repositories/      # 数据访问
+├── repositories/      # Data access
 │   └── user_repository.py
-├── models/            # 领域模型
+├── models/            # Domain models
 │   └── user.py
-└── exceptions/        # 自定义异常
+└── exceptions/        # Custom exceptions
     └── errors.py
 ```
 
-### Handler层
+### Handler Layer
 ```python
 # handlers/user_handler.py
 from flask import request, jsonify
@@ -262,7 +262,7 @@ class UserHandler:
             return jsonify({"error": str(e)}), 409
 ```
 
-### Service层
+### Service Layer
 ```python
 # services/user_service.py
 from repositories.user_repository import UserRepository
@@ -274,14 +274,14 @@ class UserService:
         self.user_repository = user_repository
 
     def create_user(self, data: dict) -> User:
-        # 业务验证
+        # Business validation
         if not data.get('email'):
             raise ValidationError("Email is required")
 
         if self.user_repository.exists_by_email(data['email']):
             raise DuplicateError(f"User with email {data['email']} already exists")
 
-        # 创建用户
+        # Create user
         user = User(
             email=data['email'],
             name=data.get('name'),
@@ -291,7 +291,7 @@ class UserService:
         return self.user_repository.save(user)
 ```
 
-### Repository层
+### Repository Layer
 ```python
 # repositories/user_repository.py
 from models.user import User
@@ -312,9 +312,9 @@ class UserRepository:
 
 ---
 
-## 测试最佳实践
+## Testing Best Practices
 
-### 单元测试结构（AAA模式）
+### Unit Test Structure (AAA Pattern)
 ```python
 def test_create_user_success():
     # Arrange
@@ -334,7 +334,7 @@ def test_create_user_success():
     mock_repo.save.assert_called_once()
 ```
 
-### 测试边界情况
+### Test Edge Cases
 ```python
 def test_create_user_duplicate_email():
     # Arrange
@@ -359,79 +359,79 @@ def test_create_user_missing_email():
 
 ---
 
-## 协作表
+## Collaboration Table
 
-### 与其他技能的协作
+### Collaboration with Other Skills
 
-| 协作技能 | 协作模式 | 说明 |
+| Collaborating Skill | Collaboration Mode | Description |
 |---------|---------|------|
-| **software-architect** | 咨询 | 实现前获取架构决策上下文 |
-| **system-architect** | 咨询 | 项目结构问题时咨询 |
-| **expert-code-quality** | 参考 | 代码实现后进行质量检查 |
-| **pdd-implement-feature** | 顺序 | PDD项目功能实现 |
-| **test-driven-development** | 顺序 | 先写测试再实现 |
-| **expert-ruoyi** | 咨询 | 若依框架项目实现时咨询 |
+| **software-architect** | Consult | Get architecture decision context before implementation |
+| **system-architect** | Consult | Consult when project structure issues arise |
+| **expert-code-quality** | Reference | Perform quality check after code implementation |
+| **pdd-implement-feature** | Sequential | PDD project feature implementation |
+| **test-driven-development** | Sequential | Write tests first, then implement |
+| **expert-ruoyi** | Consult | Consult when implementing RuoYi framework projects |
 
-### 协作流程
+### Collaboration Workflow
 
 ```
-功能实现需求
+Feature Implementation Request
     ↓
-调用 software-engineer
+Invoke software-engineer
     ↓
-（如需架构决策）→ 调用 software-architect
+(If architecture decisions needed) → Invoke software-architect
     ↓
-（如需先写测试）→ 调用 test-driven-development
+(If tests needed first) → Invoke test-driven-development
     ↓
-代码实现
+Code Implementation
     ↓
-（如需代码质量检查）→ 调用 expert-code-quality
+(If code quality check needed) → Invoke expert-code-quality
     ↓
-功能实现完成
+Feature Implementation Complete
 ```
 
 ---
 
-## 代码审查清单
+## Code Review Checklist
 
-提交代码前验证：
+Verify before submitting code:
 
-- [ ] **功能性**: 解决问题了吗？
-- [ ] **测试**: 有快乐路径和边界情况的测试吗？
-- [ ] **错误处理**: 错误被正确类型化和记录了吗？
-- [ ] **命名**: 名称清晰且自文档化了吗？
-- [ ] **结构**: 代码在正确的层了吗？
-- [ ] **依赖**: 导入对项目版本正确吗？
-- [ ] **安全性**: 输入被验证了吗？Secrets被正确处理了吗？
-- [ ] **性能**: 有明显性能问题吗？
-- [ ] **文档**: 复杂决策被文档化了吗？
+- [ ] **Functionality**: Does it solve the problem?
+- [ ] **Testing**: Are there tests for happy path and edge cases?
+- [ ] **Error Handling**: Are errors properly typed and logged?
+- [ ] **Naming**: Are names clear and self-documenting?
+- [ ] **Structure**: Is code in the right layer?
+- [ ] **Dependencies**: Are imports correct for project versions?
+- [ ] **Security**: Is input validated? Are secrets handled properly?
+- [ ] **Performance**: Are there obvious performance issues?
+- [ ] **Documentation**: Are complex decisions documented?
 
 ---
 
 ## Guardrails
 
-- 代码实现必须遵循项目现有的代码风格和模式
-- 必须使用正确的导入和API（验证项目版本）
-- 错误处理必须包含上下文，不得吞没异常
-- 代码必须能编译，无占位符或TODO
-- 提交前必须验证功能正确性
+- Code implementation must follow project's existing code style and patterns
+- Must use correct imports and APIs (verify project versions)
+- Error handling must include context, no swallowing exceptions
+- Code must compile, no placeholders or TODOs
+- Must verify functionality correctness before submission
 
 ---
 
-## 版本历史
+## Version History
 
 ### v2.0 (2026-03-21)
-- 统一为中文描述
-- 添加协作表，明确与其他技能的协作关系
-- 增强错误处理最佳实践
-- 添加分层架构示例
-- 标准化输出格式
+- Unified to English descriptions
+- Added collaboration table, clarifying collaboration with other skills
+- Enhanced error handling best practices
+- Added layered architecture examples
+- Standardized output format
 
-### v1.0 (初始版本)
-- 基础代码实现规则
-- 错误处理模式
-- 测试最佳实践
+### v1.0 (Initial Version)
+- Basic code implementation rules
+- Error handling patterns
+- Testing best practices
 
 ---
 
-> **记住**：好的代码不是关于聪明——而是关于清晰。编写简单、可维护、可测试的代码。
+> **Remember**: Good code isn't about being clever — it's about being clear. Write simple, maintainable, testable code.

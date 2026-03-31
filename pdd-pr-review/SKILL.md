@@ -1,3 +1,10 @@
+---
+name: pdd-pr-review
+description: 汇总审查结果，给出建议操作。支持 GitHub 模式和本地模式。支持中文触发：审查PR、PR审查、查看审查结果、PR建议。
+author: neuqik@hotmail.com
+license: MIT
+---
+
 # pdd-pr-review
 
 **Description**: 汇总审查结果，给出建议操作。支持 GitHub 模式和本地模式。

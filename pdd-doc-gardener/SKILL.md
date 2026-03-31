@@ -1,201 +1,207 @@
 ---
 name: pdd-doc-gardener
 description: |
-  文档园丁技能，定期扫描代码仓库中的文档目录，识别过时或废弃文档。当用户需要文档一致性检查、文档更新、文档清理时自动触发。
+  Document Gardener skill that periodically scans document directories in the codebase to identify outdated or deprecated documents. Automatically triggered when users need document consistency checks, document updates, or document cleanup.
   
-  核心职责：保持知识库的新鲜度，确保文档与代码实现同步。
+  Core responsibility: Maintain knowledge base freshness, ensure documents are synchronized with code implementation.
   
-  触发场景：
-  - 用户请求"检查文档一致性"、"更新文档"、"清理过时文档"
-  - pdd-entropy-reduction 协调器调用
-  - 定时触发（建议每天一次）
+  Trigger scenarios:
+  - User requests "check document consistency", "update documents", "clean up outdated documents"
+  - pdd-entropy-reduction coordinator invocation
+  - Scheduled trigger (recommended daily)
+  
+  支持中文触发：文档园丁、文档一致性检查、文档更新、文档清理、过时文档、PDD文档园丁。
+author: neuqik@hotmail.com
+license: MIT
 ---
 
-# 文档园丁 (pdd-doc-gardener)
+# Document Gardener (pdd-doc-gardener)
 
-## 核心理念
+## Core Philosophy
 
-> "文档即代码，保持同步。文档过时即视为技术债务。" —— PDD 黄金原则
+> "Documentation as code, keep synchronized. Outdated documentation is technical debt." —— PDD Golden Principle
 
-文档园丁是实现垃圾回收的关键技能，负责定期扫描代码仓库中的 `docs/` 目录，识别那些不再反映真实代码行为的过时或废弃文档。
+Document Gardener is a key skill for implementing garbage collection, responsible for periodically scanning the `docs/` directory in the codebase to identify outdated or deprecated documents that no longer reflect actual code behavior.
 
-## 检测项
+## Detection Items
 
-### 1. 代码与文档不一致
+### 1. Code-Document Inconsistency
 
-**检测方法**：
-- 解析文档中的代码引用（如文件路径、函数名、API 端点）
-- 检查引用的代码是否存在
-- 检查代码行为是否与文档描述一致
+**Detection Method**:
+- Parse code references in documents (e.g., file paths, function names, API endpoints)
+- Check if referenced code exists
+- Check if code behavior matches document description
 
-**示例**：
+**Example**:
 ```
-文档描述：API /api/users 返回用户列表
-实际代码：API /api/users 返回用户详情（包含订单）
-→ 检测结果：文档过时
-```
-
-### 2. 注释过时
-
-**检测方法**：
-- 扫描代码中的 TODO、FIXME、HACK 注释
-- 检查注释存在时间
-- 标记超过 N 天的注释为过时
-
-**示例**：
-```
-代码注释：// TODO: implement this later (创建于 30 天前)
-→ 检测结果：注释过时，需要处理或删除
+Document description: API /api/users returns user list
+Actual code: API /api/users returns user details (including orders)
+→ Detection result: Document outdated
 ```
 
-### 3. 文档引用的代码已删除
+### 2. Outdated Comments
 
-**检测方法**：
-- 解析文档中的文件路径引用
-- 检查文件是否存在
-- 标记引用已删除文件的文档
+**Detection Method**:
+- Scan TODO, FIXME, HACK comments in code
+- Check comment age
+- Mark comments older than N days as outdated
 
-**示例**：
+**Example**:
 ```
-文档引用：参见 src/utils/helper.js
-实际状态：文件已删除
-→ 检测结果：文档引用失效
+Code comment: // TODO: implement this later (created 30 days ago)
+→ Detection result: Comment outdated, needs handling or deletion
 ```
 
-### 4. API 文档与实现不匹配
+### 3. Document References Deleted Code
 
-**检测方法**：
-- 解析 API 文档中的端点定义
-- 扫描代码中的实际 API 实现
-- 对比参数、返回值、错误码
+**Detection Method**:
+- Parse file path references in documents
+- Check if files exist
+- Mark documents referencing deleted files
 
-**示例**：
+**Example**:
 ```
-API 文档：POST /api/users，参数 { name, email }
-实际代码：POST /api/users，参数 { name, email, phone }
-→ 检测结果：API 文档缺失参数说明
+Document reference: See src/utils/helper.js
+Actual status: File deleted
+→ Detection result: Document reference invalid
+```
+
+### 4. API Documentation Mismatch with Implementation
+
+**Detection Method**:
+- Parse endpoint definitions in API documentation
+- Scan actual API implementations in code
+- Compare parameters, return values, error codes
+
+**Example**:
+```
+API documentation: POST /api/users, parameters { name, email }
+Actual code: POST /api/users, parameters { name, email, phone }
+→ Detection result: API documentation missing parameter description
 ```
 
 ---
 
-## 执行流程
+## Execution Flow
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   扫描      │ ──→ │   对比      │ ──→ │   分类      │ ──→ │   执行      │
+│   Scan      │ ──→ │   Compare   │ ──→ │   Classify  │ ──→ │   Execute   │
 │             │     │             │     │             │     │             │
-│ • 文档目录  │     │ • 代码引用  │     │ • 问题类型  │     │ • 更新文档  │
-│ • 代码注释  │     │ • API 定义  │     │ • 严重程度  │     │ • 创建 PR   │
-│ • API 文档  │     │ • 行为描述  │     │ • 优先级    │     │ • 删除废弃  │
+│ • Doc dirs  │     │ • Code refs │     │ • Issue type│     │ • Update    │
+│ • Code      │     │ • API defs  │     │ • Severity  │     │   docs      │
+│   comments  │     │ • Behavior  │     │ • Priority  │     │ • Create PR │
+│ • API docs  │     │   desc      │     │             │     │ • Delete    │
+│             │     │             │     │             │     │   deprecated│
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
 ---
 
-## 输出格式
+## Output Format
 
-### 文档园丁报告
+### Document Gardener Report
 
 ```markdown
-# 文档园丁报告 - YYYY-MM-DD
+# Document Gardener Report - YYYY-MM-DD
 
-## 扫描范围
-- 文档目录：docs/
-- 代码目录：src/
-- 扫描文件数：XX
+## Scan Scope
+- Document directory: docs/
+- Code directory: src/
+- Files scanned: XX
 
-## 发现问题
+## Issues Found
 
-### Critical（必须修复）
-| 文件 | 问题 | 建议 |
-|------|------|------|
-| docs/api/users.md | API 参数缺失 | 添加 phone 参数说明 |
+### Critical (Must Fix)
+| File | Issue | Suggestion |
+|------|-------|------------|
+| docs/api/users.md | API parameter missing | Add phone parameter description |
 
-### Warning（建议修复）
-| 文件 | 问题 | 建议 |
-|------|------|------|
-| docs/architecture.md | 引用已删除文件 | 更新引用路径 |
+### Warning (Recommended Fix)
+| File | Issue | Suggestion |
+|------|-------|------------|
+| docs/architecture.md | References deleted file | Update reference path |
 
-### Info（可选修复）
-| 文件 | 问题 | 建议 |
-|------|------|------|
-| src/utils/helper.js | TODO 存在 30 天 | 处理或删除 |
+### Info (Optional Fix)
+| File | Issue | Suggestion |
+|------|-------|------------|
+| src/utils/helper.js | TODO exists for 30 days | Handle or delete |
 
-## 执行结果
-- 更新文档：X 项
-- 创建 PR：X 项
-- 跳过：X 项
+## Execution Results
+- Documents updated: X items
+- PRs created: X items
+- Skipped: X items
 ```
 
 ---
 
-## 使用示例
+## Usage Examples
 
-### 示例 1：全面文档检查
-
-```
-用户：检查所有文档一致性
-
-AI：
-1. 扫描 docs/ 目录
-2. 解析所有文档中的代码引用
-3. 对比代码实现
-4. 生成报告并创建修复 PR
-```
-
-### 示例 2：API 文档检查
+### Example 1: Comprehensive Document Check
 
 ```
-用户：检查 API 文档是否与代码一致
+User: Check all document consistency
 
-AI：
-1. 扫描 docs/api/ 目录
-2. 解析 API 端点定义
-3. 对比代码中的 API 实现
-4. 生成差异报告
+AI:
+1. Scan docs/ directory
+2. Parse all code references in documents
+3. Compare with code implementation
+4. Generate report and create fix PR
 ```
 
-### 示例 3：清理过时注释
+### Example 2: API Documentation Check
 
 ```
-用户：清理代码中的过时 TODO
+User: Check if API documentation matches code
 
-AI：
-1. 扫描代码中的 TODO/FIXME 注释
-2. 检查注释存在时间
-3. 标记超过 30 天的注释
-4. 生成清理建议
+AI:
+1. Scan docs/api/ directory
+2. Parse API endpoint definitions
+3. Compare with API implementations in code
+4. Generate difference report
+```
+
+### Example 3: Clean Up Outdated Comments
+
+```
+User: Clean up outdated TODOs in code
+
+AI:
+1. Scan TODO/FIXME comments in code
+2. Check comment age
+3. Mark comments older than 30 days
+4. Generate cleanup suggestions
 ```
 
 ---
 
-## 配置选项
+## Configuration Options
 
 ```yaml
 # doc-gardener-config.yaml
 doc_gardener:
-  # 扫描配置
+  # Scan configuration
   scan:
     docs_paths: ["docs/", "*.md"]
     code_paths: ["src/"]
     exclude: ["node_modules/", "dist/"]
   
-  # 过时检测
+  # Staleness detection
   staleness:
     todo_max_age_days: 30
     doc_max_age_days: 90
   
-  # 执行配置
+  # Execution configuration
   execution:
-    auto_update: true      # 自动更新简单文档
-    create_pr: true        # 创建 PR
-    max_pr_per_run: 3      # 每次运行最大 PR 数
+    auto_update: true      # Auto-update simple documents
+    create_pr: true        # Create PR
+    max_pr_per_run: 3      # Max PRs per run
 ```
 
 ---
 
-## 与其他技能的协作
+## Collaboration with Other Skills
 
-- **pdd-entropy-reduction**：作为子技能被协调调用
-- **pdd-doc-change**：调用此技能创建文档变更 PR
-- **expert-entropy-auditor**：接收审计结果，执行文档修复
+- **pdd-entropy-reduction**: Invoked as a sub-skill by the coordinator
+- **pdd-doc-change**: Calls this skill to create document change PRs
+- **expert-entropy-auditor**: Receives audit results, executes document fixes

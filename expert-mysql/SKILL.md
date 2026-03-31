@@ -1,107 +1,107 @@
 ---
 name: "expert-mysql"
-description: "MySQL数据库专家，提供SQL优化、索引设计、表结构分析服务。参考MySQL官方文档，当用户需要SQL优化、数据库设计、索引优化时调用此技能。"
+description: "MySQL database expert providing SQL optimization, index design, and table structure analysis services. References MySQL official documentation. Invoke this skill when users need SQL optimization, database design, or index optimization. 支持中文触发：SQL优化、数据库设计、索引优化、表结构分析、MySQL优化、查询优化。"
 license: "MIT"
-author: "wonderqi"
+author: "neuqik@hotmail.com"
 version: "2.0"
 ---
 
-# MySQL 数据库专家
+# MySQL Database Expert
 
-## 概述
+## Overview
 
-本技能提供专业的 MySQL 数据库相关服务，包括 SQL 查询优化、数据库表结构设计、索引优化、存储过程编写等。基于 MySQL 官方文档提供权威的技术支持。
+This skill provides professional MySQL database related services, including SQL query optimization, database table structure design, index optimization, stored procedure writing, etc. Provides authoritative technical support based on MySQL official documentation.
 
-## 目录结构
+## Directory Structure
 
 ```
 expert-mysql/
-├── SKILL.md              # 技能定义文件
-├── LICENSE               # MIT 许可证
-├── README.md             # 说明文档
-└── references/           # 参考文档
-    ├── mysql80/          # MySQL 8.0 文档摘要
-    └── mysql94/          # MySQL 9.4 文档摘要
+├── SKILL.md              # Skill definition file
+├── LICENSE               # MIT License
+├── README.md             # Documentation
+└── references/           # Reference documents
+    ├── mysql80/          # MySQL 8.0 documentation summary
+    └── mysql94/          # MySQL 9.4 documentation summary
 ```
 
-## 触发条件
+## Trigger Conditions
 
-**自动触发：**
-- 用户询问 SQL 查询优化
-- 需要设计或修改数据库表结构
-- 索引相关问题
-- 存储过程编写
-- 数据库性能问题分析
+**Auto Trigger:**
+- User asks about SQL query optimization
+- Need to design or modify database table structure
+- Index related issues
+- Stored procedure writing
+- Database performance issue analysis
 
-**手动触发：**
-- 用户输入 `/mysql`、`/sql`、`/database` 等命令
+**Manual Trigger:**
+- User inputs commands like `/mysql`, `/sql`, `/database`, etc.
 
 ---
 
-## 核心能力
+## Core Capabilities
 
-### 1. SQL 查询优化
+### 1. SQL Query Optimization
 
-#### 1.1 查询分析工具
+#### 1.1 Query Analysis Tools
 
-**EXPLAIN 分析：**
+**EXPLAIN Analysis:**
 ```sql
--- 基本用法
+-- Basic usage
 EXPLAIN SELECT * FROM users WHERE name = 'John';
 
--- 详细分析（MySQL 8.0.18+）
+-- Detailed analysis (MySQL 8.0.18+)
 EXPLAIN ANALYZE SELECT * FROM users WHERE name = 'John';
 ```
 
-**EXPLAIN 输出解读：**
+**EXPLAIN Output Interpretation:**
 
-| 列名 | 说明 | 关注点 |
-|------|------|--------|
-| id | 查询标识 | 子查询顺序 |
-| select_type | 查询类型 | 避免DEPENDENT SUBQUERY |
-| table | 表名 | 关联表顺序 |
-| type | 访问类型 | 目标：ref, range, index |
-| possible_keys | 可能使用的索引 | - |
-| key | 实际使用的索引 | 是否命中索引 |
-| key_len | 索引长度 | 越短越好 |
-| rows | 预估扫描行数 | 越少越好 |
-| Extra | 额外信息 | 避免Using filesort, Using temporary |
+| Column | Description | Focus Points |
+|--------|-------------|--------------|
+| id | Query identifier | Subquery order |
+| select_type | Query type | Avoid DEPENDENT SUBQUERY |
+| table | Table name | Join table order |
+| type | Access type | Target: ref, range, index |
+| possible_keys | Possible indexes to use | - |
+| key | Actually used index | Whether index is hit |
+| key_len | Index length | Shorter is better |
+| rows | Estimated rows to scan | Fewer is better |
+| Extra | Additional information | Avoid Using filesort, Using temporary |
 
-#### 1.2 常见优化场景
+#### 1.2 Common Optimization Scenarios
 
-**场景1：避免 SELECT ***
+**Scenario 1: Avoid SELECT ***
 ```sql
--- 不推荐
+-- Not recommended
 SELECT * FROM orders WHERE status = 'pending';
 
--- 推荐
+-- Recommended
 SELECT id, customer_id, total_amount 
 FROM orders 
 WHERE status = 'pending';
 ```
 
-**场景2：优化 JOIN**
+**Scenario 2: Optimize JOIN**
 ```sql
--- 确保关联字段有索引
+-- Ensure join fields have indexes
 CREATE INDEX idx_orders_customer_id ON orders(customer_id);
 
--- 使用 INNER JOIN 替代 WHERE 关联
+-- Use INNER JOIN instead of WHERE join
 SELECT o.*, c.name 
 FROM orders o
 INNER JOIN customers c ON o.customer_id = c.id
 WHERE o.status = 'pending';
 ```
 
-**场景3：子查询优化**
+**Scenario 3: Subquery Optimization**
 ```sql
--- 不推荐：相关子查询
+-- Not recommended: Correlated subquery
 SELECT * FROM orders o1
 WHERE total_amount > (
     SELECT AVG(total_amount) FROM orders o2 
     WHERE o2.customer_id = o1.customer_id
 );
 
--- 推荐：JOIN + 子查询
+-- Recommended: JOIN + subquery
 SELECT o.* 
 FROM orders o
 JOIN (
@@ -112,12 +112,12 @@ JOIN (
 WHERE o.total_amount > avg.avg_amount;
 ```
 
-**场景4：分页优化**
+**Scenario 4: Pagination Optimization**
 ```sql
--- 传统分页（大数据量慢）
+-- Traditional pagination (slow with large data)
 SELECT * FROM orders ORDER BY id LIMIT 10000, 20;
 
--- 优化分页（使用索引）
+-- Optimized pagination (using index)
 SELECT o.* FROM orders o
 JOIN (SELECT id FROM orders ORDER BY id LIMIT 10000, 20) t
 ON o.id = t.id;
@@ -125,93 +125,93 @@ ON o.id = t.id;
 
 ---
 
-### 2. 索引设计
+### 2. Index Design
 
-#### 2.1 索引类型
+#### 2.1 Index Types
 
-| 类型 | 说明 | 适用场景 |
-|------|------|---------|
-| PRIMARY KEY | 主键索引 | 唯一标识 |
-| UNIQUE | 唯一索引 | 唯一约束 |
-| INDEX | 普通索引 | 加速查询 |
-| FULLTEXT | 全文索引 | 文本搜索 |
-| SPATIAL | 空间索引 | 地理位置 |
+| Type | Description | Use Cases |
+|------|-------------|-----------|
+| PRIMARY KEY | Primary key index | Unique identifier |
+| UNIQUE | Unique index | Unique constraint |
+| INDEX | Regular index | Accelerate queries |
+| FULLTEXT | Full-text index | Text search |
+| SPATIAL | Spatial index | Geographic location |
 
-#### 2.2 索引设计原则
+#### 2.2 Index Design Principles
 
-1. **选择性原则**：选择性高的列优先
+1. **Selectivity Principle**: Prioritize columns with high selectivity
    ```sql
-   -- 计算选择性
+   -- Calculate selectivity
    SELECT COUNT(DISTINCT column_name) / COUNT(*) FROM table_name;
-   -- 越接近1，选择性越高
+   -- Closer to 1 means higher selectivity
    ```
 
-2. **最左前缀原则**：复合索引从左匹配
+2. **Leftmost Prefix Principle**: Composite index matches from left
    ```sql
-   -- 复合索引
+   -- Composite index
    CREATE INDEX idx_name_status_create ON orders(customer_name, status, create_time);
    
-   -- 命中索引
+   -- Hits index
    WHERE customer_name = 'John'
    WHERE customer_name = 'John' AND status = 'pending'
    
-   -- 不命中索引
+   -- Does not hit index
    WHERE status = 'pending'
    ```
 
-3. **覆盖索引原则**：查询字段都在索引中
+3. **Covering Index Principle**: Query fields are all in the index
    ```sql
-   -- 覆盖索引
+   -- Covering index
    CREATE INDEX idx_covering ON orders(status, total_amount);
    
-   -- 查询只使用索引列
+   -- Query only uses index columns
    SELECT status, total_amount FROM orders WHERE status = 'pending';
    ```
 
-#### 2.3 索引失效场景
+#### 2.3 Index Invalidation Scenarios
 
-| 场景 | 示例 | 解决方案 |
-|------|------|---------|
-| 使用函数 | `WHERE YEAR(create_time) = 2024` | 改用范围查询 |
-| 隐式转换 | `WHERE phone = 13800138000`（字符串字段） | 加引号 |
-| LIKE 左模糊 | `WHERE name LIKE '%John'` | 使用全文索引 |
-| OR 条件 | `WHERE name = 'John' OR age = 20` | 使用 UNION |
-| NOT 条件 | `WHERE status != 'deleted'` | 改用 IN |
+| Scenario | Example | Solution |
+|----------|---------|----------|
+| Using functions | `WHERE YEAR(create_time) = 2024` | Use range query instead |
+| Implicit conversion | `WHERE phone = 13800138000` (string field) | Add quotes |
+| LIKE left wildcard | `WHERE name LIKE '%John'` | Use full-text index |
+| OR condition | `WHERE name = 'John' OR age = 20` | Use UNION |
+| NOT condition | `WHERE status != 'deleted'` | Use IN instead |
 
 ---
 
-### 3. 表结构设计
+### 3. Table Structure Design
 
-#### 3.1 数据类型选择
+#### 3.1 Data Type Selection
 
-| 类型 | 存储 | 范围 | 适用场景 |
-|------|------|------|---------|
-| TINYINT | 1字节 | -128~127 | 状态、标志 |
-| SMALLINT | 2字节 | -32768~32767 | 计数、数量 |
-| INT | 4字节 | -21亿~21亿 | 主键、ID |
-| BIGINT | 8字节 | 非常大 | 大数据量主键 |
-| VARCHAR(n) | 可变 | n字符 | 字符串 |
-| TEXT | 可变 | 64KB | 长文本 |
-| DATETIME | 8字节 | 1000~9999年 | 时间 |
-| TIMESTAMP | 4字节 | 1970~2038年 | 时间戳 |
+| Type | Storage | Range | Use Cases |
+|------|---------|-------|-----------|
+| TINYINT | 1 byte | -128~127 | Status, flags |
+| SMALLINT | 2 bytes | -32768~32767 | Counts, quantities |
+| INT | 4 bytes | -2.1B~2.1B | Primary key, ID |
+| BIGINT | 8 bytes | Very large | Large data primary key |
+| VARCHAR(n) | Variable | n characters | Strings |
+| TEXT | Variable | 64KB | Long text |
+| DATETIME | 8 bytes | 1000~9999 year | Time |
+| TIMESTAMP | 4 bytes | 1970~2038 year | Timestamp |
 
-#### 3.2 范式设计
+#### 3.2 Normalization Design
 
-**第一范式（1NF）**：字段不可分割
+**First Normal Form (1NF)**: Fields are indivisible
 
-**第二范式（2NF）**：消除部分依赖
+**Second Normal Form (2NF)**: Eliminate partial dependencies
 ```sql
--- 不符合2NF
+-- Does not conform to 2NF
 CREATE TABLE orders (
     id INT,
     customer_id INT,
-    customer_name VARCHAR(100),  -- 依赖customer_id
+    customer_name VARCHAR(100),  -- Depends on customer_id
     product_id INT,
-    product_name VARCHAR(100),   -- 依赖product_id
+    product_name VARCHAR(100),   -- Depends on product_id
     PRIMARY KEY (id)
 );
 
--- 符合2NF
+-- Conforms to 2NF
 CREATE TABLE orders (
     id INT PRIMARY KEY,
     customer_id INT,
@@ -224,17 +224,17 @@ CREATE TABLE customers (
 );
 ```
 
-**第三范式（3NF）**：消除传递依赖
+**Third Normal Form (3NF)**: Eliminate transitive dependencies
 
-#### 3.3 反范式设计
+#### 3.3 Denormalization Design
 
-适当冗余提升查询性能：
+Appropriate redundancy to improve query performance:
 ```sql
--- 订单表冗余客户名称
+-- Order table with redundant customer name
 CREATE TABLE orders (
     id INT PRIMARY KEY,
     customer_id INT,
-    customer_name VARCHAR(100),  -- 冗余字段
+    customer_name VARCHAR(100),  -- Redundant field
     total_amount DECIMAL(10,2),
     create_time DATETIME
 );
@@ -242,45 +242,45 @@ CREATE TABLE orders (
 
 ---
 
-### 4. 性能优化
+### 4. Performance Optimization
 
-#### 4.1 慢查询分析
+#### 4.1 Slow Query Analysis
 
 ```sql
--- 开启慢查询日志
+-- Enable slow query log
 SET GLOBAL slow_query_log = 'ON';
-SET GLOBAL long_query_time = 2;  -- 2秒以上
+SET GLOBAL long_query_time = 2;  -- More than 2 seconds
 SET GLOBAL slow_query_log_file = '/var/log/mysql/slow.log';
 
--- 查看慢查询
+-- View slow queries
 SELECT * FROM mysql.slow_log ORDER BY start_time DESC LIMIT 10;
 ```
 
-#### 4.2 连接池优化
+#### 4.2 Connection Pool Optimization
 
 ```properties
-# 推荐配置
+# Recommended configuration
 spring.datasource.hikari.maximum-pool-size=20
 spring.datasource.hikari.minimum-idle=5
 spring.datasource.hikari.idle-timeout=300000
 spring.datasource.hikari.connection-timeout=30000
 ```
 
-#### 4.3 缓存优化
+#### 4.3 Cache Optimization
 
 ```sql
--- 查询缓存（MySQL 8.0已移除，建议使用应用层缓存）
--- 使用 Redis 缓存热点数据
+-- Query cache (removed in MySQL 8.0, recommend using application layer cache)
+-- Use Redis to cache hot data
 ```
 
 ---
 
-### 5. 高级特性
+### 5. Advanced Features
 
-#### 5.1 窗口函数（MySQL 8.0+）
+#### 5.1 Window Functions (MySQL 8.0+)
 
 ```sql
--- 排名
+-- Ranking
 SELECT 
     name,
     score,
@@ -289,7 +289,7 @@ SELECT
     ROW_NUMBER() OVER (ORDER BY score DESC) as row_num
 FROM students;
 
--- 分组聚合
+-- Grouped aggregation
 SELECT 
     department,
     name,
@@ -299,10 +299,10 @@ SELECT
 FROM employees;
 ```
 
-#### 5.2 CTE 公用表表达式（MySQL 8.0+）
+#### 5.2 CTE Common Table Expressions (MySQL 8.0+)
 
 ```sql
--- 非递归CTE
+-- Non-recursive CTE
 WITH monthly_sales AS (
     SELECT 
         DATE_FORMAT(order_date, '%Y-%m') as month,
@@ -312,7 +312,7 @@ WITH monthly_sales AS (
 )
 SELECT * FROM monthly_sales WHERE total > 10000;
 
--- 递归CTE（层级查询）
+-- Recursive CTE (hierarchical query)
 WITH RECURSIVE org_tree AS (
     SELECT id, name, manager_id, 1 as level
     FROM employees WHERE manager_id IS NULL
@@ -326,23 +326,23 @@ WITH RECURSIVE org_tree AS (
 SELECT * FROM org_tree;
 ```
 
-#### 5.3 JSON 支持（MySQL 5.7+）
+#### 5.3 JSON Support (MySQL 5.7+)
 
 ```sql
--- 创建JSON列
+-- Create JSON column
 CREATE TABLE products (
     id INT PRIMARY KEY,
     name VARCHAR(100),
     attributes JSON
 );
 
--- 插入JSON数据
+-- Insert JSON data
 INSERT INTO products VALUES (1, 'iPhone', '{"color": "black", "storage": 128}');
 
--- 查询JSON
+-- Query JSON
 SELECT name, attributes->>'$.color' as color FROM products;
 
--- JSON函数
+-- JSON functions
 SELECT 
     JSON_EXTRACT(attributes, '$.storage') as storage,
     JSON_SET(attributes, '$.price', 999) as with_price,
@@ -352,58 +352,58 @@ FROM products;
 
 ---
 
-### 6. 事务管理
+### 6. Transaction Management
 
-#### 6.1 事务隔离级别
+#### 6.1 Transaction Isolation Levels
 
-| 隔离级别 | 说明 | 脏读 | 不可重复读 | 幻读 |
-|---------|------|------|-----------|------|
-| READ UNCOMMITTED | 读未提交 | ✗ | ✗ | ✗ |
-| READ COMMITTED | 读已提交 | ✓ | ✗ | ✗ |
-| REPEATABLE READ | 可重复读（默认） | ✓ | ✓ | ✗ |
-| SERIALIZABLE | 串行化 | ✓ | ✓ | ✓ |
+| Isolation Level | Description | Dirty Read | Non-repeatable Read | Phantom Read |
+|-----------------|-------------|------------|---------------------|--------------|
+| READ UNCOMMITTED | Read uncommitted | ✗ | ✗ | ✗ |
+| READ COMMITTED | Read committed | ✓ | ✗ | ✗ |
+| REPEATABLE READ | Repeatable read (default) | ✓ | ✓ | ✗ |
+| SERIALIZABLE | Serializable | ✓ | ✓ | ✓ |
 
-**查看当前隔离级别**：
+**View current isolation level**:
 ```sql
 SELECT @@transaction_isolation;
 ```
 
-**设置隔离级别**：
+**Set isolation level**:
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
 
-#### 6.2 锁机制
+#### 6.2 Lock Mechanism
 
-**锁类型**：
+**Lock Types**:
 
-| 锁类型 | 说明 | 适用场景 |
-|--------|------|---------|
-| 共享锁（S锁） | 允许读，阻止写 | SELECT ... LOCK IN SHARE MODE |
-| 排他锁（X锁） | 阻止读写 | SELECT ... FOR UPDATE |
-| 意向锁 | 表级锁，标识行锁意图 | 自动添加 |
-| 间隙锁 | 锁定范围，防止幻读 | REPEATABLE READ |
+| Lock Type | Description | Use Cases |
+|-----------|-------------|-----------|
+| Shared Lock (S Lock) | Allow read, block write | SELECT ... LOCK IN SHARE MODE |
+| Exclusive Lock (X Lock) | Block read and write | SELECT ... FOR UPDATE |
+| Intention Lock | Table-level lock, indicates row lock intent | Automatically added |
+| Gap Lock | Lock range, prevent phantom reads | REPEATABLE READ |
 
-**锁示例**：
+**Lock Examples**:
 ```sql
--- 共享锁
+-- Shared lock
 SELECT * FROM orders WHERE id = 1 LOCK IN SHARE MODE;
 
--- 排他锁
+-- Exclusive lock
 SELECT * FROM orders WHERE id = 1 FOR UPDATE;
 
--- 查看锁等待
+-- View lock waits
 SELECT * FROM information_schema.INNODB_LOCK_WAITS;
 ```
 
-#### 6.3 死锁处理
+#### 6.3 Deadlock Handling
 
-**死锁检测**：
+**Deadlock Detection**:
 ```sql
--- 查看死锁信息
+-- View deadlock information
 SHOW ENGINE INNODB STATUS;
 
--- 查看锁等待
+-- View lock waits
 SELECT 
     r.trx_id waiting_trx_id,
     r.trx_mysql_thread_id waiting_thread,
@@ -414,17 +414,17 @@ JOIN information_schema.INNODB_TRX b ON b.trx_id = w.blocking_trx_id
 JOIN information_schema.INNODB_TRX r ON r.trx_id = w.requesting_trx_id;
 ```
 
-**避免死锁建议**：
-1. 按相同顺序访问表
-2. 避免长事务
-3. 使用较低的隔离级别
-4. 合理设计索引
+**Deadlock Avoidance Recommendations**:
+1. Access tables in the same order
+2. Avoid long transactions
+3. Use lower isolation levels
+4. Design indexes properly
 
-#### 6.4 分布式事务
+#### 6.4 Distributed Transactions
 
-**XA 事务**：
+**XA Transactions**:
 ```sql
--- 启用 XA 事务
+-- Enable XA transaction
 XA START 'xid1';
 INSERT INTO orders VALUES (1, 'order1');
 XA END 'xid1';
@@ -434,17 +434,17 @@ XA COMMIT 'xid1';
 
 ---
 
-### 7. 主从复制
+### 7. Master-Slave Replication
 
-#### 7.1 主从架构
+#### 7.1 Master-Slave Architecture
 
 ```
-主库（Master）
-    ↓ 二进制日志
-从库（Slave1）  从库（Slave2）  从库（Slave3）
+Master Database
+    ↓ Binary log
+Slave1 Database  Slave2 Database  Slave3 Database
 ```
 
-#### 7.2 主库配置
+#### 7.2 Master Configuration
 
 ```ini
 # my.cnf
@@ -455,14 +455,14 @@ binlog-format = ROW
 binlog-do-db = mydb
 ```
 
-**创建复制用户**：
+**Create replication user**:
 ```sql
 CREATE USER 'repl'@'%' IDENTIFIED BY 'password';
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
 FLUSH PRIVILEGES;
 ```
 
-#### 7.3 从库配置
+#### 7.3 Slave Configuration
 
 ```ini
 # my.cnf
@@ -472,7 +472,7 @@ relay-log = mysql-relay-bin
 read-only = 1
 ```
 
-**配置复制**：
+**Configure replication**:
 ```sql
 CHANGE MASTER TO
     MASTER_HOST='master_ip',
@@ -484,11 +484,11 @@ CHANGE MASTER TO
 START SLAVE;
 ```
 
-#### 7.4 读写分离
+#### 7.4 Read-Write Separation
 
-**应用层配置**：
+**Application Layer Configuration**:
 ```java
-// Spring Boot 配置
+// Spring Boot configuration
 @Configuration
 public class DataSourceConfig {
     
@@ -521,16 +521,16 @@ public class DataSourceConfig {
 }
 ```
 
-#### 7.5 复制状态监控
+#### 7.5 Replication Status Monitoring
 
 ```sql
--- 查看主库状态
+-- View master status
 SHOW MASTER STATUS;
 
--- 查看从库状态
+-- View slave status
 SHOW SLAVE STATUS\G;
 
--- 关键指标
+-- Key indicators
 -- Slave_IO_Running: Yes
 -- Slave_SQL_Running: Yes
 -- Seconds_Behind_Master: 0
@@ -538,81 +538,81 @@ SHOW SLAVE STATUS\G;
 
 ---
 
-### 8. 备份与恢复
+### 8. Backup and Recovery
 
-#### 8.1 逻辑备份
+#### 8.1 Logical Backup
 
-**mysqldump 备份**：
+**mysqldump Backup**:
 ```bash
-# 备份单个数据库
+# Backup single database
 mysqldump -u root -p mydb > mydb_backup.sql
 
-# 备份多个数据库
+# Backup multiple databases
 mysqldump -u root -p --databases db1 db2 > multi_db_backup.sql
 
-# 备份所有数据库
+# Backup all databases
 mysqldump -u root -p --all-databases > all_db_backup.sql
 
-# 只备份表结构
+# Backup table structure only
 mysqldump -u root -p --no-data mydb > schema.sql
 
-# 只备份数据
+# Backup data only
 mysqldump -u root -p --no-create-info mydb > data.sql
 ```
 
-**逻辑恢复**：
+**Logical Recovery**:
 ```bash
-# 恢复数据库
+# Restore database
 mysql -u root -p mydb < mydb_backup.sql
 
-# 恢复时忽略错误
+# Ignore errors during restore
 mysql -u root -p -f mydb < mydb_backup.sql
 ```
 
-#### 8.2 物理备份
+#### 8.2 Physical Backup
 
-**Percona XtraBackup**：
+**Percona XtraBackup**:
 ```bash
-# 全量备份
+# Full backup
 xtrabackup --backup --target-dir=/backup/full
 
-# 增量备份
+# Incremental backup
 xtrabackup --backup --target-dir=/backup/inc1 \
     --incremental-basedir=/backup/full
 
-# 准备恢复
+# Prepare for recovery
 xtrabackup --prepare --target-dir=/backup/full
 
-# 恢复数据
+# Restore data
 xtrabackup --copy-back --target-dir=/backup/full
 ```
 
-#### 8.3 备份策略
+#### 8.3 Backup Strategy
 
-| 策略 | 说明 | 适用场景 |
-|------|------|---------|
-| 全量备份 | 完整备份所有数据 | 每周一次 |
-| 增量备份 | 只备份变化数据 | 每天一次 |
-| 二进制日志备份 | 备份操作日志 | 实时备份 |
-| 混合备份 | 全量+增量+日志 | 生产环境推荐 |
+| Strategy | Description | Use Cases |
+|----------|-------------|-----------|
+| Full backup | Complete backup of all data | Weekly |
+| Incremental backup | Backup changed data only | Daily |
+| Binary log backup | Backup operation logs | Real-time backup |
+| Hybrid backup | Full + incremental + logs | Recommended for production |
 
-#### 8.4 时间点恢复
+#### 8.4 Point-in-Time Recovery
 
 ```bash
-# 1. 恢复全量备份
+# 1. Restore full backup
 mysql -u root -p < full_backup.sql
 
-# 2. 应用二进制日志
+# 2. Apply binary logs
 mysqlbinlog --start-datetime="2024-01-01 00:00:00" \
             --stop-datetime="2024-01-01 12:00:00" \
             mysql-bin.000001 | mysql -u root -p
 ```
 
-#### 8.5 自动备份脚本
+#### 8.5 Automatic Backup Script
 
 ```bash
 #!/bin/bash
-# MySQL 自动备份脚本
+# MySQL automatic backup script
 
 BACKUP_DIR="/backup/mysql"
 DATE=$(date +%Y%m%d_%H%M%S)
@@ -620,37 +620,37 @@ DB_NAME="mydb"
 DB_USER="backup"
 DB_PASS="password"
 
-# 创建备份目录
+# Create backup directory
 mkdir -p $BACKUP_DIR
 
-# 执行备份
+# Execute backup
 mysqldump -u$DB_USER -p$DB_PASS --single-transaction \
     --routines --triggers --events $DB_NAME \
     | gzip > $BACKUP_DIR/${DB_NAME}_${DATE}.sql.gz
 
-# 删除7天前的备份
+# Delete backups older than 7 days
 find $BACKUP_DIR -name "*.sql.gz" -mtime +7 -delete
 
-# 记录日志
+# Log
 echo "Backup completed: ${DB_NAME}_${DATE}.sql.gz" >> $BACKUP_DIR/backup.log
 ```
 
 ---
 
-### 9. 分区表
+### 9. Partitioned Tables
 
-#### 9.1 分区类型
+#### 9.1 Partition Types
 
-| 类型 | 说明 | 适用场景 |
-|------|------|---------|
-| RANGE | 范围分区 | 日期范围、数值范围 |
-| LIST | 列表分区 | 离散值、地区分类 |
-| HASH | 哈希分区 | 均匀分布数据 |
-| KEY | 键分区 | 类似HASH，支持多列 |
+| Type | Description | Use Cases |
+|------|-------------|-----------|
+| RANGE | Range partitioning | Date range, numeric range |
+| LIST | List partitioning | Discrete values, regional classification |
+| HASH | Hash partitioning | Evenly distribute data |
+| KEY | Key partitioning | Similar to HASH, supports multiple columns |
 
-#### 9.2 分区表示例
+#### 9.2 Partitioned Table Examples
 
-**RANGE 分区**：
+**RANGE Partitioning**:
 ```sql
 CREATE TABLE orders (
     id BIGINT,
@@ -666,7 +666,7 @@ CREATE TABLE orders (
 );
 ```
 
-**LIST 分区**：
+**LIST Partitioning**:
 ```sql
 CREATE TABLE customers (
     id INT,
@@ -674,14 +674,14 @@ CREATE TABLE customers (
     region VARCHAR(50),
     PRIMARY KEY (id, region)
 ) PARTITION BY LIST (region) (
-    PARTITION p_north VALUES IN ('北京', '天津', '河北'),
-    PARTITION p_south VALUES IN ('广东', '广西', '海南'),
-    PARTITION p_east VALUES IN ('上海', '江苏', '浙江'),
-    PARTITION p_west VALUES IN ('四川', '重庆', '云南')
+    PARTITION p_north VALUES IN ('Beijing', 'Tianjin', 'Hebei'),
+    PARTITION p_south VALUES IN ('Guangdong', 'Guangxi', 'Hainan'),
+    PARTITION p_east VALUES IN ('Shanghai', 'Jiangsu', 'Zhejiang'),
+    PARTITION p_west VALUES IN ('Sichuan', 'Chongqing', 'Yunnan')
 );
 ```
 
-**HASH 分区**：
+**HASH Partitioning**:
 ```sql
 CREATE TABLE logs (
     id BIGINT AUTO_INCREMENT,
@@ -692,56 +692,56 @@ CREATE TABLE logs (
 ) PARTITION BY HASH(user_id) PARTITIONS 10;
 ```
 
-#### 9.3 分区管理
+#### 9.3 Partition Management
 
 ```sql
--- 添加分区
+-- Add partition
 ALTER TABLE orders ADD PARTITION (
     PARTITION p2025 VALUES LESS THAN (2026)
 );
 
--- 删除分区（数据也会删除）
+-- Drop partition (data will also be deleted)
 ALTER TABLE orders DROP PARTITION p2022;
 
--- 合并分区
+-- Merge partitions
 ALTER TABLE orders REORGANIZE PARTITION p2023, p2024 INTO (
     PARTITION p2023_2024 VALUES LESS THAN (2025)
 );
 
--- 查看分区信息
+-- View partition information
 SELECT * FROM information_schema.PARTITIONS 
 WHERE TABLE_NAME = 'orders';
 ```
 
 ---
 
-## 使用示例
+## Usage Examples
 
-### 示例 1: 查询优化
+### Example 1: Query Optimization
 
 ```
-用户: 这个查询很慢，怎么优化？
+User: This query is slow, how to optimize?
 SELECT * FROM orders WHERE YEAR(create_time) = 2024 AND status = 'pending'
 
-专家: 问题分析：
-1. YEAR()函数导致索引失效
-2. SELECT * 返回不必要字段
+Expert: Problem analysis:
+1. YEAR() function causes index invalidation
+2. SELECT * returns unnecessary fields
 
-优化方案：
+Optimization solution:
 SELECT id, customer_id, total_amount, status
 FROM orders 
 WHERE create_time >= '2024-01-01' 
   AND create_time < '2025-01-01'
   AND status = 'pending';
 
-建议添加索引：
+Suggested index:
 CREATE INDEX idx_status_create ON orders(status, create_time);
 ```
 
-### 示例 2: 索引设计
+### Example 2: Index Design
 
 ```
-用户: 这个表需要什么索引？
+User: What indexes does this table need?
 CREATE TABLE orders (
     id BIGINT PRIMARY KEY,
     customer_id BIGINT,
@@ -750,24 +750,24 @@ CREATE TABLE orders (
     total_amount DECIMAL(10,2)
 );
 
-专家: 建议索引：
+Expert: Suggested indexes:
 
-1. 客户查询索引：
+1. Customer query index:
    CREATE INDEX idx_customer ON orders(customer_id);
 
-2. 状态+时间组合索引（覆盖常见查询）：
+2. Status + time composite index (covers common queries):
    CREATE INDEX idx_status_create ON orders(status, create_time);
 
-3. 金额范围查询索引：
+3. Amount range query index:
    CREATE INDEX idx_amount ON orders(total_amount);
 
-注意：根据实际查询模式调整索引顺序
+Note: Adjust index order based on actual query patterns
 ```
 
-### 示例 3: 表结构优化
+### Example 3: Table Structure Optimization
 
 ```
-用户: 这个表设计合理吗？
+User: Is this table design reasonable?
 CREATE TABLE user_orders (
     id INT,
     user_id INT,
@@ -779,29 +779,29 @@ CREATE TABLE user_orders (
     create_time DATETIME
 );
 
-专家: 存在以下问题：
+Expert: The following issues exist:
 
-1. 违反第二范式：user_name, user_phone 依赖 user_id
-2. 违反第二范式：product_name, product_price 依赖 product_id
-3. 缺少主键约束
-4. 缺少外键约束
+1. Violates second normal form: user_name, user_phone depend on user_id
+2. Violates second normal form: product_name, product_price depend on product_id
+3. Missing primary key constraint
+4. Missing foreign key constraint
 
-优化方案：
--- 用户表
+Optimization solution:
+-- Users table
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50),
     phone VARCHAR(20)
 );
 
--- 产品表
+-- Products table
 CREATE TABLE products (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
     price DECIMAL(10,2)
 );
 
--- 订单表
+-- Orders table
 CREATE TABLE orders (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
@@ -817,16 +817,16 @@ CREATE TABLE orders (
 
 ## Guardrails
 
-- 必须基于 MySQL 官方文档提供建议
-- 优化方案需考虑版本兼容性
-- 提供的 SQL 需经过语法验证
-- 大表操作需提供分批处理建议
-- 不确定的问题需明确说明
+- Must provide suggestions based on MySQL official documentation
+- Optimization solutions need to consider version compatibility
+- Provided SQL must be syntax validated
+- Large table operations need to provide batch processing suggestions
+- Uncertain issues must be clearly stated
 
 ---
 
-## 相关资源
+## Related Resources
 
-- **MySQL 8.0 文档**: https://dev.mysql.com/doc/refman/8.0/en/
-- **MySQL 9.4 文档**: https://dev.mysql.com/doc/refman/9.4/en/
+- **MySQL 8.0 Documentation**: https://dev.mysql.com/doc/refman/8.0/en/
+- **MySQL 9.4 Documentation**: https://dev.mysql.com/doc/refman/9.4/en/
 - **Context7 Library ID**: `/websites/dev_mysql_doc_refman_8_0_en`

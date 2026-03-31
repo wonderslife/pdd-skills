@@ -1,46 +1,47 @@
 ---
 name: pdd-main
-description: PRD驱动开发的主入口Skill，协调整个开发流程。当用户想要基于PRD文档进行功能开发时调用此Skill。
+description: Main entry Skill for PRD-Driven Development, orchestrating the entire development process. Invoke this Skill when users want to develop features based on PRD documents. 支持中文触发：PRD驱动开发、基于PRD开发、PDD开发、功能开发、PRD开发。
 license: MIT
-compatibility: 需要完整的PRD文档体系
+compatibility: Requires complete PRD document system
 metadata:
-  author: asset-platform
+  author: neuqik@hotmail.com
   version: "3.2"
 ---
 
-# PDD-MAIN - PRD驱动开发主入口
+# PDD-MAIN - PRD-Driven Development Main Entry
 
-**核心理念**: PDD (PRD-Driven Development) 是一种结合领域专家能力的开发方法论，通过整合 system-architect、software-architect、software-engineer 以及 expert-xxx 等专业技能，实现从需求分析到最终交付的全面智能化。
+**Core Concept**: PDD (PRD-Driven Development) is a development methodology that combines domain expert capabilities. By integrating system-architect, software-architect, software-engineer, and expert-xxx skills, it achieves comprehensive intelligence from requirement analysis to final delivery.
 
-**输入**: PRD文档目录路径
+**Input**: PRD document directory path
 
-**输出**: 完成的功能点代码和验收报告
+**Output**: Completed feature code and verification report
 
 ---
 
-## 版本历史
+## Version History
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Changes |
 |-----|------|---------|
-| 3.4 | 2026-03-22 | 添加PDD实施规范引用，更新技能协作流程 |
-| 3.3 | 2026-03-21 | 修正代码目录生成规则：新业务功能创建独立Maven模块，不放asset-system |
-| 3.2 | 2026-03-21 | 添加代码目录自动生成能力（模块编号→代码路径映射） |
-| 3.1 | 2026-03-21 | 添加智能PRD发现能力（模块编号自动发现+手动指定文档） |
-| 3.0 | 2026-03-21 | 整合 system-architect、software-architect、software-engineer 技能 |
-| 2.0 | 2026-03-08 | 完善四阶段流程，增强验证机制 |
-| 1.0 | 早期 | 初始版本 |
+| 3.4 | 2026-03-22 | Added PDD implementation specification reference, updated skill collaboration process |
+| 3.3 | 2026-03-21 | Fixed code directory generation rules: new business features create independent Maven modules, not in asset-system |
+| 3.2 | 2026-03-21 | Added automatic code directory generation capability (module number → code path mapping) |
+| 3.1 | 2026-03-21 | Added intelligent PRD discovery capability (module number auto-discovery + manual document specification) |
+| 3.0 | 2026-03-21 | Integrated system-architect, software-architect, software-engineer skills |
+| 2.0 | 2026-03-08 | Rined four-phase process, enhanced verification mechanism |
+| 1.0 | Early | Initial version |
 
 ---
 
-## 1. 方法论架构
+## 1. Methodology Architecture
 
-### 1.1 PDD 技能体系
+### 1.1 PDD Skill System
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                      PDD-MAIN (主入口)                          │
+│                      PDD-MAIN (Main Entry)                      │
 │  ┌─────────────┬─────────────┬─────────────┬─────────────┐      │
-│  │  流程编排   │  状态管理   │  上下文传递 │  结果汇总   │      │
+│  │  Process    │  State      │  Context    │  Result     │      │
+│  │ Orchestration│ Management │  Transfer   │ Aggregation │      │
 │  └─────────────┴─────────────┴─────────────┴─────────────┘      │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -48,224 +49,225 @@ metadata:
         │                     │                     │
         ▼                     ▼                     ▼
 ┌───────────────┐     ┌───────────────┐     ┌───────────────┐
-│   PDD流程层   │     │   架构师层   │     │   工程师层   │
+│   PDD Process │     │  Architect    │     │   Engineer    │
+│     Layer     │     │    Layer      │     │    Layer      │
 ├───────────────┤     ├───────────────┤     ├───────────────┤
-│ pdd-ba        │     │system-architect│     │software-eng  │
-│ pdd-extract   │◄───►│              │◄───►│              │
-│ pdd-generate  │     │software-arch  │     │ expert-xxx   │
-│ pdd-implement │     │              │     │              │
-│ pdd-review    │     │              │     │              │
-│ pdd-verify    │     │              │     │              │
+│ pdd-ba        │     │system-architect│    │software-eng   │
+│ pdd-extract   │◄───►│               │◄───►│               │
+│ pdd-generate  │     │software-arch  │     │ expert-xxx    │
+│ pdd-implement │     │               │     │               │
+│ pdd-review    │     │               │     │               │
+│ pdd-verify    │     │               │     │               │
 └───────────────┘     └───────────────┘     └───────────────┘
 ```
 
-### 1.2 技能分类与职责
+### 1.2 Skill Classification and Responsibilities
 
-| 类别 | 技能名称 | 核心职责 | 能力边界 |
+| Category | Skill Name | Core Responsibility | Capability Boundary |
 |------|---------|---------|---------|
-| **主入口** | pdd-main | 流程编排、状态管理、上下文传递 | 不直接实现代码 |
-| **PDD流程** | pdd-ba, pdd-extract-features, pdd-generate-spec, pdd-implement-feature, pdd-code-reviewer, pdd-verify-feature | 业务分析、规格生成、代码实现、审查验证 | 各自负责特定阶段 |
-| **架构师** | system-architect | 系统架构设计、技术选型 | 高层次设计、架构决策 |
-| | software-architect | 软件架构设计、模块划分 | 模块设计、接口规范 |
-| **工程师** | software-engineer | 代码实现、测试编写 | 依据规格执行实现 |
-| **专家** | expert-ruoyi | 若依框架专属问题 | 框架配置、代码生成 |
-| | expert-activiti | Activiti工作流引擎 | BPMN设计、流程部署 |
-| | expert-mysql | MySQL数据库优化 | SQL优化、索引设计 |
-| | expert-code-quality | 代码质量与重构 | 异味检测、设计模式 |
+| **Main Entry** | pdd-main | Process orchestration, state management, context transfer | Does not directly implement code |
+| **PDD Process** | pdd-ba, pdd-extract-features, pdd-generate-spec, pdd-implement-feature, pdd-code-reviewer, pdd-verify-feature | Business analysis, specification generation, code implementation, review verification | Each responsible for specific phase |
+| **Architect** | system-architect | System architecture design, technology selection | High-level design, architecture decisions |
+| | software-architect | Software architecture design, module division | Module design, interface specification |
+| **Engineer** | software-engineer | Code implementation, test writing | Execute implementation based on specification |
+| **Expert** | expert-ruoyi | RuoYi framework specific issues | Framework configuration, code generation |
+| | expert-activiti | Activiti workflow engine | BPMN design, process deployment |
+| | expert-mysql | MySQL database optimization | SQL optimization, index design |
+| | expert-code-quality | Code quality and refactoring | Smell detection, design patterns |
 
 ---
 
-## 2. 完整流程
+## 2. Complete Process
 
-### 2.1 六阶段流程
+### 2.1 Six-Phase Process
 
 ```
-阶段一：业务分析与功能点提取
-  PRD文档 → 5W1H分析 → 用例图 → 流程图 → 状态图 → 功能点矩阵
+Phase 1: Business Analysis and Feature Extraction
+  PRD Document → 5W1H Analysis → Use Case Diagram → Flowchart → State Diagram → Feature Matrix
 
-阶段二：开发规格生成
-  功能点矩阵 → 架构咨询 → 接口设计 → 数据模型 → 开发规格 + 验收标准
+Phase 2: Development Specification Generation
+  Feature Matrix → Architecture Consultation → Interface Design → Data Model → Dev Spec + Acceptance Criteria
 
-阶段三：功能点循环
-  对每个功能点：实现 → 审查 → 修复 → 验收
+Phase 3: Feature Loop
+  For each feature: Implementation → Review → Fix → Acceptance
 
-阶段四：架构评审整合
-  按需调用 system-architect / software-architect
+Phase 4: Architecture Review Integration
+  On-demand system-architect / software-architect invocation
 
-阶段五：专家技能整合
-  按需调用 expert-xxx
+Phase 5: Expert Skills Integration
+  On-demand expert-xxx invocation
 
-阶段六：交付与复盘
-  开发报告 → 文档归档 → 经验教训
+Phase 6: Delivery and Retrospective
+  Development Report → Document Archival → Lessons Learned
 ```
 
-### 2.2 详细流程步骤
+### 2.2 Detailed Process Steps
 
-#### Step 1: 解析输入并发现PRD文档
+#### Step 1: Parse Input and Discover PRD Documents
 
-**支持两种输入模式**：
+**Two Input Modes Supported**:
 
-**模式A：模块编号自动发现**
-- 用户输入模块编号（如 `ZCCZ-2`、`ZCCZ-1`）
-- 自动扫描 `docs/业务分析/` 目录
-- 匹配目录名（如 `ZCCZ-2-资产转让`）
-- 自动聚合该目录下所有设计文档
+**Mode A: Module Number Auto-Discovery**
+- User inputs module number (e.g., `ZCCZ-2`, `ZCCZ-1`)
+- Automatically scans `docs/business-analysis/` directory
+- Matches directory names (e.g., `ZCCZ-2-Asset-Transfer`)
+- Automatically aggregates all design documents in that directory
 
-**模式B：手动指定文档**
-- 用户直接指定一个或多个设计文档路径
-- 支持单个文件：`docs/xxx/ZCCZ-2/PRD-资产转让.md`
-- 支持多个文件：用逗号或换行分隔
-- 支持目录路径：自动发现目录下所有.md文档
+**Mode B: Manual Document Specification**
+- User directly specifies one or more design document paths
+- Supports single file: `docs/xxx/ZCCZ-2/PRD-Asset-Transfer.md`
+- Supports multiple files: separated by comma or newline
+- Supports directory path: automatically discovers all .md documents in directory
 
-**标准PRD文档结构**：
+**Standard PRD Document Structure**:
 ```
-docs/业务分析/{业务领域}/
-├── PRD-{模块名称}.md              # 需求文档
-├── 用例图-{模块名称}.md           # 用例图
-├── 业务流程图-{模块名称}.md       # 流程图
-├── 状态图-{模块名称}.md           # 状态图
-├── 序列图-{模块名称}.md           # 序列图（可选）
-└── 表单设计/                      # 表单设计文档（可选）
+docs/business-analysis/{business-domain}/
+├── PRD-{module-name}.md              # Requirements document
+├── UseCase-{module-name}.md          # Use case diagram
+├── BusinessFlow-{module-name}.md     # Flowchart
+├── StateDiagram-{module-name}.md     # State diagram
+├── SequenceDiagram-{module-name}.md  # Sequence diagram (optional)
+└── FormDesign/                       # Form design documents (optional)
 ```
 
-**自动发现流程**：
+**Auto-Discovery Process**:
 ```
-用户输入: "ZCCZ-2"
+User Input: "ZCCZ-2"
     ↓
-扫描 docs/业务分析/*/ZCCZ-2*/
+Scan docs/business-analysis/*/ZCCZ-2*/
     ↓
-匹配到: docs/业务分析/资产处置/ZCCZ-2-资产转让/
+Match: docs/business-analysis/asset-disposition/ZCCZ-2-Asset-Transfer/
     ↓
-聚合文档:
-  - PRD-资产转让.md
-  - 用例图-资产转让.md
-  - 业务流程图-资产转让.md
-  - 状态图-资产转让.md
-  - 序列图-资产转让流程.md
+Aggregate Documents:
+  - PRD-Asset-Transfer.md
+  - UseCase-Asset-Transfer.md
+  - BusinessFlow-Asset-Transfer.md
+  - StateDiagram-Asset-Transfer.md
+  - SequenceDiagram-Asset-Transfer-Process.md
     ↓
-确认文档完整性
+Confirm Document Completeness
 ```
 
-#### Step 2: 确认模块信息
+#### Step 2: Confirm Module Information
 
-从PRD文档中提取模块编号和名称：
-- 模块编号: ZCCZ-1, ZCCZ-2, ...
-- 模块名称: 国有产权转让, 资产转让, ...
+Extract module number and name from PRD document:
+- Module Number: ZCCZ-1, ZCCZ-2, ...
+- Module Name: Equity Transfer, Asset Transfer, ...
 
-#### Step 3: 识别技术栈
+#### Step 3: Identify Technology Stack
 
-分析项目技术栈，确定需要调用的技能：
-- 若依框架项目 → software-engineer + expert-ruoyi
-- 工作流项目 → expert-activiti
-- 数据库密集型 → expert-mysql
-- 架构设计阶段 → system-architect / software-architect
+Analyze project technology stack, determine which skills to invoke:
+- RuoYi framework project → software-engineer + expert-ruoyi
+- Workflow project → expert-activiti
+- Database intensive → expert-mysql
+- Architecture design phase → system-architect / software-architect
 
-#### Step 4: 调用业务分析
+#### Step 4: Invoke Business Analysis
 
-调用 `pdd-ba` skill：
-- 输入: PRD文档路径
-- 输出: 业务分析报告
-- 使用 5W1H、MECE、CRUD 等方法论
+Invoke `pdd-ba` skill:
+- Input: PRD document path
+- Output: Business analysis report
+- Uses 5W1H, MECE, CRUD methodologies
 
-#### Step 5: 调用功能点提取
+#### Step 5: Invoke Feature Extraction
 
-调用 `pdd-extract-features` skill：
-- 输入: PRD文档路径 + 业务分析报告
-- 输出: feature-matrix.md
+Invoke `pdd-extract-features` skill:
+- Input: PRD document path + Business analysis report
+- Output: feature-matrix.md
 
-#### Step 6: 人工审核功能点
+#### Step 6: Manual Review of Feature Matrix
 
-等待用户审核功能点矩阵：
-- 确认功能点完整性
-- 确认复杂度评估
-- 确认测试策略
-- 确认AI角色分配
+Wait for user to review feature matrix:
+- Confirm feature completeness
+- Confirm complexity assessment
+- Confirm test strategy
+- Confirm AI role assignment
 
-#### Step 7: 调用规格生成
+#### Step 7: Invoke Specification Generation
 
-调用 `pdd-generate-spec` skill：
-- 输入: 功能点矩阵
-- 输出: spec.md, checklist.md
+Invoke `pdd-generate-spec` skill:
+- Input: Feature matrix
+- Output: spec.md, checklist.md
 
-**架构咨询（按需）**：
-- 调用 `system-architect`：技术选型、系统架构
-- 调用 `software-architect`：模块划分、接口设计
+**Architecture Consultation (On-Demand)**:
+- Invoke `system-architect`: Technology selection, system architecture
+- Invoke `software-architect`: Module division, interface design
 
-#### Step 8: 人工审核规格
+#### Step 8: Manual Review of Specification
 
-等待用户审核开发规格：
-- 确认接口设计
-- 确认数据模型
-- 确认业务逻辑
-- 确认测试用例
+Wait for user to review development specification:
+- Confirm interface design
+- Confirm data model
+- Confirm business logic
+- Confirm test cases
 
-#### Step 8.1: 生成代码目录结构
+#### Step 8.1: Generate Code Directory Structure
 
-根据模块编号和功能，自动生成符合规范的代码目录。
+Automatically generate code directory that conforms to standards based on module number and functionality.
 
-**⚠️ 重要原则**：
-- **新业务功能应创建独立的 Maven 模块**，不要放到 `asset-system` 中
-- `asset-system` 是系统管理模块，只放系统相关代码（用户、角色、菜单等）
-- 业务模块命名规范：`asset-{业务领域}`（如 `asset-disposition`、`asset-equity`）
+**⚠️ Important Principles**:
+- **New business features should create independent Maven modules**, do not put in `asset-system`
+- `asset-system` is the system management module, only contains system-related code (users, roles, menus, etc.)
+- Business module naming convention: `asset-{business-domain}` (e.g., `asset-disposition`, `asset-equity`)
 
-**模块编号到代码路径映射**：
+**Module Number to Code Path Mapping**:
 
-| 模块编号 | 功能名称 | Maven模块 | 后端包路径 | 前端路径 |
+| Module Number | Feature Name | Maven Module | Backend Package Path | Frontend Path |
 |---------|---------|----------|-----------|---------|
-| ZCCZ-1 | 国有产权转让 | asset-equity | com.sjjk.equity.transfer | equity-transfer |
-| ZCCZ-2 | 资产转让 | asset-equity | com.sjjk.equity.transfer | asset-transfer |
-| ZCCZ-3 | 企业增资 | asset-equity | com.sjjk.equity.capital | capital-increase |
-| ZCCZ-4 | 国有产权无偿划转 | asset-equity | com.sjjk.equity.allocation | equity-allocation |
-| ZCCZ-5 | 资产租赁 | asset-lease | com.sjjk.lease | asset-lease |
-| ZCCZ-6 | 企业担保 | asset-guarantee | com.sjjk.guarantee | enterprise-guarantee |
-| ZCCZ-7 | 固定资产报废 | asset-disposition | com.sjjk.disposition | fixed-asset-scrap |
+| ZCCZ-1 | Equity Transfer | asset-equity | com.example.equity.transfer | equity-transfer |
+| ZCCZ-2 | Asset Transfer | asset-equity | com.example.equity.transfer | asset-transfer |
+| ZCCZ-3 | Enterprise Capital Increase | asset-equity | com.example.equity.capital | capital-increase |
+| ZCCZ-4 | Equity Free Allocation | asset-equity | com.example.equity.allocation | equity-allocation |
+| ZCCZ-5 | Asset Lease | asset-lease | com.example.lease | asset-lease |
+| ZCCZ-6 | Enterprise Guarantee | asset-guarantee | com.example.guarantee | enterprise-guarantee |
+| ZCCZ-7 | Fixed Asset Disposal | asset-disposition | com.example.disposition | fixed-asset-scrap |
 
-**后端模块目录结构**：
+**Backend Module Directory Structure**:
 
 ```
-asset-{业务领域}/                    # 独立的 Maven 模块
+asset-{business-domain}/                    # Independent Maven module
 ├── pom.xml
 └── src/
     ├── main/
     │   ├── java/
-    │   │   └── com/sjjk/{module}/
-    │   │       ├── controller/        # 控制器
-    │   │       ├── domain/            # 实体类
-    │   │       │   └── vo/            # VO对象
-    │   │       ├── mapper/            # Mapper接口
-    │   │       ├── service/           # 服务接口
-    │   │       │   └── impl/          # 服务实现
-    │   │       ├── constant/          # 常量类
-    │   │       └── util/              # 工具类
+    │   │   └── com/example/{module}/
+    │   │       ├── controller/        # Controllers
+    │   │       ├── domain/            # Entity classes
+    │   │       │   └── vo/            # VO objects
+    │   │       ├── mapper/            # Mapper interfaces
+    │   │       ├── service/           # Service interfaces
+    │   │       │   └── impl/          # Service implementations
+    │   │       ├── constant/          # Constant classes
+    │   │       └── util/              # Utility classes
     │   └── resources/
     │       └── mapper/
     │           └── {module}/          # Mapper XML
     └── test/
         └── java/
-            └── com/sjjk/{module}/     # 测试类
+            └── com/example/{module}/     # Test classes
 ```
 
-**前端目录结构**：
+**Frontend Directory Structure**:
 
 ```
 asset-ui/src/
 ├── api/
-│   └── {module}/              # API接口
+│   └── {module}/              # API interfaces
 │       └── {feature}.js
 └── views/
-    └── {module}/              # 视图页面（驼峰命名）
-        ├── index.vue          # 列表页
-        ├── form.vue           # 表单页
-        └── detail.vue         # 详情页
+    └── {module}/              # View pages (camelCase)
+        ├── index.vue          # List page
+        ├── form.vue           # Form page
+        └── detail.vue         # Detail page
 ```
 
-**示例：ZCCZ-1 国有产权转让**
+**Example: ZCCZ-1 Equity Transfer**
 
 ```
-后端:
-  asset-equity/                          # 新建独立模块
+Backend:
+  asset-equity/                          # Create independent module
   ├── pom.xml
-  └── src/main/java/com/sjjk/equity/transfer/
+  └── src/main/java/com/example/equity/transfer/
       ├── controller/
       │   └── EquityTransferApplyController.java
       ├── domain/
@@ -277,7 +279,7 @@ asset-ui/src/
       └── constant/
   └── src/main/resources/mapper/equity/transfer/
 
-前端:
+Frontend:
   asset-ui/src/api/equity/transfer.js
   asset-ui/src/views/equity-transfer/
   ├── index.vue
@@ -285,143 +287,143 @@ asset-ui/src/
   └── detail.vue
 ```
 
-**已有模块复用规则**：
+**Existing Module Reuse Rules**:
 
-| 已有模块 | 适用业务 | 说明 |
+| Existing Module | Applicable Business | Description |
 |---------|---------|------|
-| asset-disposition | 资产处置类 | 固定资产报废、资产核销等（已存在） |
-| asset-equity | 股权交易类 | 国有产权转让、企业增资等（需新建） |
-| asset-admin | 系统管理 | 控制器入口、配置等 |
-| asset-system | 系统功能 | 用户、角色、菜单等（不放业务代码） |
+| asset-disposition | Asset disposal type | Fixed asset disposal, asset write-off, etc. (already exists) |
+| asset-equity | Equity transaction type | Equity transfer, enterprise capital increase, etc. (needs to be created) |
+| asset-admin | System management | Controller entry, configuration, etc. |
+| asset-system | System functions | Users, roles, menus, etc. (do not put business code) |
 
-**错误示例（需避免）**：
+**Error Examples (To Avoid)**:
 
 ```
-❌ 错误：将业务代码放到 asset-system
-asset-system/src/main/java/com/sjjk/equity/  # 错误！
+❌ Wrong: Put business code in asset-system
+asset-system/src/main/java/com/example/equity/  # Wrong!
 
-✅ 正确：创建独立的业务模块
-asset-equity/src/main/java/com/sjjk/equity/  # 正确！
+✅ Correct: Create independent business module
+asset-equity/src/main/java/com/example/equity/  # Correct!
 ```
 
-#### Step 9: 循环实现功能点
+#### Step 9: Loop Through Feature Implementation
 
-对每个功能点（按优先级 P0 → P1 → P2）：
+For each feature (by priority P0 → P1 → P2):
 
-**a. 调用功能点实现**
-- 调用 `pdd-implement-feature` skill
-- 输入: 开发规格, 验收标准
-- 输出: 代码文件
+**a. Invoke Feature Implementation**
+- Invoke `pdd-implement-feature` skill
+- Input: Development specification, Acceptance criteria
+- Output: Code files
 
-**b. 调用软件工程师**
-- 调用 `software-engineer` skill
-- 职责: 依据规格执行代码实现
+**b. Invoke Software Engineer**
+- Invoke `software-engineer` skill
+- Responsibility: Execute code implementation based on specification
 
-**c. 专家咨询（按需）**
-- 若依问题 → `expert-ruoyi`
-- 数据库问题 → `expert-mysql`
-- 代码质量问题 → `expert-code-quality`
+**c. Expert Consultation (On-Demand)**
+- RuoYi issues → `expert-ruoyi`
+- Database issues → `expert-mysql`
+- Code quality issues → `expert-code-quality`
 
-**d. 调用代码审查**
-- 调用 `pdd-code-reviewer` skill
-- 输入: 代码文件, 开发规格, 验收标准
-- 输出: 审查报告
+**d. Invoke Code Review**
+- Invoke `pdd-code-reviewer` skill
+- Input: Code files, Development specification, Acceptance criteria
+- Output: Review report
 
-**e. 架构评审（按需）**
-- 发现架构问题 → `software-architect`
-- 发现系统问题 → `system-architect`
+**e. Architecture Review (On-Demand)**
+- Found architecture issues → `software-architect`
+- Found system issues → `system-architect`
 
-**f. 处理审查结果**
-- 无Critical问题 → 继续验收
-- 有Critical问题 → 修复后重新审查
+**f. Handle Review Results**
+- No Critical issues → Continue to acceptance
+- Has Critical issues → Fix and re-review
 
-**g. 调用功能点验证**
-- 调用 `pdd-verify-feature` skill
-- 输入: 代码文件, 开发规格, 验收标准
-- 输出: 验收报告
+**g. Invoke Feature Verification**
+- Invoke `pdd-verify-feature` skill
+- Input: Code files, Development specification, Acceptance criteria
+- Output: Acceptance report
 
-**h. 处理验收结果**
-- 通过 → 标记功能点完成
-- 有条件通过 → 修复问题后重新验证
-- 不通过 → 重新开发
+**h. Handle Acceptance Results**
+- Passed → Mark feature as complete
+- Conditionally passed → Fix issues and re-verify
+- Not passed → Re-develop
 
-#### Step 10: 输出开发报告
+#### Step 10: Output Development Report
 
-生成最终开发报告
+Generate final development report
 
 ---
 
-## 3. 技能整合
+## 3. Skill Integration
 
-### 3.1 system-architect 整合
+### 3.1 system-architect Integration
 
-**触发条件**：
-- 新项目初始化
-- 技术栈选型
-- 系统架构设计
-- 重大架构变更
+**Trigger Conditions**:
+- New project initialization
+- Technology stack selection
+- System architecture design
+- Major architecture changes
 
-**服务内容**：
-- 项目结构设计
-- 技术栈推荐
-- 代码标准定义
-- 架构决策记录 (ADR)
+**Service Content**:
+- Project structure design
+- Technology stack recommendation
+- Code standard definition
+- Architecture Decision Records (ADR)
 
-### 3.2 software-architect 整合
+### 3.2 software-architect Integration
 
-**触发条件**：
-- 模块划分决策
-- 接口设计评审
-- 数据架构设计
-- 发现架构偏离
+**Trigger Conditions**:
+- Module division decisions
+- Interface design review
+- Data architecture design
+- Architecture drift detected
 
-**服务内容**：
-- 模块边界定义
-- 接口规范设计
-- 设计模式推荐
-- 架构建议
+**Service Content**:
+- Module boundary definition
+- Interface specification design
+- Design pattern recommendation
+- Architecture recommendations
 
-### 3.3 software-engineer 整合
+### 3.3 software-engineer Integration
 
-**触发条件**：
-- 代码实现阶段
-- 单元测试编写
-- 代码重构
-- 缺陷修复
+**Trigger Conditions**:
+- Code implementation phase
+- Unit test writing
+- Code refactoring
+- Defect fixing
 
-**服务内容**：
-- 依据规格实现代码
-- 遵循项目编码规范
-- 错误处理最佳实践
-- 分层架构实现
+**Service Content**:
+- Implement code based on specification
+- Follow project coding standards
+- Error handling best practices
+- Layered architecture implementation
 
-### 3.4 expert-xxx 整合
+### 3.4 expert-xxx Integration
 
-| 专家技能 | 触发条件 | 期望输出 |
+| Expert Skill | Trigger Condition | Expected Output |
 |---------|---------|---------|
-| **expert-ruoyi** | 若依框架问题 | 解决方案 + 最佳实践 |
-| **expert-activiti** | 工作流问题 | BPMN设计建议 |
-| **expert-mysql** | 数据库问题 | SQL优化方案 |
-| **expert-code-quality** | 代码质量问题 | 重构方案 |
+| **expert-ruoyi** | RuoYi framework issues | Solution + Best practices |
+| **expert-activiti** | Workflow issues | BPMN design recommendations |
+| **expert-mysql** | Database issues | SQL optimization plan |
+| **expert-code-quality** | Code quality issues | Refactoring plan |
 
 ---
 
-## 4. AI协作模式
+## 4. AI Collaboration Mode
 
-根据功能点复杂度自动选择AI角色：
+Automatically select AI role based on feature complexity:
 
-| 复杂度 | AI角色 | 人工参与度 | 适用场景 |
+| Complexity | AI Role | Human Involvement | Applicable Scenarios |
 |--------|--------|-----------|----------|
-| P0 | 协作者 + 架构师 + 专家 | 高 | 核心业务流程、复杂状态转换 |
-| P1 | 协作者 + 架构师 | 中 | 重要功能、中等复杂度 |
-| P2 | 主导者 + 工程师 | 低 | 简单功能、辅助功能 |
+| P0 | Collaborator + Architect + Expert | High | Core business processes, complex state transitions |
+| P1 | Collaborator + Architect | Medium | Important features, medium complexity |
+| P2 | Leader + Engineer | Low | Simple features, auxiliary features |
 
-### 复杂度与技能调用策略
+### Complexity and Skill Invocation Strategy
 
 ```
-P0 (核心业务):
+P0 (Core Business):
   pdd-main + pdd-ba + pdd-generate-spec
-    ↓ 架构咨询
+    ↓ Architecture consultation
   system-architect + software-architect
     ↓
   pdd-implement-feature + software-engineer
@@ -430,124 +432,125 @@ P0 (核心业务):
     ↓
   pdd-verify-feature
 
-P1 (重要功能):
+P1 (Important Features):
   pdd-main + pdd-extract + pdd-generate-spec
-    ↓ 按需咨询
-  software-architect (如需要)
+    ↓ On-demand consultation
+  software-architect (if needed)
     ↓
   pdd-implement-feature + software-engineer
-    ↓ + expert-xxx (按需)
+    ↓ + expert-xxx (on-demand)
   pdd-code-reviewer
     ↓
   pdd-verify-feature
 
-P2 (辅助功能):
+P2 (Auxiliary Features):
   pdd-main + pdd-generate-spec
     ↓
-  pdd-implement-feature + software-engineer (主导)
+  pdd-implement-feature + software-engineer (lead)
     ↓
-  pdd-code-reviewer (简化)
+  pdd-code-reviewer (simplified)
     ↓
   pdd-verify-feature
 ```
 
 ---
 
-## 5. 子Skill清单
+## 5. Sub-Skill List
 
-| Skill名称 | 功能描述 | 输入 | 输出 | 触发时机 |
+| Skill Name | Description | Input | Output | Trigger Timing |
 |-----------|---------|------|------|----------|
-| **pdd-ba** | 业务分析，运用专业方法论进行需求推演 | PRD文档路径 | 业务分析报告 | 流程开始时 |
-| **pdd-extract-features** | 从PRD提取功能点矩阵 | PRD文档路径 | feature-matrix.md | 业务分析后 |
-| **pdd-generate-spec** | 生成开发规格 | 功能点矩阵 | spec.md, checklist.md | 功能点确认后 |
-| **pdd-implement-feature** | 实现功能点代码 | 开发规格 | 代码文件 | 规格确认后 |
-| **pdd-code-reviewer** | 代码审查，验证实现是否符合规格 | 代码+规格 | 审查报告 | 代码实现后 |
-| **pdd-verify-feature** | 验证功能点实现 | 代码+验收标准 | 验收报告 | 代码审查后 |
-| **pdd-doc-change** | 文档变更管理 | 变更需求 | 更新的文档 | 需求变更时 |
-| **system-architect** | 系统架构咨询 | 架构需求 | 架构方案 | 按需触发 |
-| **software-architect** | 软件架构咨询 | 模块需求 | 模块设计 | 按需触发 |
-| **software-engineer** | 代码实现与测试 | 规格文档 | 代码文件 | 实现阶段 |
-| **expert-ruoyi** | 若依框架专家咨询 | 技术问题 | 解决方案 | 按需触发 |
-| **expert-activiti** | Activiti工作流专家 | 流程问题 | 解决方案 | 按需触发 |
-| **expert-mysql** | MySQL数据库专家 | SQL/结构问题 | 优化建议 | 按需触发 |
-| **expert-code-quality** | 代码质量专家 | 代码片段 | 重构方案 | 按需触发 |
+| **pdd-ba** | Business analysis, using professional methodologies for requirement derivation | PRD document path | Business analysis report | At process start |
+| **pdd-extract-features** | Extract feature matrix from PRD | PRD document path | feature-matrix.md | After business analysis |
+| **pdd-generate-spec** | Generate development specification | Feature matrix | spec.md, checklist.md | After feature confirmation |
+| **pdd-implement-feature** | Implement feature code | Development specification | Code files | After specification confirmation |
+| **pdd-code-reviewer** | Code review, verify implementation conforms to specification | Code + Specification | Review report | After code implementation |
+| **pdd-verify-feature** | Verify feature implementation | Code + Acceptance criteria | Acceptance report | After code review |
+| **pdd-doc-change** | Document change management | Change requirements | Updated documents | When requirements change |
+| **system-architect** | System architecture consultation | Architecture requirements | Architecture plan | On-demand trigger |
+| **software-architect** | Software architecture consultation | Module requirements | Module design | On-demand trigger |
+| **software-engineer** | Code implementation and testing | Specification document | Code files | Implementation phase |
+| **expert-ruoyi** | RuoYi framework expert consultation | Technical issues | Solution | On-demand trigger |
+| **expert-activiti** | Activiti workflow expert | Process issues | Solution | On-demand trigger |
+| **expert-mysql** | MySQL database expert | SQL/structure issues | Optimization recommendations | On-demand trigger |
+| **expert-code-quality** | Code quality expert | Code snippets | Refactoring plan | On-demand trigger |
 
 ---
 
-## 6. 流程图
+## 6. Flowcharts
 
-### 6.1 主流程图
+### 6.1 Main Process Flow
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        PDD-MAIN 主流程                           │
+│                      PDD-MAIN Main Process                      │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  PRD文档 ──→ pdd-ba ──→ 业务分析报告                            │
+│  PRD Document ──→ pdd-ba ──→ Business Analysis Report          │
 │                │                                                │
 │                ↓                                                │
-│  pdd-extract-features ──→ 功能点矩阵                            │
+│  pdd-extract-features ──→ Feature Matrix                       │
 │                │                                                │
 │                ↓                                                │
-│           [人工审核]                                             │
+│           [Manual Review]                                       │
 │                │                                                │
 │                ↓                                                │
-│  pdd-generate-spec ──→ 开发规格 + 验收标准                      │
+│  pdd-generate-spec ──→ Dev Spec + Acceptance Criteria          │
 │                │                                                │
-│                ├────── (按需) ──→ system-architect            │
+│                ├────── (on-demand) ──→ system-architect        │
 │                │                                                │
-│                ├────── (按需) ──→ software-architect          │
+│                ├────── (on-demand) ──→ software-architect      │
 │                │                                                │
 │                ↓                                                │
-│           [人工审核]                                             │
+│           [Manual Review]                                       │
 │                │                                                │
 │                ↓                                                │
 │  ┌──────────────────────────────────────┐                       │
-│  │        功能点循环处理                  │                       │
+│  │        Feature Loop Processing        │                       │
 │  │  ┌────────────────────────────────┐  │                       │
 │  │  │ pdd-implement-feature          │  │                       │
 │  │  │         ↓                      │  │                       │
 │  │  │ software-engineer              │  │                       │
-│  │  │         ↓ (按需)                │  │                       │
-│  │  │   expert-ruoyi / expert-mysql   │  │                       │
-│  │  │         ↓                       │  │                       │
+│  │  │         ↓ (on-demand)          │  │                       │
+│  │  │   expert-ruoyi / expert-mysql  │  │                       │
+│  │  │         ↓                      │  │                       │
 │  │  │ pdd-code-reviewer              │  │                       │
-│  │  │         ↓ (按需)                │  │                       │
+│  │  │         ↓ (on-demand)          │  │                       │
 │  │  │   software-architect           │  │                       │
 │  │  │         ↓                      │  │                       │
-│  │  │ [Critical问题?] ─→ 修复 ─┐     │  │                       │
-│  │  │         ↓ (无)            │     │  │                       │
-│  │  │ pdd-verify-feature        │     │  │                       │
-│  │  │         ↓                 │     │  │                       │
-│  │  │ [验收通过?] ─→ 下一功能点 │     │  │                       │
-│  │  │         ↓ (不通过)        │     │  │                       │
-│  │  │      重新开发 ←───────────┘     │  │                       │
+│  │  │ [Critical issues?] ─→ Fix ─┐   │  │                       │
+│  │  │         ↓ (none)           │   │  │                       │
+│  │  │ pdd-verify-feature          │   │  │                       │
+│  │  │         ↓                   │   │  │                       │
+│  │  │ [Passed?] ─→ Next feature   │   │  │                       │
+│  │  │         ↓ (not passed)      │   │  │                       │
+│  │  │      Re-develop ←───────────┘   │  │                       │
 │  │  └────────────────────────────────┘  │                       │
 │  └──────────────────────────────────────┘                       │
 │                │                                                │
 │                ↓                                                │
-│           开发报告                                               │
+│           Development Report                                    │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 6.2 技能协作图
+### 6.2 Skill Collaboration Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                      技能协作流程                                 │
+│                    Skill Collaboration Process                  │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌─────────────┐                                               │
-│  │ PDD流程技能 │  发现需要专业支持的问题                         │
+│  │ PDD Process │  Discovers issues requiring professional support│
+│  │   Skills    │                                               │
 │  └──────┬──────┘                                               │
 │         │                                                        │
 │         ├──────────────────────────────┐                        │
 │         │                              │                        │
 │         ▼                              ▼                        │
 │  ┌──────────────┐            ┌──────────────┐                │
-│  │system-arch  │            │software-arch │                │
-│  │(系统架构)    │            │(软件架构)    │                │
+│  │system-arch   │            │software-arch │                │
+│  │(System Arch) │            │(Software Arch)│               │
 │  └──────┬──────┘            └──────┬───────┘                │
 │         │                           │                         │
 │         ├───────────────────────────┼─────────────────────────┤ │
@@ -555,28 +558,28 @@ P2 (辅助功能):
 │         ▼                           ▼                         │ │
 │  ┌──────────────┐            ┌──────────────┐                │ │
 │  │software-eng  │            │ expert-xxx   │                │ │
-│  │(代码实现)    │            │(领域专家)    │                │ │
+│  │(Code Impl)   │            │(Domain Expert)│               │ │
 │  └──────┬──────┘            └──────┬───────┘                │ │
 │         │                           │                         │ │
 │         └───────────────────────────┼─────────────────────────┘ │
 │                                     │                           │
 │                           ┌──────────┴──────────┐              │
 │                           ▼                       ▼              │
-│                    返回PDD流程技能              结果反馈         │
+│                    Return to PDD Process      Result Feedback   │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 7. AI角色协作矩阵
+## 7. AI Role Collaboration Matrix
 
 ```
                     ┌─────────────────────────────────────────┐
-                    │              PDD AI 协作矩阵              │
+                    │           PDD AI Collaboration Matrix    │
                     └─────────────────────────────────────────┘
 
-    技能/角色       │  调度者  │  分析者  │  设计者  │  实现者  │  审查者  │  专家
+    Skill/Role      │ Scheduler│ Analyzer │ Designer │Implementer│ Reviewer │ Expert
     ────────────────┼─────────┼─────────┼─────────┼─────────┼─────────┼────────
     pdd-main        │    ●    │         │         │         │         │
     pdd-ba          │         │    ●    │         │         │         │
@@ -595,181 +598,181 @@ P2 (辅助功能):
     expert-mysql    │         │         │    ○    │    ○    │    ○    │    ●
     expert-code     │         │         │    ○    │    ○    │    ●    │    ●
 
-    图例: ● 主要职责  ○ 辅助参与  │ 空格 不参与
+    Legend: ● Primary Responsibility  ○ Auxiliary Participation  │ Space Not Involved
 ```
 
 ---
 
 ## 8. Guardrails
 
-- 必须先进行业务分析再提取功能点
-- 必须等待人工审核功能点矩阵
-- 必须等待人工审核开发规格
-- 代码实现后必须进行代码审查
-- 每个功能点必须通过验收才能标记完成
-- 代码变更后必须同步更新规格文档
-- 问题必须记录到经验教训库
-- **架构决策必须咨询架构师技能**
-- **技术问题必须咨询专家技能**
-- **专家建议必须整合到代码实现中**
+- Must perform business analysis before extracting features
+- Must wait for manual review of feature matrix
+- Must wait for manual review of development specification
+- Must perform code review after code implementation
+- Each feature must pass acceptance before being marked complete
+- Must synchronously update specification documents after code changes
+- Issues must be recorded in lessons learned repository
+- **Architecture decisions must consult architect skills**
+- **Technical issues must consult expert skills**
+- **Expert recommendations must be integrated into code implementation**
 
 ---
 
-## 9. 使用示例
+## 9. Usage Examples
 
-### 9.1 模式A：模块编号自动发现
-
-```
-用户: 我想开发ZCCZ-2资产转让模块
-AI: [调用pdd-main skill]
-     正在扫描 docs/业务分析/ 目录...
-     发现模块: ZCCZ-2-资产转让
-     路径: docs/业务分析/资产处置/ZCCZ-2-资产转让/
-
-     已聚合以下设计文档:
-     ✓ PRD-资产转让.md
-     ✓ 用例图-资产转让.md
-     ✓ 业务流程图-资产转让.md
-     ✓ 状态图-资产转让.md
-     ✓ 序列图-资产转让流程.md
-
-     请确认是否开始业务分析？ [Y/n]
-```
-
-### 9.2 模式B：手动指定文档
+### 9.1 Mode A: Module Number Auto-Discovery
 
 ```
-用户: 我想基于这些文档开发
-     - docs/业务分析/资产处置/ZCCZ-1/PRD-国有产权转让.md
-     - docs/业务分析/资产处置/ZCCZ-1/业务流程图-国有产权转让.md
-     - docs/业务分析/资产处置/ZCCZ-1/状态图-国有产权转让.md
+User: I want to develop ZCCZ-2 Asset Transfer module
+AI: [Invoking pdd-main skill]
+     Scanning docs/business-analysis/ directory...
+     Found module: ZCCZ-2-Asset-Transfer
+     Path: docs/business-analysis/asset-disposition/ZCCZ-2-Asset-Transfer/
 
-AI: [调用pdd-main skill]
-     已接收3个设计文档:
-     ✓ PRD-国有产权转让.md
-     ✓ 业务流程图-国有产权转让.md
-     ✓ 状态图-国有产权转让.md
+     Aggregated design documents:
+     ✓ PRD-Asset-Transfer.md
+     ✓ UseCase-Asset-Transfer.md
+     ✓ BusinessFlow-Asset-Transfer.md
+     ✓ StateDiagram-Asset-Transfer.md
+     ✓ SequenceDiagram-Asset-Transfer-Process.md
 
-     开始业务分析...
+     Confirm to start business analysis? [Y/n]
 ```
 
-### 9.2 架构咨询使用
+### 9.2 Mode B: Manual Document Specification
 
 ```
-用户: 这个模块需要支持多租户架构
-AI: [调用 software-architect skill]
-     咨询问题: 多租户架构设计
-     传入数据:
-       - 功能需求: 国有产权转让模块
-       - 现有架构: 单体应用
-       - 约束: 需要兼容现有权限体系
+User: I want to develop based on these documents
+     - docs/business-analysis/asset-disposition/ZCCZ-1/PRD-Equity-Transfer.md
+     - docs/business-analysis/asset-disposition/ZCCZ-1/BusinessFlow-Equity-Transfer.md
+     - docs/business-analysis/asset-disposition/ZCCZ-1/StateDiagram-Equity-Transfer.md
 
-     [software-architect 返回架构方案]
-     架构方案:
-       1. 租户标识字段设计 (tenant_id)
-       2. 数据隔离策略 (共享表+租户字段过滤)
-       3. 租户上下文传递机制
-       4. 关键改造点清单
+AI: [Invoking pdd-main skill]
+     Received 3 design documents:
+     ✓ PRD-Equity-Transfer.md
+     ✓ BusinessFlow-Equity-Transfer.md
+     ✓ StateDiagram-Equity-Transfer.md
 
-     已将架构约束整合到开发规格中
+     Starting business analysis...
 ```
 
-### 9.3 专家咨询使用
+### 9.3 Architecture Consultation Usage
 
 ```
-用户: 实现转让申请列表功能时遇到权限问题
-AI: [调用 expert-ruoyi skill]
-     咨询问题: 转让申请列表接口权限校验失败
-     传入数据:
-       - 接口路径: /equity/transfer/apply/list
-       - 错误信息: 权限校验异常
-       - 相关代码片段: [代码]
+User: This module needs to support multi-tenant architecture
+AI: [Invoking software-architect skill]
+     Consultation issue: Multi-tenant architecture design
+     Passed data:
+       - Feature requirements: Equity Transfer module
+       - Existing architecture: Monolithic application
+       - Constraints: Need to be compatible with existing permission system
 
-     [expert-ruoyi 返回解决方案]
-     解决方案:
-       1. 检查 @PreAuthorize 注解配置
-       2. 确认 sys_menu 表中权限标识符
-       3. 验证角色菜单分配
+     [software-architect returns architecture plan]
+     Architecture Plan:
+       1. Tenant identifier field design (tenant_id)
+       2. Data isolation strategy (shared table + tenant field filtering)
+       3. Tenant context transfer mechanism
+       4. Key transformation points list
 
-     已整合解决方案到代码实现中
+     Architecture constraints have been integrated into development specification
+```
+
+### 9.4 Expert Consultation Usage
+
+```
+User: Encountered permission issue when implementing transfer application list feature
+AI: [Invoking expert-ruoyi skill]
+     Consultation issue: Transfer application list interface permission check failed
+     Passed data:
+       - Interface path: /equity/transfer/apply/list
+       - Error message: Permission check exception
+       - Related code snippet: [code]
+
+     [expert-ruoyi returns solution]
+     Solution:
+       1. Check @PreAuthorize annotation configuration
+       2. Confirm permission identifier in sys_menu table
+       3. Verify role menu assignment
+
+     Solution has been integrated into code implementation
 ```
 
 ---
 
-## 10. 需求变更处理
+## 10. Requirement Change Handling
 
-当需求发生变更时：
+When requirements change:
 
 ```
-需求变更
+Requirement Change
     ↓
-pdd-doc-change 分析变更影响
+pdd-doc-change analyzes change impact
     ↓
-更新相关规格文档
+Update related specification documents
     ↓
-通知受影响的功能点
+Notify affected features
     ↓
 ┌─────────────────────────────────────┐
-│ 如涉及架构变更:                       │
-│   → system-architect 重新评审        │
-│ 如涉及技术方案变更:                    │
-│   → 相关 expert-xxx 重新咨询         │
+│ If architecture change involved:    │
+│   → system-architect re-review      │
+│ If technical solution change:       │
+│   → Related expert-xxx re-consult   │
 └─────────────────────────────────────┘
     ↓
-重新执行代码审查和验证
+Re-execute code review and verification
 ```
 
 ---
 
-## 11. PDD实施规范
+## 11. PDD Implementation Specification
 
-本Skill遵循PDD框架实施规范，详见 [pdd-framework-design.md 第9章](../docs/pdd-framework-design.md#9-pdd-实施规范)。
+This Skill follows PDD framework implementation specification, see [pdd-framework-design.md Chapter 9](../docs/pdd-framework-design.md#9-pdd-implementation-specification).
 
-### 11.1 核心规范摘要
+### 11.1 Core Specification Summary
 
-| 规范 | 核心内容 |
+| Specification | Core Content |
 |------|---------|
-| **技能边界** | pdd-code-reviewer（合规性）→ expert-code-quality（质量深度），先审查后分析 |
-| **上下文传递** | 文件系统传递，目录结构规范，支持断点续传 |
-| **人工审核** | 批量审核 + 关键功能点详细审核 |
-| **错误处理** | Critical阻塞，3次重试后暂停等待人工 |
-| **PR管理** | 手动触发，Change粒度PR，手动归档 |
-| **文档体系** | 9种核心文档类型，命名规范，文档内变更历史 |
+| **Skill Boundary** | pdd-code-reviewer (compliance) → expert-code-quality (quality depth), review first then analyze |
+| **Context Transfer** | File system transfer, directory structure specification, supports checkpoint resumption |
+| **Manual Review** | Batch review + detailed review for key features |
+| **Error Handling** | Critical blocks, pause and wait for human after 3 retries |
+| **PR Management** | Manual trigger, Change-grained PR, manual archival |
+| **Document System** | 9 core document types, naming convention, document internal change history |
 
-### 11.2 审查与质量分析协作
+### 11.2 Review and Quality Analysis Collaboration
 
 ```
-代码实现完成
+Code Implementation Complete
     │
     ▼
-pdd-code-reviewer (合规性审查)
+pdd-code-reviewer (Compliance Review)
     │
-    ├── 有Critical问题 → 返回修复 → 重新审查
+    ├── Has Critical issues → Return to fix → Re-review
     │
-    └── 无Critical问题
+    └── No Critical issues
             │
             ▼
-    expert-code-quality (质量深度分析)
+    expert-code-quality (Quality Depth Analysis)
             │
             ▼
-    生成质量改进任务 (improvement-tasks.md)
+    Generate Quality Improvement Tasks (improvement-tasks.md)
             │
             ▼
-    进入下一阶段
+    Enter Next Phase
 ```
 
-### 11.3 断点续传
+### 11.3 Checkpoint Resumption
 
-- **状态文件**: `.pdd-state.json`
-- **触发方式**: 用户发出"继续执行"命令
-- **状态内容**: 当前阶段、已完成功能点、待处理功能点
+- **State File**: `.pdd-state.json`
+- **Trigger Method**: User issues "continue execution" command
+- **State Content**: Current phase, completed features, pending features
 
 ---
 
-## 12. 参考文档
+## 12. Reference Documentation
 
-- [PDD框架设计文档](../docs/pdd-framework-design.md)
-- [PDD技能关系规范](../docs/pdd-skill-relationships.md)
+- [PDD Framework Design Document](../docs/pdd-framework-design.md)
+- [PDD Skill Relationships Specification](../docs/pdd-skill-relationships.md)
 - [system-architect SKILL.md](../system-architect/SKILL.md)
 - [software-architect SKILL.md](../software-architect/SKILL.md)
 - [software-engineer SKILL.md](../software-engineer/SKILL.md)

@@ -1,268 +1,284 @@
 ---
 name: pdd-doc-change
-description: PDD框架下的文档变更管理Skill，管理开发规格文档的修改工作流。当需求变更需要更新规格文档时调用。
+description: |
+  Document Change Management skill under PDD framework, managing the modification workflow of development specification documents. Invoked when requirement changes need to update specification documents.
+  
+  支持中文触发：文档变更、规格变更、需求变更、更新规格、PDD文档变更。
 license: MIT
-compatibility: 需要已有的开发规格文档
+compatibility: Requires existing development specification documents
 metadata:
-  author: asset-platform
+  author: neuqik@hotmail.com
   version: "1.0"
   parent: pdd-main
 ---
 
-# PDD 文档变更管理 (pdd-doc-change)
+# PDD Document Change Management (pdd-doc-change)
 
-## 概述
+## Overview
 
-本 Skill 是 PRD 驱动开发 (PDD) 框架下的文档变更管理组件，专门用于管理开发规格文档的修改工作流，确保文档变更的系统性、完整性和可追溯性。
+This skill is a document change management component under the PRD-Driven Development (PDD) framework, specifically designed to manage the modification workflow of development specification documents, ensuring systematic, complete, and traceable document changes.
 
-## 触发时机
+## Trigger Scenarios
 
-**自动触发：**
-- 需求变更需要更新开发规格
-- 功能点实现过程中发现规格问题
+**Automatic Trigger:**
+- Requirement changes need to update development specifications
+- Specification issues discovered during feature implementation
 
-**手动触发：**
-- 用户输入 `/analyze`、`/audit`、`/doc` 等命令
-- 用户明确要求对业务流程、管理制度、Excel表单进行专业分析和需求建模
-- 用户需要修改设计文档基于需求变更或沟通记录
+**Manual Trigger:**
+- User inputs commands like `/change`, `/audit`, `/doc`
+- User explicitly requests professional analysis and requirement modeling for business processes, management systems, or Excel forms
+- User needs to modify design documents based on requirement changes or communication records
 
-## 核心能力
+## Core Capabilities
 
-### 1. 文档导入与分析
-- 接收并解析现有的开发规格文档
-- 提取变更需求中的关键修改点
-- 建立文档结构索引与内容理解
-- 识别相关文档之间的依赖关系
+### 1. Document Import and Analysis
 
-### 2. 修改计划生成
-- 基于变更需求内容，对比分析现有规格文档
-- 生成系统性的修改计划：
-  - 修改范围（哪些文档需要修改）
-  - 修改内容（具体修改点）
-  - 优先级（P0-紧急且重要，P1-重要不紧急，P2-可优化）
-  - 实施步骤（修改顺序和依赖关系）
+- Receive and parse existing development specification documents
+- Extract key modification points from change requirements
+- Build document structure index and content understanding
+- Identify dependencies between related documents
 
-### 3. TODO.md 生成
-- 将修改计划转化为结构化的 TODO.md 文件
-- 包含字段：
-  - 任务 ID（唯一标识）
-  - 修改内容描述
-  - 关联文档路径
-  - 优先级
-  - 状态（pending/in_progress/completed）
-  - 修改说明
+### 2. Modification Plan Generation
 
-### 4. 文档修改执行
-- 根据 TODO.md 内容对指定规格文档进行修改操作
-- 确保修改符合技术规范和设计标准
-- 保持文档风格和格式的一致性
+- Based on change requirement content, compare and analyze existing specification documents
+- Generate systematic modification plan:
+  - Modification scope (which documents need modification)
+  - Modification content (specific modification points)
+  - Priority (P0-Urgent and Important, P1-Important Not Urgent, P2-Can Optimize)
+  - Implementation steps (modification order and dependencies)
 
-### 5. CHANGELOG.md 维护
-- 针对每个被修改的规格文档，记录详细变更信息
-- 记录内容包括：
-  - 修改时间
-  - 修改文档
-  - 修改内容摘要
-  - 修改前后对比（关键变更）
-  - 关联的需求变更 ID
+### 3. TODO.md Generation
 
-### 6. 变更校验与核对
-- 完成所有 TODO 任务后，自动比对 TODO.md 与 CHANGELOG.md 内容
-- 验证所有计划修改是否均已正确实施并记录
-- 检查文档间的一致性
-- 识别遗漏或冲突的修改
+- Convert modification plan into structured TODO.md file
+- Include fields:
+  - Task ID (unique identifier)
+  - Modification content description
+  - Related document path
+  - Priority
+  - Status (pending/in_progress/completed)
+  - Modification notes
 
-### 7. 结果报告生成
-- 生成需求变更完成结果报告
-- 包含：
-  - 总体完成情况
-  - 已完成修改项列表
-  - 未完成项说明
-  - 文档一致性校验结果
-  - 后续建议
+### 4. Document Modification Execution
 
-## 工作流程
+- Execute modification operations on specified specification documents according to TODO.md content
+- Ensure modifications comply with technical specifications and design standards
+- Maintain consistency in document style and format
 
-```
-接收修改需求
-    ↓
-分析变更文档/需求
-    ↓
-对比现有规格文档
-    ↓
-生成修改计划
-    ↓
-创建 TODO.md
-    ↓
-执行文档修改
-    ↓
-更新 CHANGELOG.md
-    ↓
-变更校验
-    ↓
-所有任务完成？
-    ├── 是 → 生成结果报告
-    └── 否 → 继续执行修改
-```
+### 5. CHANGELOG.md Maintenance
 
-## 与 PDD 流程集成
+- Record detailed change information for each modified specification document
+- Record content includes:
+  - Modification time
+  - Modified document
+  - Modification content summary
+  - Before/after comparison (key changes)
+  - Related requirement change ID
+
+### 6. Change Verification and Reconciliation
+
+- After completing all TODO tasks, automatically compare TODO.md and CHANGELOG.md content
+- Verify all planned modifications have been correctly implemented and recorded
+- Check consistency between documents
+- Identify missing or conflicting modifications
+
+### 7. Result Report Generation
+
+- Generate requirement change completion result report
+- Include:
+  - Overall completion status
+  - List of completed modifications
+  - Description of incomplete items
+  - Document consistency verification results
+  - Follow-up recommendations
+
+## Workflow
 
 ```
-需求变更发生
+Receive Modification Request
     ↓
-pdd-doc-change 分析变更影响
+Analyze Change Documents/Requirements
     ↓
-确定需要修改的规格文档
+Compare with Existing Specification Documents
     ↓
-生成修改计划和 TODO
+Generate Modification Plan
     ↓
-执行文档修改
+Create TODO.md
     ↓
-更新 CHANGELOG
+Execute Document Modifications
     ↓
-校验变更完整性
+Update CHANGELOG.md
     ↓
-通知相关功能点重新验证
+Change Verification
+    ↓
+All Tasks Completed?
+    ├── Yes → Generate Result Report
+    └── No → Continue Executing Modifications
 ```
 
-## 使用场景
+## Integration with PDD Process
 
-1. **需求变更管理**：当业务需求发生变化时，系统性更新相关规格文档
-2. **版本迭代更新**：产品版本迭代时的规格文档同步更新
-3. **问题修复记录**：基于用户反馈修复文档中的错误或遗漏
-4. **合规性调整**：根据新法规或内部制度调整规格内容
-5. **流程优化**：业务流程优化后的规格文档更新
+```
+Requirement Change Occurs
+    ↓
+pdd-doc-change Analyzes Change Impact
+    ↓
+Determine Specification Documents to Modify
+    ↓
+Generate Modification Plan and TODO
+    ↓
+Execute Document Modifications
+    ↓
+Update CHANGELOG
+    ↓
+Verify Change Completeness
+    ↓
+Notify Related Feature Points for Re-verification
+```
 
-## 操作规范
+## Use Cases
 
-### 文档命名规范
-- TODO.md：放在修改模块的 `dev-specs/` 目录下
-- CHANGELOG.md：放在修改模块的 `dev-specs/` 目录下
-- 修改计划：`变更计划.md`
-- 结果报告：`变更完成报告.md`
+1. **Requirement Change Management**: Systematically update related specification documents when business requirements change
+2. **Version Iteration Update**: Synchronous update of specification documents during product version iteration
+3. **Issue Fix Recording**: Fix errors or omissions in documents based on user feedback
+4. **Compliance Adjustment**: Adjust specification content according to new regulations or internal policies
+5. **Process Optimization**: Update specification documents after business process optimization
 
-### 任务优先级定义
-| 优先级 | 名称 | 定义 | 处理方式 |
-|--------|------|------|----------|
-| P0 | 紧急且重要 | 影响核心业务流程或合规性的修改 | 立即执行 |
-| P1 | 重要不紧急 | 重要的功能改进 | 短期内完成 |
-| P2 | 可优化 | 体验优化或补充说明 | 可延后处理 |
+## Operating Standards
 
-### 变更日志格式
+### Document Naming Conventions
+
+- TODO.md: Place in the `dev-specs/` directory of the modification module
+- CHANGELOG.md: Place in the `dev-specs/` directory of the modification module
+- Modification Plan: `变更计划.md`
+- Result Report: `变更完成报告.md`
+
+### Task Priority Definition
+
+| Priority | Name | Definition | Handling |
+| --- | ----- | --------------- | ----- |
+| P0 | Urgent and Important | Modifications affecting core business processes or compliance | Execute immediately |
+| P1 | Important Not Urgent | Important feature improvements | Complete in short term |
+| P2 | Can Optimize | Experience optimization or supplementary explanations | Can be deferred |
+
+### Change Log Format
+
 ```markdown
-### [版本号] - YYYY-MM-DD
+### [Version] - YYYY-MM-DD
 
-#### 新增
-- 新增功能或文档内容
+#### Added
+- New features or document content
 
-#### 修改
-- 修改的功能或内容，说明修改原因
+#### Changed
+- Modified features or content, explain reason for modification
 
-#### 删除
-- 删除的功能或内容
+#### Removed
+- Removed features or content
 
-#### 修复
-- 修复的问题
+#### Fixed
+- Fixed issues
 ```
 
-## 输出模板
+## Output Templates
 
-### TODO.md 模板
+### TODO.md Template
+
 ```markdown
-# 规格文档修改任务清单
+# Specification Document Modification Task List
 
-## 修改背景
-[简述修改的原因和背景]
+## Modification Background
+[Brief description of the reason and background for modification]
 
-## 关联功能点
-- FP-XXX-001: 功能点名称
-- FP-XXX-002: 功能点名称
+## Related Feature Points
+- FP-XXX-001: Feature point name
+- FP-XXX-002: Feature point name
 
-## 任务列表
+## Task List
 
-### [任务 ID] - [任务名称]
-- **优先级**: P0/P1/P2
-- **关联文档**: [文档路径]
-- **修改内容**: [详细描述]
-- **状态**: pending/in_progress/completed
-- **备注**: [补充说明]
+### [Task ID] - [Task Name]
+- **Priority**: P0/P1/P2
+- **Related Document**: [Document path]
+- **Modification Content**: [Detailed description]
+- **Status**: pending/in_progress/completed
+- **Notes**: [Supplementary notes]
 ```
 
-### 变更完成报告模板
+### Change Completion Report Template
+
 ```markdown
-# 规格文档变更完成报告
+# Specification Document Change Completion Report
 
-## 基本信息
-| 项目 | 内容 |
-|------|------|
-| 变更主题 | [主题名称] |
-| 变更日期 | [YYYY-MM-DD] |
-| 变更负责人 | [负责人] |
-| 关联需求 | [需求 ID 或描述] |
+## Basic Information
+| Item | Content |
+|------|---------|
+| Change Subject | [Subject name] |
+| Change Date | [YYYY-MM-DD] |
+| Change Owner | [Owner] |
+| Related Requirement | [Requirement ID or description] |
 
-## 完成情况
-| 项目 | 数量 |
-|------|------|
-| 总任务数 | X |
-| 已完成 | Y |
-| 完成率 | Z% |
+## Completion Status
+| Item | Count |
+|------|-------|
+| Total Tasks | X |
+| Completed | Y |
+| Completion Rate | Z% |
 
-## 已完成修改项
-[列出所有已完成的修改]
+## Completed Modifications
+[List all completed modifications]
 
-## 文档一致性校验
-[校验结果说明]
+## Document Consistency Verification
+[Verification result description]
 
-## 影响的功能点
-| 功能点ID | 功能点名称 | 影响程度 | 需要重新验证 |
+## Affected Feature Points
+| Feature Point ID | Feature Point Name | Impact Level | Needs Re-verification |
 |----------|-----------|----------|-------------|
-| FP-XXX-001 | xxx | 高/中/低 | 是/否 |
+| FP-XXX-001 | xxx | High/Medium/Low | Yes/No |
 
-## 后续建议
-[改进建议或待办事项]
+## Follow-up Recommendations
+[Improvement suggestions or action items]
 ```
 
-## 最佳实践
+## Best Practices
 
-1. **修改前备份**：执行修改前创建文档备份
-2. **小步快跑**：将大修改分解为多个小任务，逐个完成
-3. **及时记录**：每完成一个修改立即更新 CHANGELOG
-4. **交叉验证**：修改完成后进行文档间的一致性检查
-5. **相关方确认**：重要修改需经相关方确认后再提交
+1. **Backup Before Modification**: Create document backup before executing modifications
+2. **Small Steps, Quick Iterations**: Break large modifications into multiple small tasks, complete one by one
+3. **Timely Recording**: Update CHANGELOG immediately after completing each modification
+4. **Cross-verification**: Perform consistency check between documents after modification
+5. **Stakeholder Confirmation**: Important modifications need stakeholder confirmation before submission
 
-## 注意事项
+## Notes
 
-1. **保持文档风格一致**：修改时遵循原有文档的结构和风格
-2. **避免过度修改**：只修改必要内容，不改变无关部分
-3. **术语一致性**：确保全文档术语使用一致
-4. **链接有效性**：更新文档间引用链接
-5. **版本兼容性**：考虑修改对其他版本的影响
+1. **Maintain Document Style Consistency**: Follow original document structure and style during modification
+2. **Avoid Over-Modification**: Only modify necessary content, do not change unrelated parts
+3. **Terminology Consistency**: Ensure consistent terminology usage throughout the document
+4. **Link Validity**: Update cross-document reference links
+5. **Version Compatibility**: Consider impact of modifications on other versions
 
 ## Guardrails
 
-- 修改规格文档必须同步更新 CHANGELOG
-- 修改后必须通知相关功能点进行重新验证
-- 必须保持文档间的一致性
-- 必须记录变更影响范围
+- Modifying specification documents must synchronously update CHANGELOG
+- After modification, must notify related feature points for re-verification
+- Must maintain consistency between documents
+- Must record change impact scope
 
-## 使用示例
+## Usage Example
 
 ```
-用户: /analyze 需要修改转让申请的审批流程
-AI: [调用 pdd-doc-change skill]
-    1. 分析变更需求 ✓
-    2. 识别影响的功能点: FP-ZCCZ1-001, FP-ZCCZ1-002
-    3. 生成修改计划...
-    4. 创建 TODO.md
+User: /analyze Need to modify the approval process for transfer application
 
-变更分析完成！
-影响功能点: 2个
-需要修改的文档:
+AI: [Invoking pdd-doc-change skill]
+    1. Analyze change requirements ✓
+    2. Identify affected feature points: FP-ZCCZ1-001, FP-ZCCZ1-002
+    3. Generate modification plan...
+    4. Create TODO.md
+
+Change analysis complete!
+Affected feature points: 2
+Documents to modify:
 - dev-specs/FP-ZCCZ1-001/spec.md
 - dev-specs/FP-ZCCZ1-002/spec.md
 
-修改计划已生成: dev-specs/变更计划.md
-TODO清单: dev-specs/TODO.md
+Modification plan generated: dev-specs/变更计划.md
+TODO list: dev-specs/TODO.md
 
-是否开始执行修改？
+Start executing modifications?
 ```

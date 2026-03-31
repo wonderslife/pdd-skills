@@ -1,3 +1,10 @@
+---
+name: pdd-pr-batch
+description: 批量合并多个 Change 为一个 PR。适用于多个小改动打包发布的场景。支持中文触发：批量合并PR、批量PR、打包发布、合并多个Change。
+author: neuqik@hotmail.com
+license: MIT
+---
+
 # pdd-pr-batch
 
 **Description**: 批量合并多个 Change 为一个 PR。适用于多个小改动打包发布的场景。

@@ -1,3 +1,10 @@
+---
+name: pdd-pr-create
+description: 创建 PR 并执行自动化审查。支持 GitHub 模式和本地模式（GitHub 不可访问时自动降级）。支持中文触发：创建PR、提交PR、新建PR、PR创建。
+author: neuqik@hotmail.com
+license: MIT
+---
+
 # pdd-pr-create
 
 **Description**: 创建 PR 并执行自动化审查。支持 GitHub 模式和本地模式（GitHub 不可访问时自动降级）。

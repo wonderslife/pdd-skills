@@ -1,267 +1,267 @@
 ---
 name: pdd-extract-features
-description: 从PRD文档体系中提取功能点矩阵。当用户想要从PRD提取功能点时调用此Skill。此技能基于业务分析结果，自动识别并提取功能点，生成标准化的功能点矩阵，为开发规格生成提供输入。
+description: Extract feature point matrix from PRD document system. Call this Skill when users want to extract feature points from PRD. This skill is based on business analysis results, automatically identifies and extracts feature points, generates standardized feature point matrix, and provides input for development specification generation. 支持中文触发：提取功能点、功能点矩阵、从PRD提取、功能点分析、PDD提取。
 license: MIT
-compatibility: 需要业务分析报告和PRD文档
+compatibility: Requires business analysis report and PRD document
 metadata:
-  author: asset-platform
+  author: neuqik@hotmail.com
   version: "2.0"
   parent: pdd-main
   triggers:
-    - "提取功能点" | "功能点矩阵" | "FP-"
-    - "从PRD提取" | "功能点分析"
+    - "extract feature points" | "feature point matrix" | "FP-"
+    - "extract from PRD" | "feature point analysis"
 ---
 
-# PDD-Extract Features - 功能点提取技能
+# PDD-Extract Features - Feature Point Extraction Skill
 
-## 1. 技能概述
+## 1. Skill Overview
 
-### 1.1 核心定位
-从业务分析结果和PRD文档中提取功能点，生成标准化的功能点矩阵。
+### 1.1 Core Positioning
+Extract feature points from business analysis results and PRD documents, generate standardized feature point matrix.
 
-### 1.2 技能边界
-- **输入**: 业务分析报告、PRD文档
-- **输出**: feature-matrix.md (功能点矩阵)
-- **不负责**: 规格编写、代码实现
+### 1.2 Skill Boundaries
+- **Input**: Business analysis report, PRD document
+- **Output**: feature-matrix.md (feature point matrix)
+- **Not responsible for**: Specification writing, code implementation
 
-## 2. 功能点分类
+## 2. Feature Point Classification
 
-### 2.1 按复杂度分类
+### 2.1 Classification by Complexity
 
-| 复杂度 | 代码 | 说明 | 开发时间 | 人工参与 |
+| Complexity | Code | Description | Development Time | Manual Involvement |
 |--------|------|------|---------|---------|
-| **核心业务** | P0 | 核心业务流程，涉及多方审批 | 3-5天 | 高 |
-| **重要功能** | P1 | 重要业务功能，有替代方案 | 1-2天 | 中 |
-| **辅助功能** | P2 | 辅助性功能，易于实现 | 0.5天 | 低 |
+| **Core Business** | P0 | Core business processes, involving multi-party approval | 3-5 days | High |
+| **Important Features** | P1 | Important business features, with alternatives | 1-2 days | Medium |
+| **Auxiliary Features** | P2 | Auxiliary features, easy to implement | 0.5 day | Low |
 
-### 2.2 按操作类型分类
+### 2.2 Classification by Operation Type
 
-| 类型 | 代码 | 说明 |
+| Type | Code | Description |
 |------|------|------|
-| **增** | C | Create，新增数据 |
-| **查** | R | Read，查询/详情 |
-| **改** | U | Update，修改数据 |
-| **删** | D | Delete，删除数据 |
-| **批** | B | Batch，批量操作 |
-| **审** | A | Approve，审批流程 |
-| **导** | E | Export，数据导出 |
-| **流** | F | Flow，状态流转 |
+| **Create** | C | Create, add new data |
+| **Read** | R | Read, query/details |
+| **Update** | U | Update, modify data |
+| **Delete** | D | Delete, remove data |
+| **Batch** | B | Batch, batch operations |
+| **Approve** | A | Approve, approval workflow |
+| **Export** | E | Export, data export |
+| **Flow** | F | Flow, state transition |
 
-### 2.3 按AI角色分类
+### 2.3 Classification by AI Role
 
-| AI角色 | 代码 | 说明 | 人工参与度 |
+| AI Role | Code | Description | Manual Involvement |
 |--------|------|------|-----------|
-| **主导者** | AI-L | AI主导实现 | 低 |
-| **协作者** | AI-C | AI与人工协作 | 中 |
-| **审核者** | AI-R | AI辅助审核 | 高 |
+| **Leader** | AI-L | AI-led implementation | Low |
+| **Collaborator** | AI-C | AI and human collaboration | Medium |
+| **Reviewer** | AI-R | AI-assisted review | High |
 
-## 3. 功能点提取流程
+## 3. Feature Point Extraction Process
 
-### Step 1: 分析业务用例
+### Step 1: Analyze Business Use Cases
 
-从业务分析报告中提取用例：
-- 主要参与者
-- 用例名称
-- 基本流程
-- 扩展流程
+Extract use cases from business analysis report:
+- Primary actors
+- Use case name
+- Basic flow
+- Extended flow
 
-### Step 2: 识别功能操作
+### Step 2: Identify Feature Operations
 
-对每个用例识别操作：
+Identify operations for each use case:
 
 ```markdown
-| 用例 | 操作 | 操作类型 | 复杂度 | AI角色 |
+| Use Case | Operation | Operation Type | Complexity | AI Role |
 |------|------|---------|--------|--------|
-| UC-001 转让申请 | 发起申请 | C | P0 | AI-C |
-| UC-001 转让申请 | 查看申请 | R | P1 | AI-L |
-| UC-001 转让申请 | 修改申请 | U | P1 | AI-C |
+| UC-001 Transfer Application | Initiate Application | C | P0 | AI-C |
+| UC-001 Transfer Application | View Application | R | P1 | AI-L |
+| UC-001 Transfer Application | Modify Application | U | P1 | AI-C |
 ```
 
-### Step 3: 识别页面/接口
+### Step 3: Identify Pages/Interfaces
 
 ```markdown
-| 功能点 | 页面路径 | API路径 | 方法 |
+| Feature Point | Page Path | API Path | Method |
 |--------|---------|---------|------|
-| FP-001 发起申请 | form.vue | /apply | POST |
-| FP-002 查看申请 | detail.vue | /apply/{id} | GET |
+| FP-001 Initiate Application | form.vue | /apply | POST |
+| FP-002 View Application | detail.vue | /apply/{id} | GET |
 ```
 
-### Step 4: 生成功能点矩阵
+### Step 4: Generate Feature Point Matrix
 
 ```markdown
-# [模块名称] 功能点矩阵
+# [Module Name] Feature Point Matrix
 
-## 1. 功能点汇总
+## 1. Feature Point Summary
 
-| 功能点ID | 功能名称 | 页面/接口 | 操作类型 | 复杂度 | AI角色 | 依赖功能 |
+| Feature Point ID | Feature Name | Page/Interface | Operation Type | Complexity | AI Role | Dependencies |
 |---------|---------|----------|---------|--------|--------|---------|
-| FP-001 | 发起转让申请 | form.vue | C | P0 | AI-C | - |
-| FP-002 | 查看转让申请 | detail.vue | R | P1 | AI-L | FP-001 |
-| FP-003 | 修改转让申请 | form.vue | U | P1 | AI-C | FP-001 |
-| FP-004 | 删除转让申请 | list.vue | D | P1 | AI-C | FP-001 |
-| FP-005 | 审批转让申请 | approval.vue | A | P0 | AI-C | FP-001 |
+| FP-001 | Initiate Transfer Application | form.vue | C | P0 | AI-C | - |
+| FP-002 | View Transfer Application | detail.vue | R | P1 | AI-L | FP-001 |
+| FP-003 | Modify Transfer Application | form.vue | U | P1 | AI-C | FP-001 |
+| FP-004 | Delete Transfer Application | list.vue | D | P1 | AI-C | FP-001 |
+| FP-005 | Approve Transfer Application | approval.vue | A | P0 | AI-C | FP-001 |
 ```
 
-### Step 5: 功能点详情
+### Step 5: Feature Point Details
 
-对每个P0功能点生成详情：
+Generate details for each P0 feature point:
 
 ```markdown
-## 2. 功能点详情
+## 2. Feature Point Details
 
-### FP-001: 发起转让申请
+### FP-001: Initiate Transfer Application
 
-**基本信息**:
-| 项目 | 内容 |
+**Basic Information**:
+| Item | Content |
 |------|------|
-| 功能点ID | FP-001 |
-| 功能名称 | 发起转让申请 |
-| 所属用例 | UC-001 |
-| 操作类型 | C (Create) |
-| 复杂度 | P0 |
+| Feature Point ID | FP-001 |
+| Feature Name | Initiate Transfer Application |
+| Belonging Use Case | UC-001 |
+| Operation Type | C (Create) |
+| Complexity | P0 |
 
-**功能描述**:
-申请人填写转让申请表单，提交后进入审批流程。
+**Feature Description**:
+Applicant fills out transfer application form, after submission enters approval workflow.
 
-**前置条件**:
-- 用户已登录
-- 用户有发起申请的权限
+**Preconditions**:
+- User has logged in
+- User has permission to initiate application
 
-**后置条件**:
-- 申请记录已创建
-- 状态变为"待审核"
-- 通知审批人
+**Postconditions**:
+- Application record has been created
+- Status changes to "Pending Review"
+- Notify approver
 
-**输入字段**:
-| 字段名 | 类型 | 必填 | 说明 |
+**Input Fields**:
+| Field Name | Type | Required | Description |
 |--------|------|------|------|
-| companyName | String | 是 | 企业名称 |
-| transferType | Enum | 是 | 转让类型 |
-| evaluationValue | Decimal | 是 | 评估价值 |
-| floorPrice | Decimal | 是 | 转让底价 |
-| attachments | File[] | 是 | 附件 |
+| companyName | String | Yes | Enterprise name |
+| transferType | Enum | Yes | Transfer type |
+| evaluationValue | Decimal | Yes | Evaluation value |
+| floorPrice | Decimal | Yes | Transfer floor price |
+| attachments | File[] | Yes | Attachments |
 
-**输出信息**:
-| 信息 | 说明 |
+**Output Information**:
+| Information | Description |
 |------|------|
-| applyId | 申请ID |
-| applyNo | 申请编号 |
-| status | 申请状态 |
+| applyId | Application ID |
+| applyNo | Application number |
+| status | Application status |
 
-**业务规则**:
-- 转让底价 >= 评估价值 * 90%
-- 必须上传相关附件
-- 同一企业同一类型只能有一笔进行中申请
+**Business Rules**:
+- Transfer floor price >= Evaluation value * 90%
+- Must upload related attachments
+- Same enterprise same type can only have one ongoing application
 
-**测试策略**:
-- 正向: 正常提交申请
-- 异常: 底价低于限制、附件缺失、重复提交
+**Test Strategy**:
+- Positive: Normal submission of application
+- Exception: Floor price below limit, missing attachments, duplicate submission
 ```
 
-## 4. 功能点矩阵模板
+## 4. Feature Point Matrix Template
 
 ```markdown
-# [模块名称] 功能点矩阵
+# [Module Name] Feature Point Matrix
 
-## 矩阵信息
-| 项目 | 内容 |
+## Matrix Information
+| Item | Content |
 |------|------|
-| 模块编号 | [编号] |
-| 模块名称 | [名称] |
-| 生成日期 | [日期] |
-| 版本 | v1.0 |
+| Module Number | [Number] |
+| Module Name | [Name] |
+| Generation Date | [Date] |
+| Version | v1.0 |
 
-## 功能点汇总表
+## Feature Point Summary Table
 
-### 1.1 按复杂度统计
-| 复杂度 | 数量 | 功能点ID |
+### 1.1 Statistics by Complexity
+| Complexity | Count | Feature Point IDs |
 |--------|------|---------|
 | P0 | N | FP-xxx |
 | P1 | N | FP-xxx |
 | P2 | N | FP-xxx |
 
-### 1.2 按操作类型统计
-| 操作类型 | 数量 | 功能点ID |
+### 1.2 Statistics by Operation Type
+| Operation Type | Count | Feature Point IDs |
 |---------|------|---------|
-| C (新增) | N | FP-xxx |
-| R (查询) | N | FP-xxx |
-| U (修改) | N | FP-xxx |
-| D (删除) | N | FP-xxx |
-| A (审批) | N | FP-xxx |
+| C (Create) | N | FP-xxx |
+| R (Read) | N | FP-xxx |
+| U (Update) | N | FP-xxx |
+| D (Delete) | N | FP-xxx |
+| A (Approve) | N | FP-xxx |
 
-## 详细功能点列表
+## Detailed Feature Point List
 
-| 功能点ID | 功能名称 | 页面/接口 | 操作 | 复杂度 | AI角色 | 依赖 | 测试策略 |
+| Feature Point ID | Feature Name | Page/Interface | Operation | Complexity | AI Role | Dependencies | Test Strategy |
 |---------|---------|----------|------|--------|--------|------|---------|
-| FP-001 | [名称] | [路径] | C | P0 | AI-C | - | [策略] |
+| FP-001 | [Name] | [Path] | C | P0 | AI-C | - | [Strategy] |
 ```
 
 ## 5. Guardrails
 
-### 5.1 必须遵守
-- [ ] 功能点ID全局唯一
-- [ ] 每个功能点必须有明确的操作类型
-- [ ] 必须标注功能点依赖关系
-- [ ] P0功能点必须有详细描述
+### 5.1 Must Follow
+- [ ] Feature point ID must be globally unique
+- [ ] Each feature point must have a clear operation type
+- [ ] Must mark feature point dependencies
+- [ ] P0 feature points must have detailed descriptions
 
-### 5.2 避免事项
-- ❌ 功能点遗漏关键业务操作
-- ❌ 依赖关系形成循环
-- ❌ 复杂度评估与实际不符
+### 5.2 Avoid
+- ❌ Feature point missing critical business operations
+- ❌ Dependencies forming cycles
+- ❌ Complexity assessment inconsistent with reality
 
-## 6. 与其他技能协作
+## 6. Collaboration with Other Skills
 
-| 协作技能 | 协作方式 | 传入数据 | 期望输出 |
+| Collaborating Skill | Collaboration Method | Input Data | Expected Output |
 |---------|---------|---------|---------|
-| **pdd-ba** | Sequential | 业务分析报告 | 用例和流程 |
-| **pdd-generate-spec** | Sequential | 功能点矩阵 | spec.md |
+| **pdd-ba** | Sequential | Business analysis report | Use cases and processes |
+| **pdd-generate-spec** | Sequential | Feature point matrix | spec.md |
 
 ---
 
-## 7. 人工审核规范
+## 7. Manual Review Standards
 
-本Skill遵循PDD框架人工审核规范。
+This Skill follows PDD framework manual review standards.
 
-### 7.1 审核节点
+### 7.1 Review Checkpoint
 
-功能点矩阵生成完成后，需要进行人工审核。
+After feature point matrix generation is complete, manual review is required.
 
-### 7.2 审核内容
+### 7.2 Review Content
 
-| 审核项 | 说明 |
+| Review Item | Description |
 |--------|------|
-| 功能点完整性 | 是否覆盖所有业务功能 |
-| 复杂度评估 | P0/P1/P2 是否合理 |
-| 测试策略 | 是否完整 |
-| 依赖关系 | 是否正确 |
+| Feature Point Completeness | Whether all business features are covered |
+| Complexity Assessment | Whether P0/P1/P2 is reasonable |
+| Test Strategy | Whether complete |
+| Dependencies | Whether correct |
 
-### 7.3 审核粒度
+### 7.3 Review Granularity
 
-- **批量审核**：快速浏览整体，标记需详细审核的内容
-- **关键功能点详细审核**：P0优先级、复杂状态转换、外部系统集成、敏感数据处理
+- **Batch Review**: Quick overview of the whole, mark content requiring detailed review
+- **Critical Feature Point Detailed Review**: P0 priority, complex state transitions, external system integration, sensitive data processing
 
-### 7.4 审核结果
+### 7.4 Review Results
 
-- **输出文件**: `review-features.md`
-- **结果类型**: passed / rejected / conditional
+- **Output File**: `review-features.md`
+- **Result Type**: passed / rejected / conditional
 
-### 7.5 关键功能点定义
+### 7.5 Critical Feature Point Definition
 
-- P0 优先级功能点
-- 涉及复杂状态转换
-- 涉及外部系统集成
-- 涉及敏感数据处理
+- P0 priority feature points
+- Involving complex state transitions
+- Involving external system integration
+- Involving sensitive data processing
 
 ---
 
-## 8. PDD实施规范引用
+## 8. PDD Implementation Standards Reference
 
-本Skill遵循PDD框架实施规范，详见 [pdd-framework-design.md 第9章](../docs/pdd-framework-design.md#9-pdd-实施规范)。
+This Skill follows PDD framework implementation standards, see [pdd-framework-design.md Chapter 9](../docs/pdd-framework-design.md#9-pdd-实施规范).
 
-## 9. 版本历史
+## 9. Version History
 
-| 版本 | 日期 | 变更内容 |
+| Version | Date | Change Content |
 |-----|------|---------|
-| 2.1 | 2026-03-22 | 添加人工审核规范、PDD实施规范引用 |
-| 2.0 | 2026-03-21 | 增强复杂度评估标准，添加AI角色分类 |
-| 1.0 | 早期 | 初始版本 |
+| 2.1 | 2026-03-22 | Added manual review standards, PDD implementation standards reference |
+| 2.0 | 2026-03-21 | Enhanced complexity assessment standards, added AI role classification |
+| 1.0 | Early | Initial version |

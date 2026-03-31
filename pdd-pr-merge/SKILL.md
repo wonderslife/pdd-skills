@@ -1,3 +1,10 @@
+---
+name: pdd-pr-merge
+description: 合并 PR 并触发归档流程。支持 GitHub 模式和本地模式。支持中文触发：合并PR、PR归档、合并请求、归档流程。
+author: neuqik@hotmail.com
+license: MIT
+---
+
 # pdd-pr-merge
 
 **Description**: 合并 PR 并触发归档流程。支持 GitHub 模式和本地模式。
