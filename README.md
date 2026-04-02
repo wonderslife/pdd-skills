@@ -1,5 +1,29 @@
 # PDD Skills - PRD Driven Development Framework
 
+> PRD-Driven Development Methodology with AI Multi-Agent System
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/Version-2.0-blue.svg)](https://github.com/wonderslife/pdd-skills)
+[![PRDs](https://img.shields.io/badge/PRDs-20%2B-green.svg)](https://github.com/wonderslife/pdd-skills)
+[![Skills](https://img.shields.io/badge/Skills-20%2B-orange.svg)](https://github.com/wonderslife/pdd-skills)
+[![Language](https://img.shields.io/badge/Languages-EN%7CZH%7CFR-red.svg)](https://github.com/wonderslife/pdd-skills)
+
+**Documentation**: [English](README.md) · [中文](README_zh.md) · [Français](README_fr.md)
+
+---
+
+## What is PDD?
+
+**PDD (PRD-Driven Development)** is an AI-powered development methodology that transforms requirement documents directly into production-ready code through a harness engineering system.
+
+### Core Principles
+
+- 📄 **Document-First**: PRD documents are the single source of truth
+- 🤖 **AI-Powered**: Multi-agent system with specialized skills
+- ✅ **Verified**: Three-dimensional verification (Completeness · Correctness · Coherence)
+- 🔄 **Entropy Reduction**: Continuous technical debt management
+
+[... 完整内容 ...]
 ## Harness Engineering 范式的企业级工程实践 | Enterprise Engineering Practice of Harness Engineering Paradigm
 
 > 🚀 **Latest News / 最新动态 / Dernières Nouvelles**
