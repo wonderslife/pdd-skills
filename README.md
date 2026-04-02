@@ -8,7 +8,7 @@
 [![Skills](https://img.shields.io/badge/Skills-20%2B-orange.svg)](https://github.com/wonderslife/pdd-skills)
 [![Language](https://img.shields.io/badge/Languages-EN%7CZH%7CFR-red.svg)](https://github.com/wonderslife/pdd-skills)
 
-**Documentation**: [English](README.md) · [中文](README_zh.md) · [Français](README_fr.md)
+**Documentation**: [English](#english) | [中文](#中文) | [Français](#français)
 
 ---
 
