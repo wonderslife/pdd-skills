@@ -9,7 +9,9 @@
 [![Language](https://img.shields.io/badge/Languages-EN%7CZH%7CFR-red.svg)](https://github.com/wonderslife/pdd-skills)
 
 **Documentation**: [English](#english) | [中文](#中文) | [Français](#français)
+PDD-Skills-v3 published | pdd-skills-v3版本已经发布 
 
+https://github.com/wonderslife/pdd-skills-v3
 ---
 
 ## What is PDD?
